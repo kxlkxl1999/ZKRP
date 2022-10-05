@@ -1,0 +1,107 @@
+---
+title: "main"
+author: "康欣来"
+date: '2022-08-25'
+output: html_document
+---
+
+```{r}
+library(fdadensity)
+library(frechet)
+source("WassCov.R")
+```
+
+```{r}
+mydatax = read.csv("data/mydatax.csv",header = F)
+mydatay = read.csv("data/mydatay.csv",header = F)
+mydataz = read.csv("data/mydataz.csv",header = F)
+mydataxx = read.csv("data/mydataxx.csv",header = F)
+mydataxxx = read.csv("data/mydataxxx.csv",header = F)
+mydataxxxx = read.csv("data/mydataxxxx.csv",header = F)
+mydatayy = read.csv("data/mydatayy.csv",header = F)
+mydataw = read.csv("data/mydataw.csv",header = F)
+mydatawp = read.csv("data/mydatawp.csv",header = F)
+mydatawpp = read.csv("data/mydatayy.csv",header = F)
+mydatas = read.csv("data/mydatas.csv",header = F)
+mydatass = read.csv("data/mydatass.csv",header = F)
+mydatasss = read.csv("data/mydatasss.csv",header = F)
+mydatac = read.csv("data/mydatac.csv",header = F)
+mydatar = read.csv("data/mydatar.csv",header = F)
+mydataxp = read.csv("data/mydataxp.csv",header = F)
+mydataxpp = read.csv("data/mydataxpp.csv",header = F)
+mydatayy = read.csv("data/mydatayy.csv",header = F)
+mydatazz = read.csv("data/mydatazz.csv",header = F)
+```
+
+### 数据转换, 把数据转换为WassCov可以用的形式
+```{r}
+trans <- function(x, y)
+{
+    data = list()
+    for(i in 1:nrow(x))
+    {
+        data1 = seq(x[i,1], x[i,2], (x[i,2] - x[i,1])/100)
+        data2 = seq(y[i,1], y[i,2], (y[i,2] - y[i,1])/100)
+        data[[i]] = list(data1,data2)
+    }
+    return(data)
+}
+
+cor <- function(wc)
+{
+    w_c = unlist(wc[2])
+    return(w_c[2]/sqrt(w_c[1]*w_c[4]))
+}
+```
+
+```{r}
+# den1 = list(c(1,2,3,4,5),c(2,3,4,5,6),c(3,4,5,6,7))
+# den2 = list(c(6,7,8,9),c(5,7,8,9),c(4,5,6,8))
+# 
+# n1 = list(c(1,3,5),c(6,8,10)) 
+# n2 = list(c(2,4,6),c(5,7,9))
+# n3 = list(c(3,5,7),c(4,6,8))
+# test = list(n1,n2,n3)
+```
+
+```{r}
+cor_xxx_zz = cor(WassCov(y = trans(mydataxxx,mydatazz)))
+```
+
+```{r}
+cor_x_y = cor(WassCov(y = trans(mydatax,mydatay)))
+cor_x_z = cor(WassCov(y = trans(mydatax,mydataz)))
+cor_x_xx = cor(WassCov(y = trans(mydatax,mydataxx)))
+cor_x_xxx = cor(WassCov(y = trans(mydatax,mydataxxx)))
+cor_x_xxxx = cor(WassCov(y = trans(mydatax,mydataxxxx)))
+cor_xxx_xxxx = cor(WassCov(y = trans(mydataxxx,mydataxxxx)))
+cor_xxx_yy = cor(WassCov(y = trans(mydataxxx,mydatayy)))
+cor_x_x = cor(WassCov(y = trans(mydatax,mydatax)))
+```
+
+```{r}
+cor_x_r = cor(WassCov(y = trans(mydatax,mydatar)))
+cor_x_w = cor(WassCov(y = trans(mydatax,mydataw)))
+cor_xp_wp = cor(WassCov(y = trans(mydataxp,mydatawp)))
+cor_xpp_wpp = cor(WassCov(y = trans(mydataxpp,mydatawpp)))
+cor_x_s = cor(WassCov(y = trans(mydatax,mydatas)))
+cor_x_ss = cor(WassCov(y = trans(mydatax,mydatass)))
+cor_x_sss = cor(WassCov(y = trans(mydatax,mydatasss)))
+cor_x_c = cor(WassCov(y = trans(mydatax,mydatac)))
+cor_s_c = cor(WassCov(y = trans(mydatas,mydatac)))
+cor_s_ss = cor(WassCov(y = trans(mydatas,mydatass)))
+cor_s_sss = cor(WassCov(y = trans(mydatas,mydatasss)))
+```
+
+```{r}
+wr = c()
+for(i in 1:100)
+{
+    x = read.csv(sprintf("data/proj1/x %d.csv", i-1),header = F)
+    w = read.csv(sprintf("data/proj1/w %d.csv", i-1),header = F)
+    wr = c(wr, cor(WassCov(y = trans(x,w))))
+}
+write.csv(as.numeric(wr), file = "data/wr.csv", row.names = F)
+```
+
+
