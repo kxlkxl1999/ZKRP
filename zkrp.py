@@ -151,7 +151,7 @@ def frechet_variance(data, method='hausdorff'):
 
 
 def fcov(w, x, y, x_mean, y_mean):
-    return abs((dist(w, x) - dist(w, x_mean)) * (dist(w, y) - dist(w, y_mean)))
+    return -1 * abs((dist(w, x) - dist(w, x_mean)) * (dist(w, y) - dist(w, y_mean)))
 
 
 def frechet_covariance(x, y, method='hausdorff'):
