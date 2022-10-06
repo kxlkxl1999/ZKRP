@@ -117,7 +117,7 @@ def frechet_mean(data, method='hausdorff', inter_l=0):
     inter_len = inter_l if inter_l else np.mean(data[:, 1] - data[:, 0])
 
     if method == 'hausdorff' or method == 'wasserstein' or method == 'middle':
-        output = optimize.fminbound(fdsum, lower, upper, args=(data, inter_len, method), full_output=1)
+        output = optimize.fminbound(fdsum, lower, upper, args=(data, inter_len, method), full_output=True)
         return {'min_d': output[1],
                 'midpoint': output[0],
                 'interval': [output[0] - inter_len / 2, output[0] + inter_len / 2]}
