@@ -154,6 +154,10 @@ def fcov(w, x, y, x_mean, y_mean):
     return -1 * abs((dist(w, x) - dist(w, x_mean)) * (dist(w, y) - dist(w, y_mean)))
 
 
+def ffcov(w, x, y, x_mean, y_mean):
+    return (dist(w, x) - dist(w, x_mean)) * (dist(w, y) - dist(w, y_mean))
+
+
 def frechet_covariance(x, y, method='hausdorff'):
     """
     calculate frechet covariance of random interval x and y using formulation 2
@@ -165,6 +169,7 @@ def frechet_covariance(x, y, method='hausdorff'):
                            'symbolic': symbolic sample method
     :return: double
     """
+    np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
     assert x.shape[0] == y.shape[0]
     n = x.shape[0]
     if method == 'hausdorff':
@@ -172,18 +177,29 @@ def frechet_covariance(x, y, method='hausdorff'):
         y_mean = frechet_mean(y)['interval']
         cov_sum = 0
         for i in tqdm(range(n)):
-            a = 0
-            abs_a = 0
-            for w in np.concatenate((np.linspace(start=x[i, 0], stop=x[i, 1], num=1000),
-                                     np.linspace(start=y[i, 0], stop=y[i, 1], num=1000),
-                                     np.linspace(start=x_mean[0], stop=x_mean[1], num=1000),
-                                     np.linspace(start=y_mean[0], stop=y_mean[1], num=1000)
-                                     )):
-                a0 = (dist(w, x[i, :]) - dist(w, x_mean)) * (dist(w, y[i, :]) - dist(w, y_mean))
-                if abs(a0) > abs_a:
-                    abs_a = abs(a0)
-                    a = a0
-            cov_sum += abs_a if a >= 0 else (-1 * abs_a)
+
+            output1 = optimize.brute(fcov, ranges=((x[i, 0], x[i, 1]),), args=(x[i, :], y[i, :], x_mean, y_mean), full_output=True, finish=optimize.fmin)
+            output2 = optimize.brute(fcov, ranges=((x_mean[0], x_mean[1]),), args=(x[i, :], y[i, :], x_mean, y_mean), full_output=True, finish=optimize.fmin)
+            output3 = optimize.brute(fcov, ranges=((y[i, 0], y[i, 1]),), args=(x[i, :], y[i, :], x_mean, y_mean), full_output=True, finish=optimize.fmin)
+            output4 = optimize.brute(fcov, ranges=((y_mean[0], y_mean[1]),), args=(x[i, :], y[i, :], x_mean, y_mean), full_output=True, finish=optimize.fmin)
+            output = [output1, output2, output3, output4]
+            m_out = max([-1 * i[1] for i in output])
+            for j in range(4):
+                if output[j][1] * -1 == m_out:
+                    max_output = output[j]
+            cov_sum += ffcov(max_output[0][0], x[i, :], y[i, :], x_mean, y_mean)
+            # a = 0
+            # abs_a = 0
+            # for w in np.concatenate((np.linspace(start=x[i, 0], stop=x[i, 1], num=1000),
+            #                          np.linspace(start=y[i, 0], stop=y[i, 1], num=1000),
+            #                          np.linspace(start=x_mean[0], stop=x_mean[1], num=1000),
+            #                          np.linspace(start=y_mean[0], stop=y_mean[1], num=1000)
+            #                          )):
+            #     a0 = (dist(w, x[i, :]) - dist(w, x_mean)) * (dist(w, y[i, :]) - dist(w, y_mean))
+            #     if abs(a0) > abs_a:
+            #         abs_a = abs(a0)
+            #         a = a0
+            # cov_sum += abs_a if a >= 0 else (-1 * abs_a)
         return cov_sum / n
     elif method == 'symbolic':
         mean1 = frechet_mean(x, method='symbolic')
