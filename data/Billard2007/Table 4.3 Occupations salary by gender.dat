@@ -1,0 +1,22 @@
+
+          Table 4.3 Occupations: Salary by gender
+
+       Variables:
+	    Occupation (as listed); nu = number in occupation u
+		Y1 = Gender: Male, Female, with relative frequencies p11 p12
+		Y2 = Salary, multi-valued, 7-point scale, 1,....,7 
+		       with relative frequencies p21 p22 p23 p24 p25 p26 p27
+
+	input u Occupation $ p11 p12 p21 p22 p23 p24 p25 p26 p27 nu
+  
+               ---------------------------------
+
+ 1 Secretaries   .055 .945  .050 .175 .189 .193 .174 .116 .103   476 
+ 2 Psychologists .138 .862  .049 .187 .218 .218 .132 .101 .095  1424 
+ 3 Domestics     .075 .925  .060 .185 .209 .217 .124 .116 .089   733 
+ 4 Cleaners      .109 .891  .065 .164 .220 .209 .129 .120 .093  1567  
+ 5 Teachers      .228 .772  .050 .182 .230 .215 .123 .107 .093  1864 
+ 6 Librarians    .221 .779  .075 .153 .213 .218 .157 .083 .101   671 
+ 7 SocialWorkers .149 .851  .055 .177 .216 .207 .144 .096 .105  1085 
+ 8 Nurses        .034 .966  .034 .204 .217 .194 .135 .105 .111   668 
+ 9 Retail        .071 .929  .060 .163 .204 .232 .132 .109 .100  1512 

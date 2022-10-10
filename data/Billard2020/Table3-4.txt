@@ -1,0 +1,6 @@
+Household   Y_1 = Energy Type}   Y_2 = Computer Type
+   1        gas, wood            laptop
+   2        gas, coal, wood      laptop, PC 
+   3        gas, coal, wood      laptop 
+   4        electricty, wood     laptop, PC, other 
+   5        electricty, other    PC, other    

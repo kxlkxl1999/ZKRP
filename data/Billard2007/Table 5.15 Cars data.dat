@@ -1,0 +1,22 @@
+
+           Table 5.15 Cars data
+
+	Variables:
+	  Car (concept), as listed
+	  Y1 = Price, interval [a1, b1]
+	  Y2 = Maximum Velocity, interval [a2, b2]
+	  Y3 = Acceleration Time, interval [a3, b3]
+      Y4 = Cylinder Capacity, interval [a4, b4]
+
+    input u Car $ a1 b1 a2 b2 a3 b3 a4 b4
+
+         --------------------------- 
+
+  1 AstonMartin 260.5 460.0  298 306  4.7  5.0  5935 5935    
+  2 AudiA6       68.2 140.3  216 250  6.7  9.7  1781 4172     
+  3 AudiA8      123.8 171.4  232 250  5.4 10.1  2771 4172     
+  4 BMW7        104.9 276.8  228 240  7.0  8.6  2793 5397     
+  5 Ferrari     240.3 391.7  295 298  4.5  5.2  3586 5474     
+  6 HondaNSR    205.2 215.2  260 270  5.7  6.5  2977 3179      
+  7 MecedesC     55.9 115.2  210 250  5.2 11.0  1998 3199         
+  8 Porsche     147.7 246.4  280 305  4.2  5.2  3387 3600      

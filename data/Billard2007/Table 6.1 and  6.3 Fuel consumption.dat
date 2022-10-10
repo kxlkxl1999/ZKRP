@@ -1,0 +1,30 @@
+
+   Table 6.1 and 6.3 Fuel consumption 
+
+   Variables:
+     Region (concept)
+	 Variables:
+     Region (concept): region1,...,region10 
+	 Y = Expenditure, quantitative classical value
+	 X1 = Fuel Type (== X of Table 6.1), 
+            modal multi-valued (gas, oil, electric, other)
+	           with relative frequencies p11, p12, p13, p14
+	 X2 = Size of household, modal multi-valued (small, large)
+	           with relative frequencies p21, p22
+
+	  input u Region $ Y p11 p12 p13 p14 p21 p22
+
+	  ----------------
+
+  
+
+  1 region1  28.1  .83 .03 .14 .00  .57 .43 
+  2 region2  23.4  .69 .13 .12 .06  .65 .35 
+  3 region3  33.2  .00 .40 .15 .45  .38 .62 
+  4 region4  25.1  .61 .07 .16 .16  .82 .18 
+  5 region5  21.7  .67 .15 .18 .00  .74 .26 
+  6 region6  32.5  .40 .00 .45 .15  .55 .45 
+  7 region7  26.6  .83 .01 .09 .07  .81 .19 
+  8 region8  19.9  .66 .15 .19 .00  .63 .37 
+  9 region9  28.4  .86 .00 .09 .05  .47 .53 
+ 10 region10 25.5  .77 .00 .23 .00  .66 .34 

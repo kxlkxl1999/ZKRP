@@ -1,0 +1,17 @@
+
+
+      Table 2.5 Bird colors
+
+  input u Bird {Major Colors}
+      -------------
+
+ 1 Magpie {black, white}
+ 2 Kookaburra {brown, black, white, blue} 
+ 3 Galah {pink, grey} 
+ 4 Cardinal {red, black} 
+ 5 Goldfinch {black, yellow} 
+ 6 Quetzal {red, green, white} 
+ 7 Toucan { black, yellow, red, green} 
+ 8 Rainbow Lorikeet {blue, yellow, green, red, violet, orange} 
+
+

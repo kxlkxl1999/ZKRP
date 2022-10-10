@@ -1,0 +1,4 @@
+Region u   Y_1 = Energy Type               Y_2 = Computers     Y_3 = College
+   1       electricity, gas, wood, other   PC, laptop, none    yes, no 
+   2       electricity, wood               PC, laptop, none    yes, no 
+   3       electricity, gas                PC, laptop          yes          

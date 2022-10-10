@@ -1,0 +1,8 @@
+Region  Major Utility                  Cost 
+  1   {electricity, coal, wood, gas} [190, 230]
+  2   {electricity, oil, coal}       [21.5, 25.5]
+  3   {coal}                         [40, 53]
+  4   {other}                        15.5
+  5   {gas, oil, other}              [25, 30]
+  6   {electricity}                  46.0
+  7   {electricity, coal}            [37, 43]

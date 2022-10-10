@@ -1,0 +1,27 @@
+
+
+
+          Table 7.14 Horses dataset
+
+	Variables:
+	   Breed (concept): CES, CMA, PEN, TES, CEN, LES, PES, PAM
+	   Y1 = Minimum Weight, interval [a1, b1]
+	   Y2 = Maximum Weight, interval [a2, b2]
+	   Y3 = Minimum Height, interval [a3, b3]
+	   Y4 = Maximum Height, interval [a4, b4]
+	   Y5 = Mares Cost, interval [a5, b5]
+	   Y6 = Fillies Cost, interval [a6, b6]
+
+	input u Breed $ a1 b1 a2 b2 a3 b3 a4 b4 a5 b5 a6 b6
+
+	      ---------------------------------
+
+   1 CES 410 460  550 630  145 155  158 175  150 480   40 130
+   2 CMA 390 430  570 580  130 158  150 167    0 200    0  50
+   3 PEN 130 190  210 310   90 135  107 153    0 100    0  30
+   4 TES 410 630  560 890  135 165  147 172  100 350   30  90
+   5 CEN 410 610  540 880  145 162  155 172   70 600   20 160
+   6 LES 170 450  290 650  118 158  147 170    0 350    0  90
+   7 PES 170 170  290 290  124 124  147 147  380 380  100 100
+   8 PAM 170 170  290 290  120 120  147 147  230 230   60  60
+

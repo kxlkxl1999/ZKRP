@@ -1,0 +1,12 @@
+  Household Characteristics Data:  
+        Y_1 = Household Makeup                    Y_2 = Occupancy and Tenure}  
+       Married Couple Female Head    Living Alone  
+County Children Aged  Children Aged      Aged     Owner     Renter 
+ u       < 18  >=18    < 18  >=18    < 65 >= 65   Occupied  Occupied Vacant  
+ 1      0.274 0.273    0.082 0.069   0.217 0.085   0.530     0.439    0.031   
+ 2      0.319 0.275    0.109 0.064   0.144 0.089   0.527     0.407    0.066  
+ 3      0.211 0.304    0.092 0.048   0.236 0.109   0.528     0.388    0.084  
+ 4      0.368 0.281    0.110 0.051   0.114 0.076   0.527     0.414    0.059  
+ 5      0.263 0.335    0.064 0.048   0.160 0.130   0.609     0.326    0.065  
+ 6      0.332 0.306    0.065 0.056   0.159 0.082   0.587     0.378    0.035  
+

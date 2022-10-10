@@ -1,0 +1,40 @@
+
+
+         Table 6.20 Hierarchy on histograms
+
+   Variables:
+      Y = Duration Time, histogram {[Ya1, Yb1), Yp1; [Ya2, Yb2], Yp2}
+	  Hierarchy variables:
+	    X1 with values: a, b or c
+	    X2 with values: If X1=a, then X2=a1 or a2; else X2=NA
+        X3 with values: If X2=a1, then X3=a11 or a12; else X3=NA
+        X4 = Glucose, with values: If X1=a and X2=a2, then 
+           X4, histogram {[X4a1, X4b1),X4p1; [X4a2, X4b2], X4p2}; else X4=NA
+        X5 = Pulse Rate, with values: If X1=b, then 
+           X5, histogram {[X5a1, X5b1), X5p1; [X5a2, X5b2], X5p2}]; else X5=NA       
+         a b c, a1 a2, a11 a12 values entered as indicators (0, 1), intervals [z,z]
+         NA entered as '.'
+      X6 = Cholesterol, interval [X6a, X6b] (non-hierarchy variable)
+
+	input u Ya1 Yb1 Yp1 Ya2 Yb2 Yp2 a a b b c c a1 a1 a2 a2 a11 a11 a12 a12 
+         X4a1 X4b1 X4p1 X4a2 X4b2 X4p2 X5a1 X5b1 X5p1 X5a2 X5b2 X5p2 X6a X6b
+
+	              -----------------------------------
+
+
+ 1 5.3 6.2 .3 6.2 8.3 .7  1 1 0 0 0 0  1 1 0 0  1 1 0 0  . . . . . .  . . . . . .  223 264 
+ 2 5.5 6.7 .4 6.7 9.0 .6  1 1 0 0 0 0  1 1 0 0  1 1 0 0  . . . . . .  . . . . . .  220 250 
+ 3 5.1 6.6 .4 6.6 7.8 .6  1 1 0 0 0 0  1 1 0 0  0 0 1 1  . . . . . .  . . . . . .  219 241 
+ 4 3.7 5.8 .6 5.8 6.3 .4  1 1 0 0 0 0  0 0 1 1  . . . .  87 110 .4 110 140 .6  . . . . . .  209 239 
+ 5 4.5 5.9 .4 5.9 6.2 .6  1 1 0 0 0 0  0 0 1 1  . . . .  90 120 .5 120 150 .5  . . . . . .  211 237 
+ 6 4.1 6.1 .5 6.1 6.9 .5  1 1 0 0 0 0  0 0 1 1  . . . . 100 120 .3 120 155 .7  . . . . . .  219 245 
+ 7 2.4 4.8 .3 4.8 6.2 .7  0 0 1 1 0 0  . . . .  . . . .  . . . . . .  70 80 .4 80 90 .6  215 228 
+ 8 2.1 5.4 .2 5.4 6.9 .8  0 0 1 1 0 0  . . . .  . . . .  . . . . . .  65 80 .4 80 95 .6  208 233 
+ 9 4.8 6.5 .5 6.5 8.2 .5  0 0 1 1 0 0  . . . .  . . . .  . . . . . .  64 82 .5 82 98 .5  227 253 
+10 0.2 1.1 .6 1.1 3.7 .4  0 0 0 0 1 1  . . . .  . . . .  . . . . . .  . . . . . .  190 210 
+
+
+
+
+
+

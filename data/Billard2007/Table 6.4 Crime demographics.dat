@@ -1,0 +1,33 @@
+
+
+   Table 6.4 Crime demographics
+
+   Variables:
+     gang (concept), gang1,..., gang15 
+	 Y = Crime == (Y1, Y2, Y3) = (violent, nonviolent, none), 
+	      modal multi-valued with relative frequencies p1 p2 p3
+	 X1 = Gender == (X11, X12) = (male, female), 
+           modal multi-valued with relative frequencies p11 p12
+	 X2 = Age == (X21, X22) = (age < 20, age >= 20),
+           modal multi-valued with relative frequencies p21 p22
+
+        input u p1 p2 p3 p11 p12 p21 p22
+
+     ----------------------
+
+
+  1 .73 .16 .11  .68 .32  .64 .36 
+  2 .40 .20 .40  .70 .30  .80 .20  
+  3 .20 .20 .60  .50 .50  .50 .50 
+  4 .10 .20 .70  .60 .40  .40 .60 
+  5 .20 .40 .40  .35 .65  .55 .45  
+  6 .48 .32 .20  .53 .47  .62 .38 
+  7 .14 .65 .21  .40 .60  .33 .67 
+  8 .37 .37 .26  .51 .49  .42 .58  
+  9 .47 .32 .21  .59 .41  .66 .34 
+ 10 .18 .15 .77  .37 .63  .22 .78 
+ 11 .35 .35 .30  .41 .59  .44 .56  
+ 12 .18 .57 .25  .39 .61  .45 .55 
+ 13 .74 .16 .10  .70 .30  .63 .37 
+ 14 .33 .45 .22  .37 .64  .29 .71 
+ 15 .35 .39 .26  .50 .50  .44 .56  

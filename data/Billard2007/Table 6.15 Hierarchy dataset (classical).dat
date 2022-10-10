@@ -1,0 +1,39 @@
+
+   Table 6.15 Hierarchy dataset (classical)
+
+   Variables:
+     Y, classical quantitative
+	 Hierarchy variables:
+	   X1 with values: a, b, c
+	   X2 with values: If X1=a, then X2=a1 or a2; else X2=NA
+       X3 with values: If X2=a1, then X3=a11 or a12; else X3=NA
+       X4 with values: If X1=a and X2=a2, then X4 quantitative; else X4=NA
+       X5 with values: If X1=b, then X5 quantitative; else X5=NA       
+        a, b, c, a1 a2 a11 a12 values entered as indicators (0, 1)
+        NA is entered as '.'
+
+	input u Y a b c a1 a2 a11 a12 X4 X5
+
+	  ---------------------------
+
+
+   1 415  1 0 0  1 0  1 0  . .
+   2 390  1 0 0  1 0  1 0  . .
+   3 381  1 0 0  1 0  1 0  . .  
+   4 385  1 0 0  1 0  1 0  . .
+   5 324  1 0 0  1 0  0 1  . .
+   6 355  1 0 0  1 0  0 1  . .
+   7 260  1 0 0  0 1  . .  10 .
+   8 255  1 0 0  0 1  . .  12 .
+   9 244  1 0 0  0 1  . .  12 . 
+  10 200  1 0 0  0 1  . .  20 . 
+  11 238  1 0 0  0 1  . .  15 . 
+  12 182  0 1 0  . .  . .  . 40 
+  13 165  0 1 0  . .  . .  . 50
+  14 158  0 1 0  . .  . .  . 55 
+  15 150  0 1 0  . .  . .  . 60
+  16 139  0 1 0  . .  . .  . 70
+  17 120  0 1 0  . .  . .  . 80
+  18  35  0 0 1  . .  . .  . .
+  19  45  0 0 1  . .  . .  . .
+  20  50  0 0 1  . .  . .  . .

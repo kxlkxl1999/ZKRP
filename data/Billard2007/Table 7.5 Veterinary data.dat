@@ -1,0 +1,23 @@
+
+     Table 7.5 Veterinary data
+
+  Variables:
+    Animal (concept): {HorseM, HorseF, BearM, DeerM, DeerF, 
+                         DogF, RabbitM, RabbitF, CatM, CatF}
+	Y1 = Height, interval [a1, b1]
+	Y2 = Weight, interval [a2, b2]
+
+	   input u Animal $ a1 b1 a2 b2
+
+	   ---------------------------
+
+  1 HorseM  120.0 180.0  222.2 354.0
+  2 HorseF  158.0 160.0  322.0 355.0
+  3 BearM   175.0 185.0  117.2 152.0 
+  4 DeerM    37.9  62.9   22.2  35.0 
+  5 DeerF    25.8  39.6   15.0  36.2 
+  6 DogF     22.8  58.6   15.0  51.8
+  7 RabbitM  22.0  45.0    0.8  11.0 
+  8 RabbitF  18.0  53.0    0.4   2.5 
+  9 CatM     40.3  55.8    2.1   4.5 
+ 10 CatF     38.4  72.4    2.5   6.1 

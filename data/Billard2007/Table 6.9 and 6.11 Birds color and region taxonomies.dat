@@ -1,0 +1,40 @@
+
+
+    Table 6.9 and 6.11
+
+	Variables:
+	  Y = Density, quantitative classical valued
+	  Color taxonomy: (from Table 6.9)
+        X1 = Tone == (X11, X12) = (dark, light) == (1,2)
+	    X2 = Shade == (X21, X22, X23, X24) = (purple, red, white, yellow) = (1,2,3,4)
+	  Region taxonomy: (from Table 6.11)
+	    Z1 = Region == (Z11, Z12) = (North, South) == (1, 2)
+		Z2 = Urbanization == (Z21, Z22, Z23, Z24)  
+                  = (NorthUrban, NorthRural, SouthUrban, SouthRural) = (1,2,3,4)
+	    Z3 = Density == (Z31, Z32, Z33, Z34, Z35, Z36, Z37, Z38)
+                  = (pop1,...,pop8) = (1,...,8); see text page 208
+
+     input u Y X1 X2 Z1 Z2 Z3
+
+       -------------------- 
+
+  1 230  1 2  2 3 6 
+  2 301  1 .  2 4 7 
+  3 373  2 4  2 4 8 
+  4 280  2 3  2 4 7  
+  5 281  1 .  1 2 4  
+  6 374  1 2  1 1 1  
+  7 330  2 4  1 1 2 
+  8 215  1 1  1 2 . 
+  9 340  2 3  2 4 7  
+ 10 159  1 1  1 2 4 
+ 11 305  1 2  1 1 1  
+ 12 207  1 1  1 2 3  
+ 13 242  2 3  1 2 3 
+ 14 345  2 3  1 . .  
+ 15 199  1 .  1 1 .  
+ 16 248  1 2  1 . . 
+ 17 311  2 4  2 3 5 
+ 18 256  2 3  2 3 .  
+ 19 388  2 .  2 3 5 
+ 20 260  1 2  2 4 7

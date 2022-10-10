@@ -1,0 +1,39 @@
+
+
+    Table 6.17 Hierarchy on intervals
+
+	Variables:
+     Y = Sales, interval [Ya, Yb]
+	 Hierarchy variables:
+	   X1 with values: a, b or c
+	   X2 with values: If X1=a, then X2=a1 or a2; else X2=NA
+       X3 with values: If X2=a1, then X3=a11 or a12; else X3=NA
+       X4 = Volume, with values: If X1=a and X2=a2, then X4, interval [X4a, X4b]; else X4=NA
+       X5 = Costs, with values: If X1=b, then X5. interval [X5a, X5b]; else X5=NA       
+        a b c, a1 a2, a11 a12 values entered as indicators (0, 1), intervals [z,z]
+        NA is entered as '.'
+
+	input u Ya Yb a a b b c c a1 a1 a2 a2 a11 a11 a12 a12 X4a X4b X5a X5b
+
+	  ---------------------------
+
+  1 410 420  1 1 0 0 0 0  1 1 0 0  1 1 0 0   . .   . . 
+  2 388 392  1 1 0 0 0 0  1 1 0 0  1 1 0 0   . .   . .
+  3 378 384  1 1 0 0 0 0  1 1 0 0  1 1 0 0   . .   . . 
+  4 381 389  1 1 0 0 0 0  1 1 0 0  1 1 0 0   . .   . .
+  5 319 330  1 1 0 0 0 0  1 1 0 0  0 0 1 1   . .   . . 
+  6 352 358  1 1 0 0 0 0  1 1 0 0  0 0 1 1   . .   . . 
+  7 255 265  1 1 0 0 0 0  0 0 1 1  . . . .   9 11  . .
+  8 251 259  1 1 0 0 0 0  0 0 1 1  . . . .  10 14  . .
+  9 240 248  1 1 0 0 0 0  0 0 1 1  . . . .  11 13  . . 
+ 10 197 203  1 1 0 0 0 0  0 0 1 1  . . . .  17 23  . . 
+ 11 232 244  1 1 0 0 0 0  0 0 1 1  . . . .  13 17  . . 
+ 12 180 184  0 0 1 1 0 0  . . . .  . . . .   . .  38 42 
+ 13 162 168  0 0 1 1 0 0  . . . .  . . . .   . .  47 53 
+ 14 156 160  0 0 1 1 0 0  . . . .  . . . .   . .  50 60  
+ 15 149 151  0 0 1 1 0 0  . . . .  . . . .   . .  58 62 
+ 16 136 142  0 0 1 1 0 0  . . . .  . . . .   . .  66 74 
+ 17 119 121  0 0 1 1 0 0  . . . .  . . . .   . .  78 82 
+ 18  33  37  0 0 0 0 1 1  . . . .  . . . .   . .   . . 
+ 19  41  49  0 0 0 0 1 1  . . . .  . . . .   . .   . .  
+ 20  48  52  0 0 0 0 1 1  . . . .  . . . .   . .   . .  

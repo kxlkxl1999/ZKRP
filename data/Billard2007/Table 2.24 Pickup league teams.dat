@@ -1,0 +1,16 @@
+
+     Pickup league teams
+  Team Type (Very Good, Good, Average, fair, Poor)
+  Y1 = Age -- interval (a1, b1)
+  Y2 = Weight -- interval (a2, b2)
+  Y3 = Speed -- interval (a3, b3)
+
+  input u Team_Type a1 b1 a2 b2 a3 b3
+
+     ----------------
+
+1 VeryGood 20 28 160 175 10.6 14.1 
+2 Good 18 34 161 189 10.5 15.9  
+3 Average 15 35 148 200 10.8 18.3 
+4 Fair 18 44 153 215 11.2 19.7  
+5 Poor 16 48 145 220 12.3 22.8   

@@ -1,0 +1,17 @@
+ 
+
+        Table 2.25 Tennis courts
+
+   Variables: Court Type (hard, Grass, Indoor, Clay)
+              Y1 = Player Weight, interval [a1, b1]
+			  Y2 = Player Height, interval [a2, b2]
+			  Y3 = Racket Tension, interval [a3, b3]
+
+	input u Court_Type $ a1 b1 a2 b2 a3 b3
+
+	       ------------------
+
+ 1 Hard   [65, 86]  [1.78, 1.93]  [14, 99] 
+ 2 Grass  [65, 83]  [1.80, 1.91]  [26, 99] 
+ 3 Indoor [65, 87]  [1.75, 1.93]  [14, 99] 
+ 4 Clay   [68, 84]  [1.75, 1.93]  [24, 99] 

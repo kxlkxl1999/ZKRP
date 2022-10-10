@@ -1,0 +1,44 @@
+County Income  Age Child Tenure Energy Distance County Income  Age Child Tenure Energy Distance 
+   u    Y_1    Y_2  Y_3   Y_4     Y_5    Y_6      u     Y_1   Y_2  Y_3    Y_4     Y_5    Y_6
+   1    801    44   yes  owner    gas    10       1     804   41   yes   owner    gas    11
+   2    752    20   no   owner    gas     6       1     797   43   yes   owner    gas     1  
+   1    901    31   no   owner  electric  9       2     750   52   no    owner  electric  4  
+   1    802    47   yes  owner    gas    15       2     748   32   no    owner  electric  7  
+   1    901    42   no   renter electric 12       1     907   42   no    renter electric 12  
+   2    750    43   no   owner  electric  4       2     748   64   no    renter  wood     6   
+   1    798    42   yes  owner    gas     8       1     799   22   no    owner    gas     8   
+   1    901    43   yes  renter electric  9       2     754   51   no    owner  electric  3   
+   2    748    30   no   owner    gas     4       1     799   24   no    owner    gas    11   
+   2    747    32   no   owner  electric  6       1     897   35   no    renter electric 10  
+   1    901    77   no   renter  other   10       2     749   38   no    owner  electric  5    
+   2    751    66   no   renter   oil     6       1     802   39   yes   owner    gas     8   
+   1    899    45   no   renter  wood     8       2     751   37   no    owner  electric  5   
+   1    897    48   no   renter  wood     9       2     747   29   no    owner  electric  6  
+   1    800    39   yes  owner    gas     8       2     749   27   no    owner    gas     6    
+   1    899    32   no   owner  electric 12       2     749   60   no    renter  wood     4   
+   2    703    46   yes  owner    gas     4       2     750   33   no    renter   gas     4    
+   2    753    48   no   owner  electric  5       1     800   21   no    owner  electric  6   
+   1    898    32   yes  renter electric 10       2     747   36   no    owner  electric  4    
+   2    748    43   no   owner  electric  5       1     802   40   yes   owner    gas    10   
+   1    896    29   no   owner  electric 11       2     699   43   yes   owner    gas     5   
+   1    802    39   yes  owner    gas    11       2     696   39   yes   owner    gas     5   
+   2    746    37   no   owner  electric  4       2     747   24   no    renter   gas     6    
+   2    752    54   no   owner  electric  6       2     752   67   no    owner   wood     5    
+   1    901    59   no   renter   oil    11       2     749   50   no    owner  electric  4   
+   3    674    41   yes  renter   gas    10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

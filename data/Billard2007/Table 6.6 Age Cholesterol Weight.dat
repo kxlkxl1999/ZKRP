@@ -1,0 +1,20 @@
+
+    Table 6.6 Age Cholesterol Weight
+
+	Variables:
+	   X = Age, interval [a, b]
+	   Y1 = Cholesterol, interval [a1, b1]
+       Y2 = Weight, interval [a2, b2]
+
+      input u a b a1 b1 a2 b2
+
+         ---------------- 
+
+
+   1  20 30  114 192  108 141
+   2  30 40  103 189  111 150
+   3  40 50  120 191  127 157
+   4  50 60  136 223  130 166
+   5  60 70  149 234  139 161
+   6  70 80  142 229  143 169
+   7  80 90  140 254  140 146
