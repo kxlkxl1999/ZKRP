@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from zkrp import *
 
+
 # Center method
 def CM_Method(input_x_center, input_y_center):
     n = input_x_center.shape[0]
