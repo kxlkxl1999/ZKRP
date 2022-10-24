@@ -23,7 +23,7 @@ def CRM_Method(input_x_center, input_y_center, input_x_width, input_y_width):
     n = input_x_center.shape[0]
     vec_one = np.ones(n)
 
-    X_c = np.insert(input_x_center, 0, vec_one, axis=1)
+    X_c = np.insert(input_x_center, 0, vec_one, axis=1)  # 第一列插入1
     X_cT = X_c.transpose()
     A = np.dot(X_cT, X_c)
     A_inv = np.linalg.inv(A)
