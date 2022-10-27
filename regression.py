@@ -176,3 +176,68 @@ def RMSE(input_y_center, estimate_y_center, input_y_width, estimate_y_width):
     rmse_u2 = pow(input_y_upper - estimate_y_upper, 2).mean()
 
     return np.sqrt(rmse_l2), np.sqrt(rmse_u2)
+
+
+def predict(x, beta):
+    n = x.shape[0]
+    vec_one = np.ones(n)
+    x_1 = np.insert(x, 0, vec_one, axis=1)
+    return x_1.dot(beta)
+
+
+def eval(y1, y2, yh1, yh2, datatype='CR', method='RMSE'):
+    """
+    evaluation of teh regression effect.
+    :param y1: numpy-array; real data
+    :param y2: numpy-array; real data
+    :param yh1: numpy-array; estimated data
+    :param yh2: numpy-array; estimated data
+    :param datatype: string;
+    'CR': central and range with respect to y1 and y2.
+    'LU': lower and upper with respect to y1 and y2
+    :param method:
+    'RMSE': root-mean-square error
+    'MHD': mean Hausdorff Distance
+    'IOR': interval overlap ratio
+    'DC': determination coefficient
+
+    :return:
+    'RMSE': (float, float); root-mean-square error of central and range
+    'NHD': float; mean Hausdorff Distance of real and estimated data
+    'IOR': float;
+    'DC': float;
+    """
+    n = y1.shape[0]
+    if datatype == 'CR':
+        y_c = y1.reshape(n)
+        y_r = y2.reshape(n)
+        y_l = y_c - y_r/2
+        y_u = y_c + y_r/2
+
+        yh_c = yh1.reshape(n)
+        yh_r = yh2.reshape(n)
+        yh_l = yh_c - yh_r / 2
+        yh_u = yh_c + yh_r / 2
+    elif datatype == 'LU':
+        y_l = y1.reshape(n)
+        y_u = y2.reshape(n)
+        y_c = (y_l + y_u) / 2
+        y_r = (y_u - y_l) / 2
+
+        yh_l = yh1.reshape(n)
+        yh_u = yh2.reshape(n)
+        yh_c = (yh_l + yh_u) / 2
+        yh_r = (yh_u - yh_l) / 2
+    else:
+        raise Exception('Wrong datatype. datatype can only be chosen from \'CR\' and \'LU\'. ')
+
+    if method == 'RMSE':
+        pass
+    elif method == 'NHD':
+        pass
+    elif method == 'IOR':
+        pass
+    elif method == 'DC':
+        pass
+    else:
+        raise Exception('Wrong method. method can only be chosen from \'RMSE\', \'LU\', \'NHD\', \'DC\'. ')
