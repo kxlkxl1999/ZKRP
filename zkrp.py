@@ -87,6 +87,10 @@ def wasserstein_distance2(u_values, v_values):
     return np.sum(np.multiply(pow((u_cdf - v_cdf), 2), deltas))
 
 
+def arithmetic_based_distance(x, y, theta=1):
+    return np.sqrt(pow(np.mean(x)-np.mean(y), 2) + theta * pow(x[1]/2-x[0]/2-y[1]/2+y[0]/2, 2))
+
+
 def fdsum(midpont, data, inter_l, method='hausdorff'):
     inter_len = inter_l
     interval = [midpont - inter_len / 2, midpont + inter_len / 2]
@@ -106,9 +110,9 @@ def frechet_mean(data, method='hausdorff', inter_l=0):
     """
     :param data: numpy[n,2]: interval data, each line indicates an interval
     :param method: string：'hausdorff': hausdorff distance;
-                             'middle': middle point;
-                             'wasserstein': hausdorff distance
+                             'midpoint': middle point;
                              'symbolic': symbolic sample method
+                             'arithmetic-based': [E(inf X), E(supX)]
     :param inter_l: bool:  interval length of frechet_mean, None for default, double for specific length
     :return: numpy[2]: frechet_mean
     """
@@ -122,16 +126,20 @@ def frechet_mean(data, method='hausdorff', inter_l=0):
                 'midpoint': output[0],
                 'interval': [output[0] - inter_len / 2, output[0] + inter_len / 2]}
 
-    elif method == 'symbolic':
+    elif method == 'symbolic' or 'midpoint':
         return np.mean(data)
+    elif method == 'arithmetic-based':
+        return [np.mean(data[:, 0]), np.mean(data[:, 1])]
 
 
-def frechet_variance(data, method='hausdorff'):
+def frechet_variance(data, method='hausdorff', theta=1):
     """
     :param data: numpy[n,2]: interval data, each line indicates an interval
     :param method: string：'hausdorff': hausdorff method;
-                            'wasserstein': wasserstein method;
+                            'midpoint': middle point;
                             'symbolic': symbolic sample method
+                            'arithmetic-based': [E(inf X), E(supX)]
+    :param theta: only use in arithmetic-based method. default is 1
     :return: double
     """
     n = data.shape[0]
@@ -145,9 +153,10 @@ def frechet_variance(data, method='hausdorff'):
             b = data[i, 1]
             s_sum += (pow(a, 2) + a * b + pow(b, 2))
         return s_sum / (3 * n) - pow(np.sum(data), 2) / (4 * pow(n, 2))
-    elif method == 'wasserstein':
-        m = frechet_mean(data, method='wasserstein')
-        return m['min_d'] / n
+    elif method == 'midpoint':
+        return np.var(np.mean(data, axis=1))
+    elif method =='arithmetic-based':
+        return np.var(data[:, 1]/2 + data[:, 0]/2) + theta * np.var(data[:, 1]/2 - data[:, 0]/2)
 
 
 def fcov(w, x, y, x_mean, y_mean):
