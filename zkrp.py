@@ -155,7 +155,7 @@ def frechet_variance(data, method='hausdorff', theta=1):
         return s_sum / (3 * n) - pow(np.sum(data), 2) / (4 * pow(n, 2))
     elif method == 'midpoint':
         return np.var(np.mean(data, axis=1))
-    elif method =='arithmetic-based':
+    elif method == 'arithmetic-based':
         return np.var(data[:, 1]/2 + data[:, 0]/2) + theta * np.var(data[:, 1]/2 - data[:, 0]/2)
 
 
@@ -167,7 +167,7 @@ def ffcov(w, x, y, x_mean, y_mean):
     return (dist(w, x) - dist(w, x_mean)) * (dist(w, y) - dist(w, y_mean))
 
 
-def frechet_covariance(x, y, method='hausdorff'):
+def frechet_covariance(x, y, method='hausdorff', theta=1):
     """
     calculate frechet covariance of random interval x and y using formulation 2
 
@@ -222,6 +222,8 @@ def frechet_covariance(x, y, method='hausdorff'):
             c_sum += (2 * (a1 - mean1) * (a2 - mean2) + (a1 - mean1) * (b2 - mean2) + (b1 - mean1) * (a2 - mean2) + 2 *
                       (b1 - mean1) * (b2 - mean2))
         return c_sum / (6 * n)
+    elif method == 'arithmetic-based':
+        return np.cov(x[:,0]/2 + x[:,1]/2, y[:,0]/2 + y[:,1]/2)[0][1] + theta * np.cov(x[:,1]/2 - x[:,0]/2, y[:,1]/2 - y[:,0]/2)[0][1]
 
     # elif method == 'wasserstein':
     #     mean1 = np.array(frechet_mean(x, method='wasserstein')['interval'])
