@@ -213,6 +213,7 @@ def frechet_covariance(x, y, method='hausdorff'):
             c_sum += (2 * (a1 - mean1) * (a2 - mean2) + (a1 - mean1) * (b2 - mean2) + (b1 - mean1) * (a2 - mean2) + 2 *
                       (b1 - mean1) * (b2 - mean2))
         return c_sum / (6 * n)
+
     # elif method == 'wasserstein':
     #     mean1 = np.array(frechet_mean(x, method='wasserstein')['interval'])
     #     mean2 = np.array(frechet_mean(y, method='wasserstein')['interval'])
@@ -264,8 +265,12 @@ def frechet_correlation(x, y, method='hausdorff'):
                    'symbolic': symbolic sample method
     :return: double
     """
-    return frechet_covariance(x, y, method=method) / \
-        np.sqrt(frechet_variance(x, method=method) * frechet_variance(y, method=method))
+    if method == 'midpoint':
+        return np.corrcoef(x[:, 1]/2 + x[:, 0]/2, y[:, 1]/2 + y[:, 0]/2)[0][1]
+    else:
+        return frechet_covariance(x, y, method=method) / \
+               np.sqrt(frechet_variance(x, method=method) * frechet_variance(y, method=method))
+
 
 
 # def frechet_covariance(x, y, method='hausdorff'):

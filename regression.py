@@ -232,12 +232,16 @@ def eval(y1, y2, yh1, yh2, datatype='CR', method='RMSE'):
         raise Exception('Wrong datatype. datatype can only be chosen from \'CR\' and \'LU\'. ')
 
     if method == 'RMSE':
-        pass
+        rmse_c2 = pow(y_r - yh_r, 2).mean()
+        # rmse_u2 = pow(y_u - yh_u, 2).mean()
+        return np.sqrt(rmse_c2)
     elif method == 'NHD':
-        pass
+        return np.mean([hausdorff_distance(np.array([y_l[i], y_u[i]]), np.array([yh_l[i], yh_u[i]])) for i in range(n)])
     elif method == 'IOR':
-        pass
+        return np.mean([max(0, y_r[i] + yh_r[i] - abs(y_c[i] - yh_c[i]))/(2*y_r[i]) for i in range(n)])
     elif method == 'DC':
-        pass
+        return 1 - np.sum((y_r - yh_r) ** 2) / np.sum((y_r - np.mean(y_r)) ** 2)
+    # elif method == 'DC' and datatype == 'LU':
+    #     return 1 - np.sum((y_l - yh_l) ** 2) / np.sum((y_l - np.mean(y_l)) ** 2), 1 - np.sum((y_u - yh_u) ** 2) / np.sum((y_u - np.mean(y_u)) ** 2)
     else:
         raise Exception('Wrong method. method can only be chosen from \'RMSE\', \'LU\', \'NHD\', \'DC\'. ')
