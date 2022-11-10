@@ -238,9 +238,11 @@ def eval(y1, y2, yh1, yh2, datatype='CR', method='RMSE'):
     elif method == 'NHD':
         return np.mean([hausdorff_distance(np.array([y_l[i], y_u[i]]), np.array([yh_l[i], yh_u[i]])) for i in range(n)])
     elif method == 'IOR':
-        return np.mean([max(0, y_r[i] + yh_r[i] - abs(y_c[i] - yh_c[i]))/(2*y_r[i]) for i in range(n)])
+        return np.mean([max(0, y_r[i] + yh_r[i] - abs(y_c[i] - yh_c[i]))/(2*abs(y_r[i])) for i in range(n)])
     elif method == 'DC':
-        return 1 - np.sum((y_r - yh_r) ** 2) / np.sum((y_r - np.mean(y_r)) ** 2)
+        # return 1 - np.sum((y_r - yh_r) ** 2) / np.sum((y_r - np.mean(y_r)) ** 2)
+        return np.corrcoef(y_r, yh_r)[0][1] ** 2 /2 + np.corrcoef(y_c, yh_c)[0][1] ** 2 /2
+        # return np.corrcoef(y_c, yh_c)[0][1] ** 2
     # elif method == 'DC' and datatype == 'LU':
     #     return 1 - np.sum((y_l - yh_l) ** 2) / np.sum((y_l - np.mean(y_l)) ** 2), 1 - np.sum((y_u - yh_u) ** 2) / np.sum((y_u - np.mean(y_u)) ** 2)
     else:
