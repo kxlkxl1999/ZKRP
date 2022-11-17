@@ -2,6 +2,8 @@ from tqdm import tqdm
 import numpy as np
 import matplotlib.pyplot as plt
 from zkrp import *
+from scipy.optimize import minimize
+from collections import OrderedDict
 
 
 # Center method
@@ -247,3 +249,52 @@ def eval(y1, y2, yh1, yh2, datatype='CR', method='RMSE'):
     #     return 1 - np.sum((y_l - yh_l) ** 2) / np.sum((y_l - np.mean(y_l)) ** 2), 1 - np.sum((y_u - yh_u) ** 2) / np.sum((y_u - np.mean(y_u)) ** 2)
     else:
         raise Exception('Wrong method. method can only be chosen from \'RMSE\', \'LU\', \'NHD\', \'DC\'. ')
+
+
+def reg_obj(para, x, y):
+    assert x.shape[0] == y.shape[0]
+    n = x.shape[0]
+    a = para[0]
+    b = para[1]
+    dist2 = 0
+    for i in range(n):
+        dist2 += max((a*x[i,0]+b-y[i,0])**2, (a*x[i,1]+b-y[i,1])**2)
+    return dist2 / n
+
+
+def HF_Method(x, y, method='Nelder-Mead'):
+    result = minimize(reg_obj, x0=np.array([1,1]), args=(x, y), method='Nelder-Mead')
+    return result
+
+
+def show4(x, y, yhat, samples=25, path=None, real=None, Cor=None):
+    np.random.seed(0)
+    n = np.shape(x)[0]
+    plt.figure(dpi=200, figsize=(5, 5))
+    for i in np.random.choice(n,samples,replace=False):
+        plt.fill_between(x[i, :], np.array([y[i, 1], y[i, 1]]), np.array([y[i, 0], y[i, 0]]), alpha=0.15, linewidth=0,
+                         color='darkorange', label=r'$y$')
+        plt.fill_between(x[i, :], np.array([yhat[i, 1], yhat[i, 1]]), np.array([yhat[i, 0], yhat[i, 0]]), alpha=0.3, linewidth=0,
+                         color='steelblue', label=r'$\hat{y}$')
+        if real is not None:
+            plt.scatter(real[i, 0], real[i, 1], alpha=1, color="black", s=2)
+
+    if Cor is not None:
+        plt.title('plot of ' + r'$X$'+' and ' + r'$Y$' + ', ' + r'$\hat{y}$' + ' with Cor %.4f' % Cor)  # 折线图标题
+    else:
+        plt.title('plot of ' + r'$X$'+' and ' + r'$Y$' + ', ' + r'$\hat{Y}$')
+    plt.xlabel(r'$X$')  # x轴标题
+    plt.ylabel(r'$Y$')  # y轴标题
+    plt.grid(ls='-.')  # 绘制背景线
+
+    handles, labels = plt.gca().get_legend_handles_labels()
+    by_label = OrderedDict(zip(labels, handles))
+    plt.legend(by_label.values(), by_label.keys(), loc='best')
+
+    # plt.legend(loc='best')
+    plt.tight_layout()
+    if path is not None:
+        plt.savefig(path)
+    plt.show()
+
+

@@ -360,7 +360,7 @@ def show2(x, y, path, Cov=None):
     plt.show()
 
 
-def show3(x, y, path, samples=25, real=None, Cor=None):
+def show3(x, y, samples=25, path=None, real=None, Cor=None):
     np.random.seed(0)
     n = np.shape(x)[0]
     plt.figure(dpi=200, figsize=(5, 5))
@@ -378,5 +378,6 @@ def show3(x, y, path, samples=25, real=None, Cor=None):
     plt.grid(ls='-.')  # 绘制背景线
     # plt.legend(loc='best', handles=[a, b])
     plt.tight_layout()
-    plt.savefig(path)
+    if path is not None:
+        plt.savefig(path)
     plt.show()
