@@ -254,17 +254,21 @@ def eval(y1, y2, yh1, yh2, datatype='CR', method='RMSE'):
 def reg_obj(para, x, y):
     assert x.shape[0] == y.shape[0]
     n = x.shape[0]
-    a = para[0]
-    b = para[1]
+    a_c = para[0]
+    b_c = para[1]
+    a_r = para[2]
+    b_r = para[3]
     dist2 = 0
     for i in range(n):
-        dist2 += max((a*x[i,0]+b-y[i,0])**2, (a*x[i,1]+b-y[i,1])**2)
+        y_c_hat = a_c * (x[i, 1] / 2 + x[i, 0] / 2) + b_c
+        y_r_hat = a_r * (x[i, 1] / 2 - x[i, 0] / 2) + b_r
+        dist2 += max((y_c_hat - y_r_hat - y[i, 0])**2, (y_c_hat + y_r_hat - y[i, 1])**2)
     return dist2 / n
 
 
 def HF_Method(x, y, method='Nelder-Mead'):
-    result = minimize(reg_obj, x0=np.array([1,1]), args=(x, y), method='Nelder-Mead')
-    return result
+    result = minimize(reg_obj, x0=np.array([1,1,1,1]), args=(x, y), method='Nelder-Mead')
+    return result['x'][0], result['x'][1], result['x'][2], result['x'][3]
 
 
 def show4(x, y, yhat, samples=25, path=None, real=None, Cor=None):
