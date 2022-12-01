@@ -213,13 +213,13 @@ def eval(y1, y2, yh1, yh2, datatype='CR', method='RMSE'):
     if datatype == 'CR':
         y_c = y1.reshape(n)
         y_r = y2.reshape(n)
-        y_l = y_c - y_r/2
-        y_u = y_c + y_r/2
+        y_l = y_c - y_r
+        y_u = y_c + y_r
 
         yh_c = yh1.reshape(n)
         yh_r = yh2.reshape(n)
-        yh_l = yh_c - yh_r / 2
-        yh_u = yh_c + yh_r / 2
+        yh_l = yh_c - yh_r
+        yh_u = yh_c + yh_r
     elif datatype == 'LU':
         y_l = y1.reshape(n)
         y_u = y2.reshape(n)
@@ -240,13 +240,23 @@ def eval(y1, y2, yh1, yh2, datatype='CR', method='RMSE'):
     elif method == 'NHD':
         return np.mean([hausdorff_distance(np.array([y_l[i], y_u[i]]), np.array([yh_l[i], yh_u[i]])) for i in range(n)])
     elif method == 'IOR':
-        return np.mean([max(0, y_r[i] + yh_r[i] - abs(y_c[i] - yh_c[i]))/(2*abs(y_r[i])) for i in range(n)])
+        ior = []
+        for i in range(n):
+            if (y_l[i] - yh_l[i]) * (y_u[i] - yh_u[i]) >= 0:
+                if abs(y_c[i] - yh_c[i]) >= (abs(y_r[i])+abs(yh_r[i])):
+                    ior.append(0)
+                else:
+                    ior.append(min(abs(y_l[i] - yh_u[i]), abs(y_u[i] - yh_l[i])) / (2 * abs(y_r[i])))
+            else:
+                ior.append(min(abs(y_r[i]), abs(yh_r[i])) / abs(y_r[i]))
+        return np.mean(ior)
+
     elif method == 'DC':
         # return 1 - np.sum((y_r - yh_r) ** 2) / np.sum((y_r - np.mean(y_r)) ** 2)
-        return np.corrcoef(y_r, yh_r)[0][1] ** 2 /2 + np.corrcoef(y_c, yh_c)[0][1] ** 2 /2
+        # return np.corrcoef(y_r, yh_r)[0][1] ** 2 /2 + np.corrcoef(y_c, yh_c)[0][1] ** 2 /2
         # return np.corrcoef(y_c, yh_c)[0][1] ** 2
     # elif method == 'DC' and datatype == 'LU':
-    #     return 1 - np.sum((y_l - yh_l) ** 2) / np.sum((y_l - np.mean(y_l)) ** 2), 1 - np.sum((y_u - yh_u) ** 2) / np.sum((y_u - np.mean(y_u)) ** 2)
+        return (1 - np.sum((y_l - yh_l) ** 2) / np.sum((y_l - np.mean(y_l)) ** 2))/2 + (1 - np.sum((y_u - yh_u) ** 2) / np.sum((y_u - np.mean(y_u)) ** 2))/2
     else:
         raise Exception('Wrong method. method can only be chosen from \'RMSE\', \'LU\', \'NHD\', \'DC\'. ')
 
