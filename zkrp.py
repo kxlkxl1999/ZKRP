@@ -360,7 +360,7 @@ def show2(x, y, path, Cov=None):
     plt.show()
 
 
-def show3(x, y, samples=25, path=None, real=None, Cor=None):
+def show3(x, y, samples=25, path=None, real=None, Cor=None, varname=None):
     np.random.seed(0)
     n = np.shape(x)[0]
     plt.figure(dpi=200, figsize=(5, 5))
@@ -369,12 +369,18 @@ def show3(x, y, samples=25, path=None, real=None, Cor=None):
         if real is not None:
             plt.scatter(real[i, 0], real[i, 1], alpha=1, color="black", s=2)
 
-    if Cor is not None:
-        plt.title('plot of ' + r'$X_1$'+' and ' + r'$X_2$' + ' with Cor %.4f' % Cor)  # 折线图标题
+    if varname is not None:
+        xname = varname[0]
+        yname = varname[1]
     else:
-        plt.title('plot of ' + r'$X_1$'+' and ' + r'$X_2$')
-    plt.xlabel(r'$X_1$')  # x轴标题
-    plt.ylabel(r'$X_2$')  # y轴标题
+        xname = r'$X_1$'
+        yname = r'$X_2$'
+    if Cor is not None:
+        plt.title('plot of ' + xname +' and ' + yname + ' with Cor %.4f' % Cor)  # 折线图标题
+    else:
+        plt.title('plot of ' + xname+' and ' + yname)
+    plt.xlabel(xname)  # x轴标题
+    plt.ylabel(yname)  # y轴标题
     plt.grid(ls='-.')  # 绘制背景线
     # plt.legend(loc='best', handles=[a, b])
     plt.tight_layout()
