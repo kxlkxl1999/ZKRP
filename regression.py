@@ -187,7 +187,7 @@ def predict(x, beta):
     return x_1.dot(beta)
 
 
-def eval(y1, y2, yh1, yh2, datatype='CR', method='RMSE'):
+def eval(y1, y2, yh1, yh2, datatype='CR', method='RMSE', detail=False):
     """
     evaluation of teh regression effect.
     :param y1: numpy-array; real data
@@ -234,9 +234,14 @@ def eval(y1, y2, yh1, yh2, datatype='CR', method='RMSE'):
         raise Exception('Wrong datatype. datatype can only be chosen from \'CR\' and \'LU\'. ')
 
     if method == 'RMSE':
-        rmse_c2 = pow(y_r - yh_r, 2).mean()
-        # rmse_u2 = pow(y_u - yh_u, 2).mean()
-        return np.sqrt(rmse_c2)
+        rmse_l2 = pow(y_l - yh_l, 2).mean()
+        rmse_u2 = pow(y_u - yh_u, 2).mean()
+        rmse_r2 = pow(y_r - yh_r, 2).mean()
+        rmse_c2 = pow(y_c - yh_c, 2).mean()
+        if detail:
+            return np.sqrt(rmse_l2), np.sqrt(rmse_u2), np.sqrt(rmse_r2), np.sqrt(rmse_c2)
+        else:
+            return np.sqrt(rmse_c2)
     elif method == 'NHD':
         return np.mean([hausdorff_distance(np.array([y_l[i], y_u[i]]), np.array([yh_l[i], yh_u[i]])) for i in range(n)])
     elif method == 'IOR':
@@ -256,7 +261,10 @@ def eval(y1, y2, yh1, yh2, datatype='CR', method='RMSE'):
 
     elif method == 'DC':
         # return 1 - np.sum((y_r - yh_r) ** 2) / np.sum((y_r - np.mean(y_r)) ** 2)
-        return np.corrcoef(abs(y_r), abs(yh_r))[0][1] ** 2 /2 + np.corrcoef(y_c, yh_c)[0][1] ** 2 /2
+        if detail:
+            return np.corrcoef(y_c, yh_c)[0][1] ** 2, np.corrcoef(abs(y_r), abs(yh_r))[0][1] ** 2
+        else:
+            return np.corrcoef(abs(y_r), abs(yh_r))[0][1] ** 2 /2 + np.corrcoef(y_c, yh_c)[0][1] ** 2 /2
         # return np.corrcoef(y_c, yh_c)[0][1] ** 2
     # elif method == 'DC' and datatype == 'LU':
     #     return (1 - np.sum((y_l - yh_l) ** 2) / np.sum((y_l - np.mean(y_l)) ** 2))/2 + (1 - np.sum((y_u - yh_u) ** 2) / np.sum((y_u - np.mean(y_u)) ** 2))/2

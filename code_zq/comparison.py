@@ -1,11 +1,11 @@
 import numpy as np
 
-from ir.methods.CM import CM
-from ir.methods.CRM import CRM
-from ir.methods.CCRM import CCRM
-from ir.methods.InterArith import WL2
-from ir.methods.HD import HD
-from ir.utils.utils import evaluation
+from .ir.methods.CM import CM
+from .ir.methods.CRM import CRM
+from .ir.methods.CCRM import CCRM
+from .ir.methods.InterArith import WL2
+from .ir.methods.HD import HD
+from .ir.utils.utils import evaluation
 
 
 # def cr_indep_data_generation(n, a, b, c, d, e, f, g, h, i, j, seed):
@@ -187,7 +187,7 @@ def comparison(a, b, c, d, e, f, g, h, i, j):
 # comparison(20, 40, 0, 1, -20, 20, 20, 40, 10, 20)
 # comparison(20, 40, 1, 10, 1, 5, 1, 5, 1, 5)
 # comparison(20, 40, 0, 1, -5, 5, 1, 5, 10, 20)
-comparison(10, 20, 0, 1, -1, 1, 1, 2, 1, 2)
+# comparison(10, 20, 0, 1, -1, 1, 1, 2, 1, 2)
 # for i in range(5, 7):
 #     # for i in [3]:
 #     print("=============================")
