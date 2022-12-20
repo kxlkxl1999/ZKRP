@@ -18,15 +18,16 @@ def hausdorff_distance(x, y, sgn=False):
     :return:
     """
 
-    a = (1 if (x[0] - y[0]) * (x[0] - y[1]) > 0 else 0) * \
-        (abs(x[0] - y[0]) if abs(x[0] - y[0]) < abs(x[0] - y[1]) else abs(x[0] - y[1]))
-    b = (1 if (x[1] - y[0]) * (x[1] - y[1]) > 0 else 0) * \
-        (abs(x[1] - y[0]) if abs(x[1] - y[0]) < abs(x[1] - y[1]) else abs(x[1] - y[1]))
-    c = (1 if (x[0] - y[0]) * (x[1] - y[0]) > 0 else 0) * \
-        (abs(x[0] - y[0]) if abs(x[0] - y[0]) < abs(x[1] - y[0]) else abs(x[1] - y[0]))
-    d = (1 if (x[0] - y[1]) * (x[1] - y[1]) > 0 else 0) * \
-        (abs(x[0] - y[1]) if abs(x[0] - y[1]) < abs(x[1] - y[1]) else abs(x[1] - y[1]))
-    m = max(a, b, c, d)
+    # a = (1 if (x[0] - y[0]) * (x[0] - y[1]) > 0 else 0) * \
+    #     (abs(x[0] - y[0]) if abs(x[0] - y[0]) < abs(x[0] - y[1]) else abs(x[0] - y[1]))
+    # b = (1 if (x[1] - y[0]) * (x[1] - y[1]) > 0 else 0) * \
+    #     (abs(x[1] - y[0]) if abs(x[1] - y[0]) < abs(x[1] - y[1]) else abs(x[1] - y[1]))
+    # c = (1 if (x[0] - y[0]) * (x[1] - y[0]) > 0 else 0) * \
+    #     (abs(x[0] - y[0]) if abs(x[0] - y[0]) < abs(x[1] - y[0]) else abs(x[1] - y[0]))
+    # d = (1 if (x[0] - y[1]) * (x[1] - y[1]) > 0 else 0) * \
+    #     (abs(x[0] - y[1]) if abs(x[0] - y[1]) < abs(x[1] - y[1]) else abs(x[1] - y[1]))
+    # m = max(a, b, c, d)
+    m = max(abs(x[0] - y[0]), abs(x[1] - y[1]))
     if sgn:
         return m if sum(x) < sum(y) else -1 * m
     else:

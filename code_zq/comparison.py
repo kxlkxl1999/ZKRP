@@ -119,11 +119,11 @@ def comparison(a, b, c, d, e, f, g, h, i, j):
         # train, test, _, _ = cr_indep_data_generation(
         #     375, a, b, c, d, e, f, g, h, i, j, iter
         # )
-        train, test, _, _, _ = data_generation(375, a, b, c, d, e, f, g, h, i, j, iter)
+        train, test, beta0, beta1, betastar = data_generation(375, a, b, c, d, e, f, g, h, i, j, iter)
         # train, test = kangxinlai(2000, scenario, iter)
         # CM
         cm = CM(train[0], train[2])
-        cm.fit()
+        hatbeta_cm = cm.fit()
         hatyc, hatyr = cm.predict(test[0], test[1], cr=True)
         rmsel, rmseu = evaluation(test[2], test[3], hatyc, hatyr)
         cm_rmsel.append(rmsel)
@@ -131,7 +131,7 @@ def comparison(a, b, c, d, e, f, g, h, i, j):
 
         # CRM
         crm = CRM(train[0], train[1], train[2], train[3])
-        crm.fit()
+        hatbeta_c_crm, hatbeta_r_crm = crm.fit()
         hatyc, hatyr = crm.predict(test[0], test[1], cr=True)
         rmsel, rmseu = evaluation(test[2], test[3], hatyc, hatyr)
         # print("CRM")
@@ -141,7 +141,7 @@ def comparison(a, b, c, d, e, f, g, h, i, j):
 
         # CCRM
         ccrm = CCRM(train[0], train[1], train[2], train[3])
-        ccrm.fit()
+        hatbeta_c_ccrm, hatbeta_r_ccrm = ccrm.fit()
         hatyc, hatyr = ccrm.predict(test[0], test[1], cr=True)
         rmsel, rmseu = evaluation(test[2], test[3], hatyc, hatyr)
         # print("CCRM")
@@ -161,7 +161,7 @@ def comparison(a, b, c, d, e, f, g, h, i, j):
 
         # HD
         hd = HD(train[0], train[1], train[2], train[3])
-        hd.fit()
+        hatbeta_c_hd, hatbeta_r_hd = hd.fit()
         hatyc, hatyr = hd.predict(test[0], test[1], cr=True)
         rmsel, rmseu = evaluation(test[2], test[3], hatyc, hatyr)
         # print("HD")

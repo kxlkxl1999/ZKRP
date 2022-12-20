@@ -283,7 +283,8 @@ def reg_obj(para, x, y):
     for i in range(n):
         y_c_hat = a_c * (x[i, 1] / 2 + x[i, 0] / 2) + b_c
         y_r_hat = a_r * (x[i, 1] / 2 - x[i, 0] / 2) + b_r
-        dist2 += max((y_c_hat - y_r_hat - y[i, 0])**2, (y_c_hat + y_r_hat - y[i, 1])**2)
+        # dist2 += max((y_c_hat - y_r_hat - y[i, 0])**2, (y_c_hat + y_r_hat - y[i, 1])**2)
+        dist2 += max(abs(y_c_hat - y_r_hat - y[i, 0]), abs(y_c_hat + y_r_hat - y[i, 1]))
     return dist2 / n
 
 

@@ -43,7 +43,7 @@ def hausdorff_dist_vec(x, y, cr=False):
         xl, xu = x[:, 0], x[:, 1]
         yl, yu = y[:, 0], y[:, 1]
 
-    return np.min(np.vstack([abs(xl - yl), abs(xu - yu)]), 0)
+    return np.max(np.vstack([abs(xl - yl), abs(xu - yu)]), 0)
 
 
 def arithmetic_based_distance(x, y, theta=1):
