@@ -239,7 +239,7 @@ def eval(y1, y2, yh1, yh2, datatype='CR', method='RMSE', detail=False):
         rmse_r2 = pow(y_r - yh_r, 2).mean()
         rmse_c2 = pow(y_c - yh_c, 2).mean()
         if detail:
-            return np.sqrt(rmse_l2), np.sqrt(rmse_u2), np.sqrt(rmse_r2), np.sqrt(rmse_c2)
+            return np.sqrt(rmse_l2), np.sqrt(rmse_u2), np.sqrt(rmse_c2), np.sqrt(rmse_r2)
         else:
             return np.sqrt(rmse_c2)
     elif method == 'NHD':
@@ -289,7 +289,18 @@ def reg_obj(para, x, y):
 
 
 def HF_Method(x, y, method='Nelder-Mead'):
-    result = minimize(reg_obj, x0=np.array([1,1,1,1]), args=(x, y), method='Nelder-Mead')
+    n = x.shape[0]
+    x_l = x[:, 0].reshape((n, 1))
+    x_u = x[:, 1].reshape((n, 1))
+    x_c = x_u / 2 + x_l / 2
+    x_r = x_u / 2 - x_l / 2
+    y_l = y[:, 0].reshape((n, 1))
+    y_u = y[:, 1].reshape((n, 1))
+    y_c = y_u / 2 + y_l / 2
+    y_r = y_u / 2 - y_l / 2
+    beta_c, beta_r = CRM_Method(x_c,y_c,x_r,y_r)
+
+    result = minimize(reg_obj, x0=np.array([beta_c[1],beta_c[0],beta_r[1],beta_r[0]]), args=(x, y), method='Nelder-Mead')
     return result['x'][0], result['x'][1], result['x'][2], result['x'][3]
 
 
