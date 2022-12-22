@@ -272,7 +272,23 @@ def eval(y1, y2, yh1, yh2, datatype='CR', method='RMSE', detail=False):
         raise Exception('Wrong method. method can only be chosen from \'RMSE\', \'LU\', \'NHD\', \'DC\'. ')
 
 
-def reg_obj(para, x, y):
+def reg_obj1(para, x, y):
+    assert x.shape[0] == y.shape[0]
+    n = x.shape[0]
+    a_c = para[0]
+    b_c = para[1]
+    a_r = para[2]
+    b_r = para[3]
+    dist1 = 0
+    for i in range(n):
+        y_c_hat = a_c * (x[i, 1] / 2 + x[i, 0] / 2) + b_c
+        y_r_hat = a_r * (x[i, 1] / 2 - x[i, 0] / 2) + b_r
+        # dist2 += max((y_c_hat - y_r_hat - y[i, 0])**2, (y_c_hat + y_r_hat - y[i, 1])**2)
+        dist1 += max(abs(y_c_hat - y_r_hat - y[i, 0]), abs(y_c_hat + y_r_hat - y[i, 1]))
+    return dist1 / n
+
+
+def reg_obj2(para, x, y):
     assert x.shape[0] == y.shape[0]
     n = x.shape[0]
     a_c = para[0]
@@ -283,12 +299,12 @@ def reg_obj(para, x, y):
     for i in range(n):
         y_c_hat = a_c * (x[i, 1] / 2 + x[i, 0] / 2) + b_c
         y_r_hat = a_r * (x[i, 1] / 2 - x[i, 0] / 2) + b_r
-        # dist2 += max((y_c_hat - y_r_hat - y[i, 0])**2, (y_c_hat + y_r_hat - y[i, 1])**2)
-        dist2 += max(abs(y_c_hat - y_r_hat - y[i, 0]), abs(y_c_hat + y_r_hat - y[i, 1]))
+        dist2 += max((y_c_hat - y_r_hat - y[i, 0])**2, (y_c_hat + y_r_hat - y[i, 1])**2)
+        # dist2 += max(abs(y_c_hat - y_r_hat - y[i, 0]), abs(y_c_hat + y_r_hat - y[i, 1]))
     return dist2 / n
 
 
-def HF_Method(x, y, method='Nelder-Mead'):
+def HF_Method1(x, y, method='Nelder-Mead'):
     n = x.shape[0]
     x_l = x[:, 0].reshape((n, 1))
     x_u = x[:, 1].reshape((n, 1))
@@ -298,10 +314,40 @@ def HF_Method(x, y, method='Nelder-Mead'):
     y_u = y[:, 1].reshape((n, 1))
     y_c = y_u / 2 + y_l / 2
     y_r = y_u / 2 - y_l / 2
-    beta_c, beta_r = CRM_Method(x_c,y_c,x_r,y_r)
+    beta_0 = CM_Method(x_c, y_c)
+    beta_c1, beta_r1 = CRM_Method(x_c, y_c, x_r, y_r)
+    beta_c2, beta_r2 = CCRM_Method(x_c, y_c, x_r, y_r)
+    x0_list = [[beta_0[1], beta_0[0], beta_0[1], beta_0[0]],
+               [beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]],
+               [beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]]]
 
-    result = minimize(reg_obj, x0=np.array([beta_c[1],beta_c[0],beta_r[1],beta_r[0]]), args=(x, y), method='Nelder-Mead')
-    return result['x'][0], result['x'][1], result['x'][2], result['x'][3]
+    result = [minimize(reg_obj1, x0=np.array(i), args=(x, y), method='Nelder-Mead') for i in x0_list]
+    num_min = np.argmin([i['fun'] for i in result])
+
+    return result[num_min]['x'][0], result[num_min]['x'][1], result[num_min]['x'][2], result[num_min]['x'][3]
+
+
+def HF_Method2(x, y, method='Nelder-Mead'):
+    n = x.shape[0]
+    x_l = x[:, 0].reshape((n, 1))
+    x_u = x[:, 1].reshape((n, 1))
+    x_c = x_u / 2 + x_l / 2
+    x_r = x_u / 2 - x_l / 2
+    y_l = y[:, 0].reshape((n, 1))
+    y_u = y[:, 1].reshape((n, 1))
+    y_c = y_u / 2 + y_l / 2
+    y_r = y_u / 2 - y_l / 2
+    beta_0 = CM_Method(x_c, y_c)
+    beta_c1, beta_r1 = CRM_Method(x_c, y_c, x_r, y_r)
+    beta_c2, beta_r2 = CCRM_Method(x_c, y_c, x_r, y_r)
+    x0_list = [[beta_0[1], beta_0[0], beta_0[1], beta_0[0]],
+               [beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]],
+               [beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]]]
+
+    result = [minimize(reg_obj2, x0=np.array(i), args=(x, y), method='Nelder-Mead') for i in x0_list]
+    num_min = np.argmin([i['fun'] for i in result])
+
+    return result[num_min]['x'][0], result[num_min]['x'][1], result[num_min]['x'][2], result[num_min]['x'][3]
 
 
 def show4(x, y, yhat, samples=25, path=None, real=None, Cor=None):
