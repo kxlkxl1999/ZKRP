@@ -243,18 +243,30 @@ def reg_obj2(para, x, y):
 
 def data_expansion(x1, x2):
     """
-    :param x2: array-like (n,)
-    :param x1: array-like (n,)
-    :return: list of list
+    :param x2: numpy (n,)
+    :param x1: numpy (n,)
+    :return: list of numpy array
     """
     assert len(x1) == len(x2)
     n = len(x1)
     res_list = []
     deta_list = []
-    for i in n:
-        deta_list.append(abs(x1[i] - x2[i]))
+    for i in range(n):
+        deta_list.append(abs(x1[i] - x2[i]) / 2)
 
-    res = []
+    res_list.append(x1)
+    res_list.append(x2)
+    for i in range(n):
+        deta = np.zeros(n)
+        deta[i] = deta_list[i]
+        res_list.append(x1 + deta)
+        res_list.append(x2 + deta)
+        res_list.append(x1 - deta)
+        res_list.append(x2 - deta)
+
+    return res_list
+
+
 
 
 
@@ -272,11 +284,10 @@ def HF_Method1(x, y, method='Nelder-Mead'):
     beta_0 = CM_Method(x_c, y_c)
     beta_c1, beta_r1 = CRM_Method(x_c, y_c, x_r, y_r)
     beta_c2, beta_r2 = CCRM_Method(x_c, y_c, x_r, y_r)
-    x0_list = [[beta_0[1], beta_0[0], beta_0[1], beta_0[0]],
-               [beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]],
-               [beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]]]
+    x0_list = data_expansion(np.array([beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]]),
+                             np.array([beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]]))
 
-    result = [minimize(reg_obj1, x0=np.array(i), args=(x, y), method='Nelder-Mead') for i in x0_list]
+    result = [minimize(reg_obj1, x0=i, args=(x, y), method='Nelder-Mead') for i in x0_list]
     num_min = np.argmin([i['fun'] for i in result])
 
     return result[num_min]['x'][0], result[num_min]['x'][1], result[num_min]['x'][2], result[num_min]['x'][3]
@@ -295,11 +306,11 @@ def HF_Method2(x, y, method='Nelder-Mead'):
     beta_0 = CM_Method(x_c, y_c)
     beta_c1, beta_r1 = CRM_Method(x_c, y_c, x_r, y_r)
     beta_c2, beta_r2 = CCRM_Method(x_c, y_c, x_r, y_r)
-    x0_list = [[beta_0[1], beta_0[0], beta_0[1], beta_0[0]],
-               [beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]],
-               [beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]]]
+    x0_list = data_expansion(np.array([beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]]),
+                             np.array([beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]]))
 
-    result = [minimize(reg_obj2, x0=np.array(i), args=(x, y), method='Nelder-Mead') for i in x0_list]
+
+    result = [minimize(reg_obj2, x0=i, args=(x, y), method='Nelder-Mead') for i in x0_list]
     num_min = np.argmin([i['fun'] for i in result])
 
     return result[num_min]['x'][0], result[num_min]['x'][1], result[num_min]['x'][2], result[num_min]['x'][3]
