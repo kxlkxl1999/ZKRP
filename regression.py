@@ -117,69 +117,6 @@ def CCRM_Method(input_x_center, input_y_center, input_x_width, input_y_width):
     return hatBeta_c, hatBeta_r
 
 
-# Parametrized method
-def PM_Method(input_x_center, input_y_center, input_x_width, input_y_width):
-    input_x_lower = input_x_center - input_x_width / 2
-    input_x_upper = input_x_center + input_x_width / 2
-    input_y_lower = input_y_center - input_y_width / 2
-    input_y_upper = input_y_center + input_y_width / 2
-
-    n, p = input_x_center.shape
-    X_lu = np.ones(n).reshape(n, 1)
-    for j in range(p):
-        X_lu = np.insert(X_lu, X_lu.shape[1], input_x_lower[:, j], axis=1)
-        X_lu = np.insert(X_lu, X_lu.shape[1], input_x_upper[:, j], axis=1)
-
-    X_luT = X_lu.transpose()
-    A = np.dot(X_luT, X_lu)
-    A_inv = np.linalg.inv(A)
-    B = np.dot(A_inv, X_luT)
-    hatBeta_l = np.dot(B, input_y_lower)
-    hatBeta_u = np.dot(B, input_y_upper)
-
-    return hatBeta_l, hatBeta_u
-
-
-# Mean magnitude of error relative to the estimate index
-def MMER(input_y_center, estimate_y_center, input_y_width, estimate_y_width):
-    n = input_y_center.shape[0]
-
-    input_y_center = input_y_center.reshape(n)
-    estimate_y_center = estimate_y_center.reshape(n)
-    input_y_width = input_y_width.reshape(n)
-    estimate_y_width = estimate_y_width.reshape(n)
-
-    input_y_lower = input_y_center - input_y_width / 2
-    input_y_upper = input_y_center + input_y_width / 2
-    estimate_y_lower = estimate_y_center - estimate_y_width / 2
-    estimate_y_upper = estimate_y_center + estimate_y_width / 2
-
-    ratio1 = abs((input_y_lower - estimate_y_lower) / estimate_y_lower).sum()
-    ratio2 = abs((input_y_upper - estimate_y_upper) / estimate_y_upper).sum()
-
-    return (ratio1 + ratio2) / (2 * n)
-
-
-# The lower bound mean-squared error and upper bound mean-squared error
-def RMSE(input_y_center, estimate_y_center, input_y_width, estimate_y_width):
-    n = input_y_center.shape[0]
-
-    input_y_center = input_y_center.reshape(n)
-    estimate_y_center = estimate_y_center.reshape(n)
-    input_y_width = input_y_width.reshape(n)
-    estimate_y_width = estimate_y_width.reshape(n)
-
-    input_y_lower = input_y_center - input_y_width / 2
-    input_y_upper = input_y_center + input_y_width / 2
-    estimate_y_lower = estimate_y_center - estimate_y_width / 2
-    estimate_y_upper = estimate_y_center + estimate_y_width / 2
-
-    rmse_l2 = pow(input_y_lower - estimate_y_lower, 2).mean()
-    rmse_u2 = pow(input_y_upper - estimate_y_upper, 2).mean()
-
-    return np.sqrt(rmse_l2), np.sqrt(rmse_u2)
-
-
 def predict(x, beta):
     n = x.shape[0]
     vec_one = np.ones(n)
@@ -302,6 +239,24 @@ def reg_obj2(para, x, y):
         dist2 += max((y_c_hat - y_r_hat - y[i, 0])**2, (y_c_hat + y_r_hat - y[i, 1])**2)
         # dist2 += max(abs(y_c_hat - y_r_hat - y[i, 0]), abs(y_c_hat + y_r_hat - y[i, 1]))
     return dist2 / n
+
+
+def data_expansion(x1, x2):
+    """
+    :param x2: array-like (n,)
+    :param x1: array-like (n,)
+    :return: list of list
+    """
+    assert len(x1) == len(x2)
+    n = len(x1)
+    res_list = []
+    deta_list = []
+    for i in n:
+        deta_list.append(abs(x1[i] - x2[i]))
+
+    res = []
+
+
 
 
 def HF_Method1(x, y, method='Nelder-Mead'):
