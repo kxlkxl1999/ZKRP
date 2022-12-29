@@ -296,8 +296,10 @@ def HF_Method1(x, y, method='Nelder-Mead'):
     beta_0 = CM_Method(x_c, y_c)
     beta_c1, beta_r1 = CRM_Method(x_c, y_c, x_r, y_r)
     beta_c2, beta_r2 = CCRM_Method(x_c, y_c, x_r, y_r)
-    x0_list = data_expansion(np.array([beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]]),
-                             np.array([beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]]))
+    # x0_list = data_expansion(np.array([beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]]),
+    #                          np.array([beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]]))
+    x0_list = [np.array([beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]]),
+               np.array([beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]])]
 
     result = [minimize(reg_obj1, x0=i, args=(x, y), method='Nelder-Mead') for i in x0_list]
     num_min = np.argmin([i['fun'] for i in result])
@@ -318,8 +320,10 @@ def HF_Method2(x, y, method='Nelder-Mead'):
     beta_0 = CM_Method(x_c, y_c)
     beta_c1, beta_r1 = CRM_Method(x_c, y_c, x_r, y_r)
     beta_c2, beta_r2 = CCRM_Method(x_c, y_c, x_r, y_r)
-    x0_list = data_expansion(np.array([beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]]),
-                             np.array([beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]]))
+    # x0_list = data_expansion(np.array([beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]]),
+    #                          np.array([beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]]))
+    x0_list = [np.array([beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]]),
+               np.array([beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]])]
 
 
     result = [minimize(reg_obj2, x0=i, args=(x, y), method='Nelder-Mead') for i in x0_list]
