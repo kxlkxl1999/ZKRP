@@ -1,5 +1,5 @@
 import numpy as np
-from distances import *
+from .distances import *
 from cvxopt import matrix
 from cvxopt import solvers
 from scipy.stats import pearsonr

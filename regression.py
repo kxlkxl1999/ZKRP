@@ -270,12 +270,12 @@ def data_expansion(x1, x2):
 
 def HF_med_Method(x,y):
     n = x.shape[0]
-    x_l = x[:, 0].reshape((n, 1))
-    x_u = x[:, 1].reshape((n, 1))
+    x_l = x[:, 0]
+    x_u = x[:, 1]
     x_c = x_u / 2 + x_l / 2
     x_r = x_u / 2 - x_l / 2
-    y_l = y[:, 0].reshape((n, 1))
-    y_u = y[:, 1].reshape((n, 1))
+    y_l = y[:, 0]
+    y_u = y[:, 1]
     y_c = y_u / 2 + y_l / 2
     y_r = y_u / 2 - y_l / 2
     beta_c = utils.medianregression(x_c, y_c)

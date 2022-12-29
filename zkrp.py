@@ -364,7 +364,7 @@ def show2(x, y, path, Cov=None):
 def show3(x, y, samples=25, path=None, real=None, Cor=None, varname=None):
     np.random.seed(0)
     n = np.shape(x)[0]
-    plt.figure(dpi=200, figsize=(5, 5))
+    plt.figure(dpi=150, figsize=(4, 4))
     for i in np.random.choice(n,samples,replace=False):
         plt.fill_between(x[i, :], np.array([y[i, 1], y[i, 1]]), np.array([y[i, 0], y[i, 0]]), alpha=0.25, linewidth=0, color='steelblue')
         if real is not None:

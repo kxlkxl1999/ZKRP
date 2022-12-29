@@ -5,7 +5,7 @@ from .ir.methods.CRM import CRM
 from .ir.methods.CCRM import CCRM
 from .ir.methods.InterArith import WL2
 from .ir.methods.HD import HD
-from .ir.utils.utils import evaluation
+# from .ir.utils.utils import evaluation
 
 
 # def cr_indep_data_generation(n, a, b, c, d, e, f, g, h, i, j, seed):
@@ -105,75 +105,75 @@ def kangxinlai(n, scenario, seed):
     return train, test
 
 
-def comparison(a, b, c, d, e, f, g, h, i, j):
-    print(a, b, c, d, e, f, g, h, i, j)
-    # def comparison(scenario):
-    # print(a, b, c, d, e, f, g, h, i, j)
-    cm_rmsel, cm_rmseu = [], []
-    crm_rmsel, crm_rmseu = [], []
-    ccrm_rmsel, ccrm_rmseu = [], []
-    wl2_rmsel, wl2_rmseu = [], []
-    hd_rmsel, hd_rmseu = [], []
-
-    for iter in range(100):
-        # train, test, _, _ = cr_indep_data_generation(
-        #     375, a, b, c, d, e, f, g, h, i, j, iter
-        # )
-        train, test, beta0, beta1, betastar = data_generation(375, a, b, c, d, e, f, g, h, i, j, iter)
-        # train, test = kangxinlai(2000, scenario, iter)
-        # CM
-        cm = CM(train[0], train[2])
-        hatbeta_cm = cm.fit()
-        hatyc, hatyr = cm.predict(test[0], test[1], cr=True)
-        rmsel, rmseu = evaluation(test[2], test[3], hatyc, hatyr)
-        cm_rmsel.append(rmsel)
-        cm_rmseu.append(rmseu)
-
-        # CRM
-        crm = CRM(train[0], train[1], train[2], train[3])
-        hatbeta_c_crm, hatbeta_r_crm = crm.fit()
-        hatyc, hatyr = crm.predict(test[0], test[1], cr=True)
-        rmsel, rmseu = evaluation(test[2], test[3], hatyc, hatyr)
-        # print("CRM")
-        # print(crm.centerbeta, crm.rangebeta)
-        crm_rmsel.append(rmsel)
-        crm_rmseu.append(rmseu)
-
-        # CCRM
-        ccrm = CCRM(train[0], train[1], train[2], train[3])
-        hatbeta_c_ccrm, hatbeta_r_ccrm = ccrm.fit()
-        hatyc, hatyr = ccrm.predict(test[0], test[1], cr=True)
-        rmsel, rmseu = evaluation(test[2], test[3], hatyc, hatyr)
-        # print("CCRM")
-        # print(ccrm.centerbeta, ccrm.rangebeta)
-        ccrm_rmsel.append(rmsel)
-        ccrm_rmseu.append(rmseu)
-
-        # WL2
-        wl2 = WL2(train[0], train[1], train[2], train[3])
-        wl2.fit(0.5)
-        hatyc, hatyr = wl2.predict(test[0], test[1], cr=True)
-        rmsel, rmseu = evaluation(test[2], test[3], hatyc, hatyr)
-        # print("WL2")
-        # print(wl2.centerbeta, wl2.rangebeta)
-        wl2_rmsel.append(rmsel)
-        wl2_rmseu.append(rmseu)
-
-        # HD
-        hd = HD(train[0], train[1], train[2], train[3])
-        hatbeta_c_hd, hatbeta_r_hd = hd.fit()
-        hatyc, hatyr = hd.predict(test[0], test[1], cr=True)
-        rmsel, rmseu = evaluation(test[2], test[3], hatyc, hatyr)
-        # print("HD")
-        # print(hd.centerbeta, hd.rangebeta)
-        hd_rmsel.append(rmsel)
-        hd_rmseu.append(rmseu)
-
-    print(np.array(cm_rmsel).mean(), np.array(cm_rmseu).mean())
-    print(np.array(crm_rmsel).mean(), np.array(crm_rmseu).mean())
-    print(np.array(ccrm_rmsel).mean(), np.array(ccrm_rmseu).mean())
-    print(np.array(wl2_rmsel).mean(), np.array(wl2_rmseu).mean())
-    print(np.array(hd_rmsel).mean(), np.array(hd_rmseu).mean())
+# def comparison(a, b, c, d, e, f, g, h, i, j):
+#     print(a, b, c, d, e, f, g, h, i, j)
+#     # def comparison(scenario):
+#     # print(a, b, c, d, e, f, g, h, i, j)
+#     cm_rmsel, cm_rmseu = [], []
+#     crm_rmsel, crm_rmseu = [], []
+#     ccrm_rmsel, ccrm_rmseu = [], []
+#     wl2_rmsel, wl2_rmseu = [], []
+#     hd_rmsel, hd_rmseu = [], []
+#
+#     for iter in range(100):
+#         # train, test, _, _ = cr_indep_data_generation(
+#         #     375, a, b, c, d, e, f, g, h, i, j, iter
+#         # )
+#         train, test, beta0, beta1, betastar = data_generation(375, a, b, c, d, e, f, g, h, i, j, iter)
+#         # train, test = kangxinlai(2000, scenario, iter)
+#         # CM
+#         cm = CM(train[0], train[2])
+#         hatbeta_cm = cm.fit()
+#         hatyc, hatyr = cm.predict(test[0], test[1], cr=True)
+#         rmsel, rmseu = evaluation(test[2], test[3], hatyc, hatyr)
+#         cm_rmsel.append(rmsel)
+#         cm_rmseu.append(rmseu)
+#
+#         # CRM
+#         crm = CRM(train[0], train[1], train[2], train[3])
+#         hatbeta_c_crm, hatbeta_r_crm = crm.fit()
+#         hatyc, hatyr = crm.predict(test[0], test[1], cr=True)
+#         rmsel, rmseu = evaluation(test[2], test[3], hatyc, hatyr)
+#         # print("CRM")
+#         # print(crm.centerbeta, crm.rangebeta)
+#         crm_rmsel.append(rmsel)
+#         crm_rmseu.append(rmseu)
+#
+#         # CCRM
+#         ccrm = CCRM(train[0], train[1], train[2], train[3])
+#         hatbeta_c_ccrm, hatbeta_r_ccrm = ccrm.fit()
+#         hatyc, hatyr = ccrm.predict(test[0], test[1], cr=True)
+#         rmsel, rmseu = evaluation(test[2], test[3], hatyc, hatyr)
+#         # print("CCRM")
+#         # print(ccrm.centerbeta, ccrm.rangebeta)
+#         ccrm_rmsel.append(rmsel)
+#         ccrm_rmseu.append(rmseu)
+#
+#         # WL2
+#         wl2 = WL2(train[0], train[1], train[2], train[3])
+#         wl2.fit(0.5)
+#         hatyc, hatyr = wl2.predict(test[0], test[1], cr=True)
+#         rmsel, rmseu = evaluation(test[2], test[3], hatyc, hatyr)
+#         # print("WL2")
+#         # print(wl2.centerbeta, wl2.rangebeta)
+#         wl2_rmsel.append(rmsel)
+#         wl2_rmseu.append(rmseu)
+#
+#         # HD
+#         hd = HD(train[0], train[1], train[2], train[3])
+#         hatbeta_c_hd, hatbeta_r_hd = hd.fit()
+#         hatyc, hatyr = hd.predict(test[0], test[1], cr=True)
+#         rmsel, rmseu = evaluation(test[2], test[3], hatyc, hatyr)
+#         # print("HD")
+#         # print(hd.centerbeta, hd.rangebeta)
+#         hd_rmsel.append(rmsel)
+#         hd_rmseu.append(rmseu)
+#
+#     print(np.array(cm_rmsel).mean(), np.array(cm_rmseu).mean())
+#     print(np.array(crm_rmsel).mean(), np.array(crm_rmseu).mean())
+#     print(np.array(ccrm_rmsel).mean(), np.array(ccrm_rmseu).mean())
+#     print(np.array(wl2_rmsel).mean(), np.array(wl2_rmseu).mean())
+#     print(np.array(hd_rmsel).mean(), np.array(hd_rmseu).mean())
 
 
 # CRM better than CCRM
