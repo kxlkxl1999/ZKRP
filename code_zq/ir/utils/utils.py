@@ -1,5 +1,5 @@
 import numpy as np
-from .distances import *
+from distances import *
 from cvxopt import matrix
 from cvxopt import solvers
 from scipy.stats import pearsonr
@@ -63,7 +63,7 @@ def medianregression(x, y, positivebta=False):
     x = sol["x"]
 
     beta = x[:2]
-    return beta
+    return np.array(beta)
 
 
 def constrained_simplelstsq(x, y):
@@ -79,3 +79,10 @@ def constrained_simplelstsq(x, y):
     sol = solvers.qp(P, q, G, h, options={"show_progress": False})
 
     return np.array(sol["x"])
+
+
+if __name__ == "__main__":
+    n = 100
+    x = np.random.randn(n)
+    y = 2 + 1.5 * x + 0.01 * np.random.randn(n)
+    print(medianregression(x, y))

@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from zkrp import *
 from scipy.optimize import minimize
 from collections import OrderedDict
+from code_zq.ir.utils import utils
 
 
 # Center method
@@ -267,8 +268,19 @@ def data_expansion(x1, x2):
     return res_list
 
 
-
-
+def HF_med_Method(x,y):
+    n = x.shape[0]
+    x_l = x[:, 0].reshape((n, 1))
+    x_u = x[:, 1].reshape((n, 1))
+    x_c = x_u / 2 + x_l / 2
+    x_r = x_u / 2 - x_l / 2
+    y_l = y[:, 0].reshape((n, 1))
+    y_u = y[:, 1].reshape((n, 1))
+    y_c = y_u / 2 + y_l / 2
+    y_r = y_u / 2 - y_l / 2
+    beta_c = utils.medianregression(x_c, y_c)
+    beta_r = utils.medianregression(x_r, y_r, positivebta=True)
+    return beta_c[1][0], beta_c[0][0], beta_r[1][0], beta_r[0][0]
 
 
 def HF_Method1(x, y, method='Nelder-Mead'):
