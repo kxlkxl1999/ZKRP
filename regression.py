@@ -268,7 +268,7 @@ def data_expansion(x1, x2):
     return res_list
 
 
-def HF_med_Method(x,y):
+def Medreg_Method(x, y):
     n = x.shape[0]
     x_l = x[:, 0]
     x_u = x[:, 1]
@@ -280,6 +280,16 @@ def HF_med_Method(x,y):
     y_r = y_u / 2 - y_l / 2
     beta_c = utils.medianregression(x_c, y_c)
     beta_r = utils.medianregression(x_r, y_r, positivebta=True)
+    return beta_c[1][0], beta_c[0][0], beta_r[1][0], beta_r[0][0]
+
+
+def HF_Med_Method(x, y):
+    beta_c, beta_r = utils.HF_medianregression(x, y, positivebta=True)
+    return beta_c[1][0], beta_c[0][0], beta_r[1][0], beta_r[0][0]
+
+
+def HF_Qd_Method(x, y):
+    beta_c, beta_r = utils.HF_quadraticregression(x, y, positivebta=True)
     return beta_c[1][0], beta_c[0][0], beta_r[1][0], beta_r[0][0]
 
 
@@ -301,7 +311,7 @@ def HF_Method1(x, y, method='Nelder-Mead'):
     x0_list = [np.array([beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]]),
                np.array([beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]])]
 
-    result = [minimize(reg_obj1, x0=i, args=(x, y), method='Nelder-Mead') for i in x0_list]
+    result = [minimize(reg_obj1, x0=i, args=(x, y), method=method) for i in x0_list]
     num_min = np.argmin([i['fun'] for i in result])
 
     return result[num_min]['x'][0], result[num_min]['x'][1], result[num_min]['x'][2], result[num_min]['x'][3]
@@ -326,7 +336,7 @@ def HF_Method2(x, y, method='Nelder-Mead'):
                np.array([beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]])]
 
 
-    result = [minimize(reg_obj2, x0=i, args=(x, y), method='Nelder-Mead') for i in x0_list]
+    result = [minimize(reg_obj2, x0=i, args=(x, y), method=method) for i in x0_list]
     num_min = np.argmin([i['fun'] for i in result])
 
     return result[num_min]['x'][0], result[num_min]['x'][1], result[num_min]['x'][2], result[num_min]['x'][3]
