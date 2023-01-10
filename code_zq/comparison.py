@@ -88,49 +88,81 @@ def data_generation2(n, a, b, c, d, e, f, g, h, i, j, seed):
     return train, test, beta0, beta1, betastar
 
 
-def kangxinlai(n, scenario, seed):
+def data_generation_outsider(n, a, b, c, d, e, f, g, h, i, j, k, l, m, o, seed=0, alpha=0.1):
     rng = np.random.default_rng(seed)
-    xr = abs(rng.random(n)) * 2
-    xc = rng.random(n) * 10
-    # xx = np.vstack((xx_c - xx_r, xx_c + xx_r)).T
-    # xx_r = xx_r.reshape((n, 1))
-    # xx_c = xx_c.reshape((n, 1))
-    if scenario == 1:
-        yr = abs(xr + 0.25 * rng.standard_normal(n))
-        yc = 0.5 * xc + 1 + 0.15 * rng.standard_normal(n)
-    elif scenario == 2:
-        yr = abs(xr + 0.25 * rng.standard_normal(n))
-        yc = 0.5 * xc + 1 + 0.5 * rng.standard_normal(n)
-    elif scenario == 3:
-        yr = abs(xr + 0.25 * rng.standard_normal(n))
-        yc = 0.5 * xc + 1 + 2 * rng.standard_normal(n)
-    elif scenario == 4:
-        yr = abs(xr + 0.5 * rng.standard_normal(n))
-        yc = 0.5 * xc + 1 + 0.5 * rng.standard_normal(n)
-    elif scenario == 5:
-        xc = rng.standard_normal(n)
-        epsilonc = rng.standard_normal(n)
-        xr = rng.chisquare(1, size=n)
-        epsilonr = rng.chisquare(1, size=n)
-        yl = 2 * (xc - xr) + (epsilonc - epsilonr)
-        yu = 2 * (xc + xr) + (epsilonc + epsilonr)
-        yc = (yl + yu) / 2
-        yr = (yu - yl) / 2
-    elif scenario == 6:
-        xc = rng.standard_normal(n)
-        epsilonc = 4 * rng.standard_normal(n)
-        xr = rng.chisquare(1, size=n)
-        epsilonr = rng.chisquare(1, size=n)
-        yl = 2 * (xc - xr) + (epsilonc - epsilonr)
-        yu = 2 * (xc + xr) + (epsilonc + epsilonr)
-        yc = (yl + yu) / 2
-        yr = (yu - yl) / 2
+    xc = rng.uniform(low=a, high=b, size=n)
+    beta0 = rng.uniform(c, d)
+    beta1 = rng.uniform(c, d)
+    epsilon = rng.uniform(low=e, high=f, size=n)
+    yc = beta0 + beta1 * xc + epsilon
 
-    n1 = 1000
+    betastar = rng.uniform(g, h)
+    epsilonr = rng.uniform(i, j, size=n)
+
+    xr = betastar * xc + epsilonr
+    yr = betastar * yc + epsilonr
+
+    # yr = betastar * (beta0 + beta1 * (xr - epsilonr) / betastar) + epsilonr
+    #  = betastar * beta0 + beta1*xr +(1-beta1)*epsilonr
+    # xr = rng.uniform(i, j, size=n)
+    n1 = 250
+    alpha = alpha
+
     train = [xc[:n1], xr[:n1], yc[:n1], yr[:n1]]
-    test = [xc[n1:], xr[n1:], yc[n1:], yr[n1:]]
+    indices_c = rng.choice(n1, size=int(n1 * alpha), replace=False)
+    train[2][indices_c] = train[2][indices_c] + rng.uniform(k, l)
+    indices_r = rng.choice(n1, size=int(n1 * alpha), replace=False)
+    train[3][indices_r] = train[3][indices_r] + rng.uniform(m, o)
 
-    return train, test
+    test = [xc[n1:], xr[n1:], yc[n1:], yr[n1:]]
+    # print(beta0, beta1, betastar)
+
+    return train, test, beta0, beta1, betastar
+
+
+# def kangxinlai(n, scenario, seed):
+#     rng = np.random.default_rng(seed)
+#     xr = abs(rng.random(n)) * 2
+#     xc = rng.random(n) * 10
+#     # xx = np.vstack((xx_c - xx_r, xx_c + xx_r)).T
+#     # xx_r = xx_r.reshape((n, 1))
+#     # xx_c = xx_c.reshape((n, 1))
+#     if scenario == 1:
+#         yr = abs(xr + 0.25 * rng.standard_normal(n))
+#         yc = 0.5 * xc + 1 + 0.15 * rng.standard_normal(n)
+#     elif scenario == 2:
+#         yr = abs(xr + 0.25 * rng.standard_normal(n))
+#         yc = 0.5 * xc + 1 + 0.5 * rng.standard_normal(n)
+#     elif scenario == 3:
+#         yr = abs(xr + 0.25 * rng.standard_normal(n))
+#         yc = 0.5 * xc + 1 + 2 * rng.standard_normal(n)
+#     elif scenario == 4:
+#         yr = abs(xr + 0.5 * rng.standard_normal(n))
+#         yc = 0.5 * xc + 1 + 0.5 * rng.standard_normal(n)
+#     elif scenario == 5:
+#         xc = rng.standard_normal(n)
+#         epsilonc = rng.standard_normal(n)
+#         xr = rng.chisquare(1, size=n)
+#         epsilonr = rng.chisquare(1, size=n)
+#         yl = 2 * (xc - xr) + (epsilonc - epsilonr)
+#         yu = 2 * (xc + xr) + (epsilonc + epsilonr)
+#         yc = (yl + yu) / 2
+#         yr = (yu - yl) / 2
+#     elif scenario == 6:
+#         xc = rng.standard_normal(n)
+#         epsilonc = 4 * rng.standard_normal(n)
+#         xr = rng.chisquare(1, size=n)
+#         epsilonr = rng.chisquare(1, size=n)
+#         yl = 2 * (xc - xr) + (epsilonc - epsilonr)
+#         yu = 2 * (xc + xr) + (epsilonc + epsilonr)
+#         yc = (yl + yu) / 2
+#         yr = (yu - yl) / 2
+#
+#     n1 = 1000
+#     train = [xc[:n1], xr[:n1], yc[:n1], yr[:n1]]
+#     test = [xc[n1:], xr[n1:], yc[n1:], yr[n1:]]
+#
+#     return train, test
 
 
 # def comparison(a, b, c, d, e, f, g, h, i, j):
