@@ -90,14 +90,14 @@ def data_generation2(n, a, b, c, d, e, f, g, h, i, j, seed):
 
 def data_generation_outlier(n, a, b, c, d, e, f, g, h, i, j, k, l, m, o, seed=0, alpha=0.1):
     rng = np.random.default_rng(seed)
-    xc = rng.uniform(low=a, high=b, size=n)
+    xc = rng.uniform(low=a, high=b, size=n+125)
     beta0 = rng.uniform(c, d)
     beta1 = rng.uniform(c, d)
-    epsilon = rng.uniform(low=e, high=f, size=n)
+    epsilon = rng.uniform(low=e, high=f, size=n+125)
     yc = beta0 + beta1 * xc + epsilon
 
     betastar = rng.uniform(g, h)
-    epsilonr = rng.uniform(i, j, size=n)
+    epsilonr = rng.uniform(i, j, size=n+125)
 
     xr = betastar * xc + epsilonr
     yr = betastar * yc + epsilonr
@@ -105,7 +105,7 @@ def data_generation_outlier(n, a, b, c, d, e, f, g, h, i, j, k, l, m, o, seed=0,
     # yr = betastar * (beta0 + beta1 * (xr - epsilonr) / betastar) + epsilonr
     #  = betastar * beta0 + beta1*xr +(1-beta1)*epsilonr
     # xr = rng.uniform(i, j, size=n)
-    n1 = 250
+    n1 = n
     alpha = alpha
 
     train = [xc[:n1], xr[:n1], yc[:n1], yr[:n1]]
