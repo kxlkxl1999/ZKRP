@@ -88,7 +88,7 @@ def data_generation2(n, a, b, c, d, e, f, g, h, i, j, seed):
     return train, test, beta0, beta1, betastar
 
 
-def data_generation_outsider(n, a, b, c, d, e, f, g, h, i, j, k, l, m, o, seed=0, alpha=0.1):
+def data_generation_outlier(n, a, b, c, d, e, f, g, h, i, j, k, l, m, o, seed=0, alpha=0.1):
     rng = np.random.default_rng(seed)
     xc = rng.uniform(low=a, high=b, size=n)
     beta0 = rng.uniform(c, d)
