@@ -61,8 +61,10 @@ def CCRM_Method(input_x_center, input_y_center, input_x_width, input_y_width):
     Z = np.arange(p + 1)
     X_r = np.insert(input_x_width, 0, vec_one, axis=1)
     X_rT = X_r.transpose()
+    loop = 0
 
-    while True:
+    while True and loop < 1000:
+        loop += 1
         w = np.dot(X_rT, input_y_width - np.dot(X_r, hatBeta_r))
         neg_Z = np.array([], dtype=np.int64)
         for j in Z:
@@ -75,8 +77,10 @@ def CCRM_Method(input_x_center, input_y_center, input_x_width, input_y_width):
         t = Z[np.argmax(w[Z])]
         Z = np.delete(Z, np.argwhere(Z == t))
         P = np.append(P, t)
+        loop2 = 0
 
-        while True:
+        while True and loop2 < 1000:
+            loop2 += 1
             X_p = X_r.copy()
             for j in Z:
                 X_p[:, j] = 0
@@ -303,9 +307,12 @@ def HF_Method1(x, y, method='Nelder-Mead'):
     y_u = y[:, 1].reshape((n, 1))
     y_c = y_u / 2 + y_l / 2
     y_r = y_u / 2 - y_l / 2
-    beta_0 = CM_Method(x_c, y_c)
+    # beta_0 = CM_Method(x_c, y_c)
+    # print('=')
     beta_c1, beta_r1 = CRM_Method(x_c, y_c, x_r, y_r)
+    # print('==')
     beta_c2, beta_r2 = CCRM_Method(x_c, y_c, x_r, y_r)
+    # print('===')
     # x0_list = data_expansion(np.array([beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]]),
     #                          np.array([beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]]))
     x0_list = [np.array([beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]]),
