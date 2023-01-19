@@ -144,15 +144,15 @@ def data_generation_outlier1(n, a, b, c, d, e, f, g, h, i, j, seed=0, alpha=0.1,
     indices = rng.choice(n1, size=int(n1 * alpha), replace=False)
 
     if outlier == 'Central':
-        train[0][indices] = 1
+        # train[0][indices] = 1
         train[2][indices] = 5
     elif outlier == 'Radius':
-        train[1][indices] = 1
+        # train[1][indices] = 1
         train[3][indices] = 5
     else:
-        train[0][indices] = 1
+        # train[0][indices] = 1
         train[2][indices] = 5
-        train[1][indices] = 1
+        # train[1][indices] = 1
         train[3][indices] = 5
 
     test = [xc[n1:], xr[n1:], yc[n1:], yr[n1:]]
@@ -264,16 +264,16 @@ def data_generation_outlier4(n, a, b, c, d, e, f, g, h, i, j, seed=0, alpha=0.1,
     indices = rng.choice(n1, size=int(n1 * alpha), replace=False)
 
     if outlier == 'Central':
-        train[0][indices] = train[0][indices] + 1 * np.random.standard_t(df=1, size=int(n1 * alpha))
-        train[2][indices] = train[2][indices] + 1 * np.random.standard_t(df=1, size=int(n1 * alpha))
+        # train[0][indices] = train[0][indices] + 1 * np.random.standard_t(df=1, size=int(n1 * alpha))
+        train[2][indices] = train[2][indices] + 1 * np.random.standard_t(df=3, size=int(n1 * alpha))
     elif outlier == 'Radius':
-        train[1][indices] = train[1][indices] + 1 * abs(np.random.standard_t(df=1, size=int(n1 * alpha)))
-        train[3][indices] = train[3][indices] + 1 * abs(np.random.standard_t(df=1, size=int(n1 * alpha)))
+        # train[1][indices] = train[1][indices] + 1 * abs(np.random.standard_t(df=1, size=int(n1 * alpha)))
+        train[3][indices] = train[3][indices] + 1 * abs(np.random.standard_t(df=3, size=int(n1 * alpha)))
     else:
-        train[0][indices] = train[0][indices] + 1 * np.random.standard_t(df=1, size=int(n1 * alpha))
-        train[2][indices] = train[2][indices] + 1 * np.random.standard_t(df=1, size=int(n1 * alpha))
-        train[1][indices] = train[1][indices] + 1 * abs(np.random.standard_t(df=1, size=int(n1 * alpha)))
-        train[3][indices] = train[3][indices] + 1 * abs(np.random.standard_t(df=1, size=int(n1 * alpha)))
+        # train[0][indices] = train[0][indices] + 1 * np.random.standard_t(df=1, size=int(n1 * alpha))
+        train[2][indices] = train[2][indices] + 1 * np.random.standard_t(df=3, size=int(n1 * alpha))
+        # train[1][indices] = train[1][indices] + 1 * abs(np.random.standard_t(df=1, size=int(n1 * alpha)))
+        train[3][indices] = train[3][indices] + 1 * abs(np.random.standard_t(df=3, size=int(n1 * alpha)))
 
     test = [xc[n1:], xr[n1:], yc[n1:], yr[n1:]]
 
