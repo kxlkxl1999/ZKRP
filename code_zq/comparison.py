@@ -120,6 +120,25 @@ def data_generation_outlier(n, a, b, c, d, e, f, g, h, i, j, k, l, m, o, seed=0,
     return train, test, beta0, beta1, betastar
 
 
+def data_generation3(n, a, b, c, d, e, f, g, h, i, j, seed=0):
+    rng = np.random.default_rng(seed)
+    xc = rng.uniform(low=a, high=b, size=n+100)
+    beta0 = rng.uniform(c, d)
+    beta1 = rng.uniform(c, d)
+    epsilon = rng.uniform(low=e, high=f, size=n+100)
+    yc = beta0 + beta1 * xc + epsilon
+    betastar = rng.uniform(g, h)
+    epsilonr = rng.uniform(i, j, size=n+100)
+
+    xr = betastar * xc + epsilonr
+    yr = betastar * yc + epsilonr
+
+    train = [xc[:n], xr[:n], yc[:n], yr[:n]]
+    test = [xc[n:], xr[n:], yc[n:], yr[n:]]
+
+    return train, test, beta0, beta1, betastar
+
+
 def data_generation_outlier1(n, a, b, c, d, e, f, g, h, i, j, seed=0, alpha=0.1, outlier='Central'):
     rng = np.random.default_rng(seed)
     xc = rng.uniform(low=a, high=b, size=n+100)

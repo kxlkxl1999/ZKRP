@@ -5,6 +5,7 @@ from zkrp import *
 from scipy.optimize import minimize
 from collections import OrderedDict
 from code_zq.ir.utils import utils
+from time import process_time
 
 
 # Center method
