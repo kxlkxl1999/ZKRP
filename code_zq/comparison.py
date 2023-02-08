@@ -244,13 +244,13 @@ def data_generation_outlier3(n, a, b, c, d, e, f, g, h, i, j, seed=0, alpha=0.1,
 
     if outlier == 'Central':
         # train[0][indices] = rng.uniform(8, 10, size=int(n1 * alpha))
-        train[2][indices] = rng.uniform(8, 10, size=int(n1 * alpha))
+        train[2][indices] = rng.uniform(6, 12, size=int(n1 * alpha))
     elif outlier == 'Radius':
         # train[1][indices] = rng.uniform(2, 4, size=int(n1 * alpha))
         train[3][indices] = rng.uniform(2, 4, size=int(n1 * alpha))
     else:
         # train[0][indices] = rng.uniform(8, 10, size=int(n1 * alpha))
-        train[2][indices] = rng.uniform(8, 10, size=int(n1 * alpha))
+        train[2][indices] = rng.uniform(6, 12, size=int(n1 * alpha))
         # train[1][indices] = rng.uniform(2, 4, size=int(n1 * alpha))
         train[3][indices] = rng.uniform(2, 4, size=int(n1 * alpha))
 

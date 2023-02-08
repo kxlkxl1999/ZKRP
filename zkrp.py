@@ -164,8 +164,18 @@ def fcov(w, x, y, x_mean, y_mean):
     return -1 * abs((dist(w, x) - dist(w, x_mean)) * (dist(w, y) - dist(w, y_mean)))
 
 
+def fcov1(w, x, y, x_mean, y_mean):
+    return -1 * np.sqrt(abs((dist(w, x) - dist(w, x_mean)) * (dist(w, y) - dist(w, y_mean))))
+
+
 def ffcov(w, x, y, x_mean, y_mean):
     return (dist(w, x) - dist(w, x_mean)) * (dist(w, y) - dist(w, y_mean))
+
+
+def ffcov1(w, x, y, x_mean, y_mean):
+    return (dist(w, x) - dist(w, x_mean)) * (dist(w, y) - dist(w, y_mean)) \
+        / abs((dist(w, x) - dist(w, x_mean)) * (dist(w, y) - dist(w, y_mean)))\
+        * np.sqrt(abs((dist(w, x) - dist(w, x_mean)) * (dist(w, y) - dist(w, y_mean))))
 
 
 def frechet_covariance(x, y, method='hausdorff', theta=1):
@@ -192,25 +202,36 @@ def frechet_covariance(x, y, method='hausdorff', theta=1):
             output2 = optimize.brute(fcov, ranges=((x_mean[0], x_mean[1]),), args=(x[i, :], y[i, :], x_mean, y_mean), full_output=True, finish=optimize.fmin)
             output3 = optimize.brute(fcov, ranges=((y[i, 0], y[i, 1]),), args=(x[i, :], y[i, :], x_mean, y_mean), full_output=True, finish=optimize.fmin)
             output4 = optimize.brute(fcov, ranges=((y_mean[0], y_mean[1]),), args=(x[i, :], y[i, :], x_mean, y_mean), full_output=True, finish=optimize.fmin)
+            max_output = output1
             output = [output1, output2, output3, output4]
             m_out = max([-1 * i[1] for i in output])
             for j in range(4):
                 if output[j][1] * -1 == m_out:
                     max_output = output[j]
             cov_sum += ffcov(max_output[0][0], x[i, :], y[i, :], x_mean, y_mean)
-            # a = 0
-            # abs_a = 0
-            # for w in np.concatenate((np.linspace(start=x[i, 0], stop=x[i, 1], num=1000),
-            #                          np.linspace(start=y[i, 0], stop=y[i, 1], num=1000),
-            #                          np.linspace(start=x_mean[0], stop=x_mean[1], num=1000),
-            #                          np.linspace(start=y_mean[0], stop=y_mean[1], num=1000)
-            #                          )):
-            #     a0 = (dist(w, x[i, :]) - dist(w, x_mean)) * (dist(w, y[i, :]) - dist(w, y_mean))
-            #     if abs(a0) > abs_a:
-            #         abs_a = abs(a0)
-            #         a = a0
-            # cov_sum += abs_a if a >= 0 else (-1 * abs_a)
-        return cov_sum / n
+
+    elif method == 'hausdorff1':
+        x_mean = frechet_mean(x)['interval']
+        y_mean = frechet_mean(y)['interval']
+        cov_sum = 0
+        for i in tqdm(range(n)):
+
+            output1 = optimize.brute(fcov1, ranges=((x[i, 0], x[i, 1]),), args=(x[i, :], y[i, :], x_mean, y_mean),
+                                     full_output=True, finish=optimize.fmin)
+            output2 = optimize.brute(fcov1, ranges=((x_mean[0], x_mean[1]),), args=(x[i, :], y[i, :], x_mean, y_mean),
+                                     full_output=True, finish=optimize.fmin)
+            output3 = optimize.brute(fcov1, ranges=((y[i, 0], y[i, 1]),), args=(x[i, :], y[i, :], x_mean, y_mean),
+                                     full_output=True, finish=optimize.fmin)
+            output4 = optimize.brute(fcov1, ranges=((y_mean[0], y_mean[1]),), args=(x[i, :], y[i, :], x_mean, y_mean),
+                                     full_output=True, finish=optimize.fmin)
+            max_output = output1
+            output = [output1, output2, output3, output4]
+            m_out = max([-1 * i[1] for i in output])
+            for j in range(4):
+                if output[j][1] * -1 == m_out:
+                    max_output = output[j]
+            cov_sum += ffcov1(max_output[0][0], x[i, :], y[i, :], x_mean, y_mean)
+
     elif method == 'symbolic':
         mean1 = frechet_mean(x, method='symbolic')
         mean2 = frechet_mean(y, method='symbolic')
@@ -225,46 +246,6 @@ def frechet_covariance(x, y, method='hausdorff', theta=1):
         return c_sum / (6 * n)
     elif method == 'arithmetic-based':
         return np.cov(x[:,0]/2 + x[:,1]/2, y[:,0]/2 + y[:,1]/2)[0][1] + theta * np.cov(x[:,1]/2 - x[:,0]/2, y[:,1]/2 - y[:,0]/2)[0][1]
-
-    # elif method == 'wasserstein':
-    #     mean1 = np.array(frechet_mean(x, method='wasserstein')['interval'])
-    #     mean2 = np.array(frechet_mean(y, method='wasserstein')['interval'])
-    #     m1_values = np.linspace(start=mean1[0], stop=mean1[1], num=10000)
-    #     m2_values = np.linspace(start=mean2[0], stop=mean2[1], num=10000)
-    #     m1_sorter = np.argsort(m1_values)
-    #     m2_sorter = np.argsort(m2_values)
-    #     c_sum = 0
-    #     for i in range(n):
-    #         x_values = np.linspace(start=x[i, 0], stop=x[i, 1], num=10000)
-    #         y_values = np.linspace(start=y[i, 0], stop=y[i, 1], num=10000)
-    #         x_sorter = np.argsort(x_values)
-    #         y_sorter = np.argsort(y_values)
-    #
-    #         all_values = np.concatenate((m1_values, m2_values, x_values, y_values))
-    #         all_values.sort(kind='mergesort')
-    #         all_values.sort(kind='mergesort')
-    #
-    #         # Compute the differences between pairs of successive values of u and v.
-    #         deltas = np.diff(all_values)
-    #
-    #         # Get the respective positions of the values of u and v among the values of
-    #         # both distributions.
-    #         m1_cdf_indices = m1_values[m1_sorter].searchsorted(all_values[:-1], 'right')
-    #         m2_cdf_indices = m2_values[m2_sorter].searchsorted(all_values[:-1], 'right')
-    #         x_cdf_indices = x_values[x_sorter].searchsorted(all_values[:-1], 'right')
-    #         y_cdf_indices = y_values[y_sorter].searchsorted(all_values[:-1], 'right')
-    #
-    #         # Calculate the CDFs of u and v using their weights, if specified.
-    #
-    #         m1_cdf = m1_cdf_indices / m1_values.size
-    #         m2_cdf = m2_cdf_indices / m2_values.size
-    #         x_cdf = x_cdf_indices / x_values.size
-    #         y_cdf = y_cdf_indices / y_values.size
-    #         # Compute the value of the integral based on the CDFs.
-    #         # If p = 1 or p = 2, we avoid using np.power, which introduces an overhead
-    #         # of about 15%.
-    #         c_sum += np.sum(np.multiply((x_cdf - m1_cdf) * (y_cdf - m2_cdf), deltas))
-    #     return c_sum / n
 
 
 def frechet_correlation(x, y, method='hausdorff'):
@@ -282,30 +263,6 @@ def frechet_correlation(x, y, method='hausdorff'):
     else:
         return frechet_covariance(x, y, method=method) / \
                np.sqrt(frechet_variance(x, method=method) * frechet_variance(y, method=method))
-
-
-
-# def frechet_covariance(x, y, method='hausdorff'):
-#     """
-#     calculate frechet covariance of random interval x and y
-#
-#     :param x: numpy[n,2]: interval data, each line indicates an interval
-#     :param y: numpy[n,2]: interval data, each line indicates an interval
-#     :param method: string：'hausdorff': hausdorff method; 'middle': middle point
-#     :return: double
-#     """
-#     assert x.shape[0] == y.shape[0]
-#     n = x.shape[0]
-#     if method == 'hausdorff':
-#         x_mean = frechet_mean(x)['interval']
-#         y_mean = frechet_mean(y)['interval']
-#         cov_sum = 0
-#         for i in range(n):
-#             cov_sum += hausdorff_distance(x[i,], x_mean, sgn=True) * hausdorff_distance(y[i,], y_mean, sgn=True)
-#         return {'location covariance': cov_sum / n,
-#                 'scale covariance': np.cov(x[:, 1] - x[:, 0], y[:, 1] - y[:, 0])[0][1]}
-#     else:
-#         return 0
 
 
 def show(data, path, result=None):
