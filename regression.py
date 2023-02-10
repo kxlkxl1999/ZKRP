@@ -1,10 +1,12 @@
 from tqdm import tqdm
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
 from zkrp import *
 from scipy.optimize import minimize
 from collections import OrderedDict
 from code_zq.ir.utils import utils
+# import rpy2.robjects as robjects
 from time import process_time
 
 
@@ -247,6 +249,42 @@ def reg_obj2(para, x, y):
     return dist2 / n
 
 
+def reg_Med_obj1(para, x, y):
+    assert x.shape[0] == y.shape[0]
+    n = x.shape[0]
+    a_c = para[0]
+    b_c = para[1]
+    a_r = para[2]
+    b_r = para[3]
+    dist1 = 0
+    if a_r < 0 or b_r < 0:
+        return sys.float_info.max
+    for i in range(n):
+        y_c_hat = a_c * (x[i, 1] / 2 + x[i, 0] / 2) + b_c
+        y_r_hat = a_r * (x[i, 1] / 2 - x[i, 0] / 2) + b_r
+        # dist2 += max((y_c_hat - y_r_hat - y[i, 0])**2, (y_c_hat + y_r_hat - y[i, 1])**2)
+        dist1 += max(abs(y_c_hat - y_r_hat - y[i, 0]), abs(y_c_hat + y_r_hat - y[i, 1]))
+    return dist1 / n
+
+
+def reg_Qd_obj2(para, x, y):
+    assert x.shape[0] == y.shape[0]
+    n = x.shape[0]
+    a_c = para[0]
+    b_c = para[1]
+    a_r = para[2]
+    b_r = para[3]
+    dist2 = 0
+    if a_r < 0 or b_r < 0:
+        return sys.float_info.max
+    for i in range(n):
+        y_c_hat = a_c * (x[i, 1] / 2 + x[i, 0] / 2) + b_c
+        y_r_hat = a_r * (x[i, 1] / 2 - x[i, 0] / 2) + b_r
+        dist2 += max((y_c_hat - y_r_hat - y[i, 0])**2, (y_c_hat + y_r_hat - y[i, 1])**2)
+        # dist2 += max(abs(y_c_hat - y_r_hat - y[i, 0]), abs(y_c_hat + y_r_hat - y[i, 1]))
+    return dist2 / n
+
+
 def data_expansion(x1, x2):
     """
     :param x2: numpy (n,)
@@ -288,14 +326,61 @@ def Medreg_Method(x, y):
     return beta_c[1][0], beta_c[0][0], beta_r[1][0], beta_r[0][0]
 
 
-def HF_Med_Method(x, y):
-    beta_c, beta_r = utils.HF_medianregression(x, y, positivebta=True)
-    return beta_c[1][0], beta_c[0][0], beta_r[1][0], beta_r[0][0]
+def HF_Med_Method(x, y, method='Nelder-Mead'):
+    n = x.shape[0]
+    x_l = x[:, 0].reshape((n, 1))
+    x_u = x[:, 1].reshape((n, 1))
+    x_c = x_u / 2 + x_l / 2
+    x_r = x_u / 2 - x_l / 2
+    y_l = y[:, 0].reshape((n, 1))
+    y_u = y[:, 1].reshape((n, 1))
+    y_c = y_u / 2 + y_l / 2
+    y_r = y_u / 2 - y_l / 2
+    # beta_0 = CM_Method(x_c, y_c)
+    # print('=')
+    beta_c1, beta_r1 = CRM_Method(x_c, y_c, x_r, y_r)
+    # print('==')
+    beta_c2, beta_r2 = CCRM_Method(x_c, y_c, x_r, y_r)
+    # print('===')
+    # x0_list = data_expansion(np.array([beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]]),
+    #                          np.array([beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]]))
+    x0_list = [np.array([beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]]),
+               np.array([beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]])]
+
+    result = [minimize(reg_Med_obj1, x0=i, args=(x, y), method=method) for i in x0_list]
+    num_min = np.argmin([i['fun'] for i in result])
+
+    return result[num_min]['x'][0], result[num_min]['x'][1], result[num_min]['x'][2], result[num_min]['x'][3]
+
+    # beta_c, beta_r = utils.HF_medianregression(x, y, positivebta=True)
+    # return beta_c[1][0], beta_c[0][0], beta_r[1][0], beta_r[0][0]
 
 
-def HF_Qd_Method(x, y):
-    beta_c, beta_r = utils.HF_quadraticregression(x, y, positivebta=True)
-    return beta_c[1][0], beta_c[0][0], beta_r[1][0], beta_r[0][0]
+def HF_Qd_Method(x, y, method='Nelder-Mead'):
+    n = x.shape[0]
+    x_l = x[:, 0].reshape((n, 1))
+    x_u = x[:, 1].reshape((n, 1))
+    x_c = x_u / 2 + x_l / 2
+    x_r = x_u / 2 - x_l / 2
+    y_l = y[:, 0].reshape((n, 1))
+    y_u = y[:, 1].reshape((n, 1))
+    y_c = y_u / 2 + y_l / 2
+    y_r = y_u / 2 - y_l / 2
+    beta_0 = CM_Method(x_c, y_c)
+    beta_c1, beta_r1 = CRM_Method(x_c, y_c, x_r, y_r)
+    beta_c2, beta_r2 = CCRM_Method(x_c, y_c, x_r, y_r)
+    # x0_list = data_expansion(np.array([beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]]),
+    #                          np.array([beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]]))
+    x0_list = [np.array([beta_c1[1], beta_c1[0], beta_r1[1], beta_r1[0]]),
+               np.array([beta_c2[1], beta_c2[0], beta_r2[1], beta_r2[0]])]
+
+    result = [minimize(reg_Qd_obj2, x0=i, args=(x, y), method=method) for i in x0_list]
+    num_min = np.argmin([i['fun'] for i in result])
+
+    return result[num_min]['x'][0], result[num_min]['x'][1], result[num_min]['x'][2], result[num_min]['x'][3]
+
+    # beta_c, beta_r = utils.HF_quadraticregression(x, y, positivebta=True)
+    # return beta_c[1][0], beta_c[0][0], beta_r[1][0], beta_r[0][0]
 
 
 def HF_Method1(x, y, method='Nelder-Mead'):
@@ -323,6 +408,24 @@ def HF_Method1(x, y, method='Nelder-Mead'):
     num_min = np.argmin([i['fun'] for i in result])
 
     return result[num_min]['x'][0], result[num_min]['x'][1], result[num_min]['x'][2], result[num_min]['x'][3]
+
+
+# def HF_Method1_sub(x, y):
+#     n = x.shape[0]
+#     x_l = x[:, 0].reshape(n)
+#     x_u = x[:, 1].reshape(n)
+#     x_c = x_u / 2 + x_l / 2
+#     x_r = x_u / 2 - x_l / 2
+#     y_l = y[:, 0].reshape(n)
+#     y_u = y[:, 1].reshape(n)
+#     y_c = y_u / 2 + y_l / 2
+#     y_r = y_u / 2 - y_l / 2
+#
+#     robjects.r.source('test.R')
+#     beta_c = robjects.r['HF1_sub'](robjects.FloatVector(x_c.tolist()), robjects.FloatVector(y_c.tolist()))
+#     beta_r = robjects.r['HF1_sub'](robjects.FloatVector(x_r.tolist()), robjects.FloatVector(y_r.tolist()))
+
+    return beta_c, beta_r
 
 
 def HF_Method2(x, y, method='Nelder-Mead'):
@@ -380,4 +483,12 @@ def show4(x, y, yhat, samples=25, path=None, real=None, Cor=None):
         plt.savefig(path)
     plt.show()
 
+
+# if __name__ == "__main__":
+#     x = np.array([[1, 2], [2, 4], [3, 6]])
+#     y = np.array([[2, 5], [3, 8], [6, 15]])
+#     beta_c, beta_r = HF_Method1_sub(x, y)
+#     print(beta_c)
+#     print('=====')
+#     print(beta_r)
 

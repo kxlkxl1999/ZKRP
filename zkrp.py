@@ -100,6 +100,8 @@ def fdsum(midpont, data, inter_l, method='hausdorff'):
     for j in range(n):
         if method == 'hausdorff':
             dsum += pow(hausdorff_distance(interval, data[j, :]), 2)
+        elif method == 'hausdorff1':
+            dsum += abs(hausdorff_distance(interval, data[j, :]))
         elif method == 'wasserstein':
             dsum += wasserstein_distance2(np.array(interval), data[j, :])
         else:
@@ -121,7 +123,7 @@ def frechet_mean(data, method='hausdorff', inter_l=0):
     upper = max(data[:, 1])
     inter_len = inter_l if inter_l else np.mean(data[:, 1] - data[:, 0])
 
-    if method == 'hausdorff' or method == 'wasserstein' or method == 'middle':
+    if method == 'hausdorff' or method == 'wasserstein' or method == 'middle' or method == 'hausdorff1':
         output = optimize.fminbound(fdsum, lower, upper, args=(data, inter_len, method), full_output=True)
         return {'min_d': output[1],
                 'midpoint': output[0],
@@ -145,7 +147,10 @@ def frechet_variance(data, method='hausdorff', theta=1):
     """
     n = data.shape[0]
     if method == 'hausdorff':
-        m = frechet_mean(data)
+        m = frechet_mean(data, method=method)
+        return m['min_d'] / n
+    elif method == 'hausdorff1':
+        m = frechet_mean(data, method=method)
         return m['min_d'] / n
     elif method == 'symbolic':
         s_sum = 0
@@ -209,6 +214,7 @@ def frechet_covariance(x, y, method='hausdorff', theta=1):
                 if output[j][1] * -1 == m_out:
                     max_output = output[j]
             cov_sum += ffcov(max_output[0][0], x[i, :], y[i, :], x_mean, y_mean)
+        return cov_sum / n
 
     elif method == 'hausdorff1':
         x_mean = frechet_mean(x)['interval']
@@ -231,6 +237,7 @@ def frechet_covariance(x, y, method='hausdorff', theta=1):
                 if output[j][1] * -1 == m_out:
                     max_output = output[j]
             cov_sum += ffcov1(max_output[0][0], x[i, :], y[i, :], x_mean, y_mean)
+        return cov_sum / n
 
     elif method == 'symbolic':
         mean1 = frechet_mean(x, method='symbolic')
