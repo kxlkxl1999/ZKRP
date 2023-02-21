@@ -1,0 +1,62 @@
+"","Program.ID","Institution.Name","Broad.Field","Field","Program.Name","S.Ranking.5th.Percentile","S.Ranking.95th.Percentile","R.Ranking.5th.Percentile","R.Ranking.95th.Percentile"
+"84",20043432,"Baylor University","Physical and Mathematical Sciences","Statistics and Probability","Statistical Science",28,56,44,57
+"108",20059073,"Boston University","Physical and Mathematical Sciences","Statistics and Probability","Biostatistics",41,61,8,23
+"255",20037367,"Carnegie Mellon University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",16,36,11,24
+"286",20019327,"Case Western Reserve University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",14,33,17,31
+"420",20056432,"Colorado State University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",21,43,33,48
+"467",20057910,"Columbia University in the City of New York","Physical and Mathematical Sciences","Statistics and Probability","Statistics",8,27,10,22
+"477",20015596,"Cornell University","Physical and Mathematical Sciences","Statistics and Probability","Biometry",5,38,3,15
+"521",20016168,"Cornell University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",5,20,29,47
+"598",20030050,"Duke University","Physical and Mathematical Sciences","Statistics and Probability","Statistics and Decision Sciences",4,21,5,11
+"682",20027458,"Florida State University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",29,52,33,48
+"711",20019521,"George Washington University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",42,59,50,58
+"818",20066464,"Harvard University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",2,3,2,4
+"950",20016731,"Iowa State University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",4,18,9,20
+"955",20056458,"Johns Hopkins University","Physical and Mathematical Sciences","Statistics and Probability","Applied Mathematics & Statistics",4,17,24,43
+"1032",20028732,"Kansas State University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",31,55,57,60
+"1224",20047247,"Michigan State University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",20,44,26,42
+"1375",20041667,"North Carolina State University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",3,14,19,32
+"1390",20026941,"North Dakota State University Main Campus","Physical and Mathematical Sciences","Statistics and Probability","Statistics",57,61,61,61
+"1447",20069092,"Northwestern University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",25,49,23,41
+"1458",20028839,"Ohio State University Main Campus","Physical and Mathematical Sciences","Statistics and Probability","Biostatistics",26,53,18,38
+"1509",20029375,"Ohio State University Main Campus","Physical and Mathematical Sciences","Statistics and Probability","Statistics",11,37,25,44
+"1548",20042132,"Oklahoma State University Main Campus","Physical and Mathematical Sciences","Statistics and Probability","Statistics",54,61,29,51
+"1614",20018894,"Oregon State University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",37,56,47,56
+"1682",20031790,"Penn State University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",6,23,5,13
+"1762",20056047,"Purdue University Main Campus","Physical and Mathematical Sciences","Statistics and Probability","Statistics",9,27,10,24
+"1808",20041243,"Rice University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",17,48,29,46
+"1848",20012816,"Rutgers The State University of New Jersey New Brunswick Campus","Physical and Mathematical Sciences","Statistics and Probability","Statistics",27,51,22,40
+"1897",20043335,"Southern Methodist University","Physical and Mathematical Sciences","Statistics and Probability","Statistical Science",28,54,45,56
+"1944",20052902,"Stanford University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",1,1,1,1
+"2116",20042420,"Temple University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",48,60,59,60
+"2159",20022084,"Texas A & M University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",5,25,30,46
+"2443",20061252,"University of California-Berkeley","Physical and Mathematical Sciences","Statistics and Probability","Statistics",2,6,2,5
+"2492",20067463,"University of California-Davis","Physical and Mathematical Sciences","Statistics and Probability","Statistics",17,41,12,23
+"2585",20053626,"University of California-Los Angeles","Physical and Mathematical Sciences","Statistics and Probability","Statistics",11,29,10,22
+"2588",20048712,"University of California-Riverside","Physical and Mathematical Sciences","Statistics and Probability","Applied Statistics",42,58,53,59
+"2679",20070434,"University of California-Santa Barbara","Physical and Mathematical Sciences","Statistics and Probability","Statistics & Applied Probability",30,53,50,57
+"2749",20014649,"University of Chicago","Physical and Mathematical Sciences","Statistics and Probability","Statistics",4,15,5,11
+"2881",20024354,"University of Connecticut","Physical and Mathematical Sciences","Statistics and Probability","Statistics PhD",31,50,21,35
+"2973",20013491,"University of Florida","Physical and Mathematical Sciences","Statistics and Probability","Statistics",21,48,17,27
+"3021",20020002,"University of Georgia","Physical and Mathematical Sciences","Statistics and Probability","Statistics",19,43,21,37
+"3184",20039349,"University of Illinois at Urbana-Champaign","Physical and Mathematical Sciences","Statistics and Probability","Statistics",20,44,22,40
+"3235",20020358,"University of Iowa","Physical and Mathematical Sciences","Statistics and Probability","Statistics",17,39,32,47
+"3319",20028457,"University of Kentucky","Physical and Mathematical Sciences","Statistics and Probability","Statistics",26,54,19,36
+"3353",20036478,"University of Maryland Baltimore County","Physical and Mathematical Sciences","Statistics and Probability","Statistics",42,58,50,58
+"3390",20050344,"University of Maryland College Park","Physical and Mathematical Sciences","Statistics and Probability","Mathematical Statistics",31,53,45,54
+"3557",20035835,"University of Michigan-Ann Arbor","Physical and Mathematical Sciences","Statistics and Probability","Statistics",3,13,5,13
+"3624",20040273,"University of Minnesota-Twin Cities","Physical and Mathematical Sciences","Statistics and Probability","Statistics",15,36,33,47
+"3683",20025612,"University of Missouri - Columbia","Physical and Mathematical Sciences","Statistics and Probability","Statistics",30,52,29,45
+"3812",20015321,"University of New Mexico Main Campus","Physical and Mathematical Sciences","Statistics and Probability","Statistics",30,56,20,38
+"3864",20045595,"University of North Carolina at Chapel Hill","Physical and Mathematical Sciences","Statistics and Probability","Statistics",7,20,6,15
+"3968",20036711,"University of Pennsylvania","Physical and Mathematical Sciences","Statistics and Probability","Biomedical Graduate Studies-Biostatistics and Epidemiology",9,28,9,22
+"4004",20037147,"University of Pennsylvania","Physical and Mathematical Sciences","Statistics and Probability","Statistics-Wharton",9,22,12,24
+"4080",20069416,"University of Rochester","Physical and Mathematical Sciences","Statistics and Probability","Statistics",28,55,20,42
+"4106",20067942,"University of South Carolina Columbia","Physical and Mathematical Sciences","Statistics and Probability","Statistics",32,55,48,57
+"4221",20070081,"University of Tennessee","Physical and Mathematical Sciences","Statistics and Probability","Statistics and Management Science",35,57,48,58
+"4394",20023397,"University of Virginia","Physical and Mathematical Sciences","Statistics and Probability","Statistics",48,60,32,48
+"4453",20060020,"University of Washington","Physical and Mathematical Sciences","Statistics and Probability","Statistics",12,34,2,5
+"4529",20031088,"University of Wisconsin-Madison","Physical and Mathematical Sciences","Statistics and Probability","Statistics",4,26,7,19
+"4646",20044758,"Virginia Polytechnic Institute and State University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",35,57,37,49
+"4779",20044208,"Western Michigan University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",52,61,50,58
+"4832",20063810,"Yale University","Physical and Mathematical Sciences","Statistics and Probability","Statistics",23,50,30,45
