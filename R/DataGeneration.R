@@ -42,14 +42,20 @@ data_generation_outlier1 <- function(n, a, b, c, d, e, f, g, h, i, j, seed, outl
   beta0 = runif(n, c, d)
   epsilon = runif(n, e, f)
   epsilonr = runif(n, i, j)
-  y.C = beta0 + x.C * diag(beta1) + epsilon
+  y.C = beta0 + x.C * beta1 + epsilon
   x.R = x.C * betastar + epsilonr
   y.R = y.C * betastar + epsilonr
   n1 = floor(n*alpha)
+  sampled.index = sample(1:n,n1)
   
   if(outlierType == "central")
+    y.C[sampled.index] = 5
+  else if(outlierType == "range")
+    y.R[sampled.index] = 5
+  else if(outlierType == "central and range")
   {
-    
+    y.C[sampled.index] = 5
+    y.R[sampled.index] = 5
   }
   
   return(list(
