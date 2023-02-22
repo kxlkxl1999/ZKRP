@@ -16,7 +16,6 @@ source('IntervalPlot.R')
 source('DataGeneration.R')
 ```
 
-
 ```{r}
 mydata = data_generation(10, 3, c(20,20,20), c(40,40,40), c(0,0,0), c(1,1,1), -20, 20, c(0,0,0), c(0.05,0.05,0.05), 10, 20, 0)
 CCRM(cbind(yl, yu) ~ xl[,1] + xu[,1] + xl[,2] + xu[,2] + xl[,3] + xu[,3], data = mydata)
@@ -63,5 +62,6 @@ summary(t.HF1)
 xl = c(1,2,3,4,5)
 xu = c(2,4,6,8,10)
 y = c(2,3,5,7,10)
-HF1_sub(x,y)
+
 ```
+
