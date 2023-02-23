@@ -5,7 +5,7 @@ date: '2023-02-09'
 output: html_document
 ---
 
-```{r}
+```{r warning=FALSE}
 library(quantreg)
 library(mgcv)
 source('CM.R')
@@ -59,9 +59,93 @@ summary(t.HF1)
 ```
 
 ```{r}
-xl = c(1,2,3,4,5)
-xu = c(2,4,6,8,10)
-y = c(2,3,5,7,10)
+data1c = data_generation_outlier1(20, 0, 20, 0, 1, 0, 5, 0.2, 0.5, 0, 5,seed = 0, outlierType = "central",alpha = 0.15)
 
+plot.rect(data1c$xc, data1c$xr, data1c$yc, data1c$yr)
+plot.cross(data1c$xc, data1c$xr, data1c$yc, data1c$yr)
+plot.segment(data1c$xc, data1c$xr, data1c$yc, data1c$yr)
+plot.dandelion(data1c$xc, data1c$xr, data1c$yc, data1c$yr)
+
+data1r = data_generation_outlier1(20, 0, 20, 0, 1, 0, 5, 0.2, 0.5, 0, 5,seed = 0, outlierType = "range",alpha = 0.15)
+
+plot.rect(data1r$xc, data1r$xr, data1r$yc, data1r$yr)
+plot.cross(data1r$xc, data1r$xr, data1r$yc, data1r$yr)
+plot.segment(data1r$xc, data1r$xr, data1r$yc, data1r$yr)
+plot.dandelion(data1r$xc, data1r$xr, data1r$yc, data1r$yr)
+
+data1cr = data_generation_outlier1(20, 0, 20, 0, 1, 0, 5, 0.2, 0.5, 0, 5,seed = 0, outlierType = "central and range",alpha = 0.15)
+
+plot.rect(data1cr$xc, data1cr$xr, data1cr$yc, data1cr$yr)
+plot.cross(data1cr$xc, data1cr$xr, data1cr$yc, data1cr$yr)
+plot.segment(data1cr$xc, data1cr$xr, data1cr$yc, data1cr$yr)
+plot.dandelion(data1cr$xc, data1cr$xr, data1cr$yc, data1cr$yr)
+```
+```{r}
+data2c = data_generation_outlier2(20, 0, 20, 0, 1, 0, 5, 0.2, 0.5, 0, 5,seed = 0, outlierType = "central",alpha = 0.15)
+
+plot.rect(data2c$xc, data2c$xr, data2c$yc, data2c$yr)
+plot.cross(data2c$xc, data2c$xr, data2c$yc, data2c$yr)
+plot.segment(data2c$xc, data2c$xr, data2c$yc, data2c$yr)
+plot.dandelion(data2c$xc, data2c$xr, data2c$yc, data2c$yr)
+
+data2r = data_generation_outlier2(20, 0, 20, 0, 1, 0, 5, 0.2, 0.5, 0, 5,seed = 0, outlierType = "range",alpha = 0.15)
+
+plot.rect(data2r$xc, data2r$xr, data2r$yc, data2r$yr)
+plot.cross(data2r$xc, data2r$xr, data2r$yc, data2r$yr)
+plot.segment(data2r$xc, data2r$xr, data2r$yc, data2r$yr)
+plot.dandelion(data2r$xc, data2r$xr, data2r$yc, data2r$yr)
+
+data2cr = data_generation_outlier2(20, 0, 20, 0, 1, 0, 5, 0.2, 0.5, 0, 5,seed = 0, outlierType = "central and range",alpha = 0.15)
+
+plot.rect(data2cr$xc, data2cr$xr, data2cr$yc, data2cr$yr)
+plot.cross(data2cr$xc, data2cr$xr, data2cr$yc, data2cr$yr)
+plot.segment(data2cr$xc, data2cr$xr, data2cr$yc, data2cr$yr)
+plot.dandelion(data2cr$xc, data2cr$xr, data2cr$yc, data2cr$yr)
+```
+
+```{r}
+data3c = data_generation_outlier3(20, 0, 20, 0, 1, 0, 10, 0.2, 0.5, 0, 5,seed = 0, outlierType = "central",alpha = 0.15)
+
+plot.rect(data3c$xc, data3c$xr, data3c$yc, data3c$yr)
+plot.cross(data3c$xc, data3c$xr, data3c$yc, data3c$yr)
+plot.segment(data3c$xc, data3c$xr, data3c$yc, data3c$yr)
+plot.dandelion(data3c$xc, data3c$xr, data3c$yc, data3c$yr)
+
+data3r = data_generation_outlier3(20, 0, 20, 0, 1, 0, 10, 0.2, 0.5, 0, 5,seed = 0, outlierType = "range",alpha = 0.15)
+
+plot.rect(data3r$xc, data3r$xr, data3r$yc, data3r$yr)
+plot.cross(data3r$xc, data3r$xr, data3r$yc, data3r$yr)
+plot.segment(data3r$xc, data3r$xr, data3r$yc, data3r$yr)
+plot.dandelion(data3r$xc, data3r$xr, data3r$yc, data3r$yr)
+
+data3cr = data_generation_outlier3(20, 0, 20, 0, 1, 0, 10, 0.2, 0.5, 0, 5,seed = 0, outlierType = "central and range",alpha = 0.15)
+
+plot.rect(data3cr$xc, data3cr$xr, data3cr$yc, data3cr$yr)
+plot.cross(data3cr$xc, data3cr$xr, data3cr$yc, data3cr$yr)
+plot.segment(data3cr$xc, data3cr$xr, data3cr$yc, data3cr$yr)
+plot.dandelion(data3cr$xc, data3cr$xr, data3cr$yc, data3cr$yr)
+```
+
+```{r}
+data4c = data_generation_outlier4(20, 0, 20, 0, 1, 0, 10, 0.2, 0.5, 0, 5,seed = 0, outlierType = "central",alpha = 0.15)
+
+plot.rect(data4c$xc, data4c$xr, data4c$yc, data4c$yr)
+plot.cross(data4c$xc, data4c$xr, data4c$yc, data4c$yr)
+plot.segment(data4c$xc, data4c$xr, data4c$yc, data4c$yr)
+plot.dandelion(data4c$xc, data4c$xr, data4c$yc, data4c$yr)
+
+data4r = data_generation_outlier4(20, 0, 20, 0, 1, 0, 10, 0.2, 0.5, 0, 5,seed = 0, outlierType = "range",alpha = 0.15)
+
+plot.rect(data4r$xc, data4r$xr, data4r$yc, data4r$yr)
+plot.cross(data4r$xc, data4r$xr, data4r$yc, data4r$yr)
+plot.segment(data4r$xc, data4r$xr, data4r$yc, data4r$yr)
+plot.dandelion(data4r$xc, data4r$xr, data4r$yc, data4r$yr)
+
+data4cr = data_generation_outlier4(20, 0, 20, 0, 1, 0, 10, 0.2, 0.5, 0, 5,seed = 0, outlierType = "central and range",alpha = 0.15)
+
+plot.rect(data4cr$xc, data4cr$xr, data4cr$yc, data4cr$yr)
+plot.cross(data4cr$xc, data4cr$xr, data4cr$yc, data4cr$yr)
+plot.segment(data4cr$xc, data4cr$xr, data4cr$yc, data4cr$yr)
+plot.dandelion(data4cr$xc, data4cr$xr, data4cr$yc, data4cr$yr)
 ```
 

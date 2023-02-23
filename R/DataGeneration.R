@@ -172,13 +172,13 @@ data_generation_outlier4 <- function(n, a, b, c, d, e, f, g, h, i, j, seed, outl
   sampled.index = sample(1:n,n1)
   
   if(outlierType == "central")
-    y.C[sampled.index] = y.C[sampled.index] + rt(n1,3)
+    y.C[sampled.index] = y.C[sampled.index] + 5*rt(n1,3)
   else if(outlierType == "range")
-    y.R[sampled.index] = y.R[sampled.index]
+    y.R[sampled.index] = y.R[sampled.index] + 5*abs(rt(n1,3))
   else if(outlierType == "central and range")
   {
-    y.C[sampled.index] = y.C[sampled.index]
-    y.R[sampled.index] = y.R[sampled.index]
+    y.C[sampled.index] = y.C[sampled.index] + 5*rt(n1,3)
+    y.R[sampled.index] = y.R[sampled.index] + 5*abs(rt(n1,3))
   }
   
   return(list(
