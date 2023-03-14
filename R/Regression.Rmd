@@ -5,9 +5,11 @@ date: '2023-02-09'
 output: html_document
 ---
 
-```{r warning=FALSE}
+```{r message=FALSE, warning=FALSE}
 library(quantreg)
 library(mgcv)
+library(caret)
+library(MAINT.Data)
 source('CM.R')
 source('CRM.R')
 source('CCRM.R')
@@ -18,7 +20,8 @@ source('DataGeneration.R')
 
 ```{r}
 mydata = data_generation(10, 3, c(20,20,20), c(40,40,40), c(0,0,0), c(1,1,1), -20, 20, c(0,0,0), c(0.05,0.05,0.05), 10, 20, 0)
-CCRM(cbind(yl, yu) ~ xl[,1] + xu[,1] + xl[,2] + xu[,2] + xl[,3] + xu[,3], data = mydata)
+ccrm = CM(cbind(yl, yu) ~ xl[,1] + xu[,1] + xl[,2] + xu[,2] + xl[,3] + xu[,3], data = mydata)
+as.vector(ccrm$coefficients.Center) %*% c(1,1,1,1)
 ```
 
 ```{r include=FALSE}
@@ -80,6 +83,7 @@ plot.cross(data1cr$xc, data1cr$xr, data1cr$yc, data1cr$yr)
 plot.segment(data1cr$xc, data1cr$xr, data1cr$yc, data1cr$yr)
 plot.dandelion(data1cr$xc, data1cr$xr, data1cr$yc, data1cr$yr)
 ```
+
 ```{r}
 data2c = data_generation_outlier2(20, 0, 20, 0, 1, 0, 5, 0.2, 0.5, 0, 5,seed = 0, outlierType = "central",alpha = 0.15)
 
@@ -148,4 +152,170 @@ plot.cross(data4cr$xc, data4cr$xr, data4cr$yc, data4cr$yr)
 plot.segment(data4cr$xc, data4cr$xr, data4cr$yc, data4cr$yr)
 plot.dandelion(data4cr$xc, data4cr$xr, data4cr$yc, data4cr$yr)
 ```
+
+### regression comparasion
+```{r}
+rmse <- function(yc, yr, yhatc, yhatr){
+    yl = yc - yr
+    yu = yc + yr
+    yhatl = yhatc - yhatr
+    yhatu = yhatc + yhatr
+    return(c(
+        sqrt(mean((yc-yhatc)^2)),
+        sqrt(mean((yr-yhatr)^2)),
+        sqrt(mean((yl-yhatl)^2)),
+        sqrt(mean((yu-yhatu)^2))
+    ))
+}
+
+eval <- function(model, testdata){
+    coef.c = as.vector(model$coefficients.Center)
+    coef.r = as.vector(model$coefficeints.Range)
+    testdata = as.matrix(testdata)
+    m = ncol(testdata)
+    nx = (m-2)/2
+    yl = testdata[,1]
+    yu = testdata[,2]
+    xl = testdata[,3:(2+nx)]
+    xu = testdata[,(3+nx):m]
+    xc = (xu + xl) / 2
+    xr = (xu - xl) / 2
+    yc = (yu + yl) / 2
+    yr = (yu - yl) / 2
+    yhatc = cbind(1,xc) %*% coef.c
+    yhatr = cbind(1,xr) %*% coef.r
+    return(rmse(yc, yr, yhatc, yhatr))
+}
+
+comparasion <- function(formula, dataset)
+{
+    k=10
+    set.seed(0)
+    folds = createFolds(dataset[,1],k=k)
+    rmse_cm = matrix(0,nrow = 4)
+    rmse_crm = matrix(0,nrow = 4)
+    rmse_ccrm = matrix(0,nrow = 4)
+    rmse_hf1 = matrix(0,nrow = 4)
+    for(i in 1:k)
+    {
+        train = dataset[-folds[[i]], ]
+        test = dataset[folds[[i]], ]
+
+        model_cm = CM(formula, train)
+        model_crm = CRM(formula, train)
+        model_ccrm = CCRM(formula, train)
+        model_hf1 = HF1(formula, train)
+        rmse_cm = cbind(rmse_cm, eval(model_cm, test))
+        rmse_crm = cbind(rmse_crm, eval(model_crm, test))
+        rmse_ccrm = cbind(rmse_ccrm, eval(model_ccrm, test))
+        rmse_hf1 = cbind(rmse_hf1, eval(model_hf1, test))
+    }
+
+    return(cbind(
+        apply(rmse_cm[,-1], 1, mean),
+        apply(rmse_crm[,-1], 1, mean),
+        apply(rmse_ccrm[,-1], 1, mean),
+        apply(rmse_hf1[,-1], 1, mean))
+    )
+}
+```
+
+### rankdata
+```{r warning=FALSE}
+rankdata = read.csv("rankdata.csv", header = T)[,7:10]
+xl_rankdata = rankdata[,1]
+xu_rankdata = rankdata[,2]
+yl_rankdata = rankdata[,3]
+yu_rankdata = rankdata[,4]
+xc_rankdata = (xu_rankdata + xl_rankdata) / 2
+xr_rankdata = (xu_rankdata - xl_rankdata) / 2
+yc_rankdata = (yu_rankdata + yl_rankdata) / 2
+yr_rankdata = (yu_rankdata - yl_rankdata) / 2
+
+rankdata2 = data.frame(
+    yl = yl_rankdata,
+    yu = yu_rankdata,
+    xl = xl_rankdata,
+    xu = xu_rankdata
+)
+plot.cross(xc_rankdata, xr_rankdata, yc_rankdata, yr_rankdata)
+plot.segment(xc_rankdata, xr_rankdata, yc_rankdata, yr_rankdata)
+plot.dandelion(xc_rankdata, xr_rankdata, yc_rankdata, yr_rankdata)
+comparasion(cbind(yl,yu)~xl+xu, rankdata2)
+```
+
+### FlightsIdt
+```{r}
+library(MAINT.Data)
+range_list = Ranges(FlightsIdt)/2
+central_list = MidPoints(FlightsIdt)
+
+yc = central_list$arr_delay.MidP
+yr = range_list$arr_delay.LogR
+yl = yc-yr
+yu = yc+yr
+
+x1c = central_list$dep_delay.MidP
+x2c = central_list$air_time.MidP
+x3c = central_list$distance.MidP
+x1r = range_list$dep_delay.LogR
+x2r = range_list$air_time.LogR
+x3r = range_list$distance.LogR
+x1l = x1c-x1r
+x1u = x1c+x1r
+x2l = x2c-x2r
+x2u = x2c+x2r
+x3l = x3c-x3r
+x3u = x3c+x3r
+
+dataF = data.frame(
+    yl = yl,
+    yu = yu,
+    x1l = x1l,
+    x2l = x2l,
+    x3l = x3l,
+    x1u = x1u,
+    x2u = x2u,
+    x3u = x3u
+)
+
+plot.cross(x1c, x1r, yc, yr)
+plot.segment(x1c, x1r, yc, yr)
+plot.dandelion(x1c, x1r, yc, yr)
+
+plot.cross(x2c, x2r, yc, yr)
+plot.segment(x2c, x2r, yc, yr)
+plot.dandelion(x2c, x2r, yc, yr)
+
+plot.cross(x1c, x1r, yc, yr)
+plot.segment(x2c, x2r, yc, yr)
+plot.dandelion(x2c, x2r, yc, yr)
+
+comparasion(cbind(yl,yu)~x1l+x1u+x2l+x2u+x3l+x3u, dataF)
+```
+
+### FOMC data
+```{r}
+library(tidyverse)
+valid_diamonds <- diamonds %>%
+filter(carat !=0, x != 0, y != 0, z != 0) %>%
+drop_na() %>% mutate(logcarat = log(carat),
+logx = log(x),
+logy = log(y),
+logz = log(z))
+
+DiamondsUnits <- factor( paste(
+valid_diamonds$cut,valid_diamonds$color,valid_diamonds$clarity, sep="-"))
+
+DiamondsIdt <- AgrMcDt(valid_diamonds[,c("logcarat","logx","logy","logz")], agrby=DiamondsUnits)
+
+range_list = exp(Ranges(DiamondsIdt)/2)
+central_list = MidPoints(DiamondsIdt)
+
+yc = central_list$arr_delay.MidP
+yr = range_list$arr_delay.LogR
+yl = yc-yr
+yu = yc+yr
+```
+
 

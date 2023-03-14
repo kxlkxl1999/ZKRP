@@ -43,7 +43,7 @@ CRM <- function(formula = formula, data = data) {
   yinterval = model.response(model_interval)
   y = as.matrix(yinterval)
   y.C = (y[, 1] + y[, 2]) / 2   # center point of y
-  y.R = y[, 2] - y[, 1]         # range point of y
+  y.R = (y[, 2] - y[, 1]) / 2   # range point of y
 
   # predictor variable interval matrix (each left: Lower, each right: Upper)
   xinterval = model.matrix(attr(model_interval, "terms"), data = data)
@@ -60,7 +60,7 @@ CRM <- function(formula = formula, data = data) {
   for (j in 1:{p/2}) {
     for (i in 1:n) {
       x.C[i, j] = (x[i, 2*j] + x[i, 2*j+1]) / 2
-      x.R[i, j] = (x[i, 2*j+1] - x[i, 2*j])
+      x.R[i, j] = (x[i, 2*j+1] - x[i, 2*j]) / 2
     }
   }
 
@@ -90,14 +90,14 @@ CRM <- function(formula = formula, data = data) {
   colnames(coef.R) <- c("coefficeints")
 
   # fitted values (Lower & Upper)
-  fitted_L <- (x.C %*% coef.C) - ((x.R %*% coef.R) / 2)
-  fitted_U <- (x.C %*% coef.C) + ((x.R %*% coef.R) / 2)
+  fitted_L <- (x.C %*% coef.C) - (x.R %*% coef.R)
+  fitted_U <- (x.C %*% coef.C) + (x.R %*% coef.R)
   fitted_values <- cbind(fitted_L, fitted_U)
   colnames(fitted_values) <- c("fitted.Lower", "fitted.Upper")
 
   # residuals (Lower & Upper)
-  residual_L <- (y.C - y.R / 2) - fitted_L
-  residual_U <- (y.C + y.R / 2) - fitted_U
+  residual_L <- (y.C - y.R) - fitted_L
+  residual_U <- (y.C + y.R) - fitted_U
   residuals <- cbind(residual_L, residual_U)
   colnames(residuals) <- c("resid.Lower", "resid.Upper")
 
