@@ -498,6 +498,7 @@ Fuzzy <- function(data){
   Y_upper <- data[[4]]
   n <- nrow(X_lower)
   p <- ncol(X_lower)
+  print(p)
   X_c <- (X_lower + X_upper) / 2
   X_r <- (X_upper - X_lower) / 2
   Y_c <- (Y_lower + Y_upper) / 2
@@ -515,6 +516,7 @@ Fuzzy <- function(data){
   summary_fuzzy_result <- summary(fuzzy_result)
   coefficients <- summary_fuzzy_result$coefficients
   coefficients.C <- coefficients[1:(2*p+1)]
+  print(length(coefficients.C))
   coefficients.R <- coefficients[(2*p+2):(4*p+2)]
   
   result <- list("coefficients.C"=coefficients.C,"coefficients.R"=coefficients.R)
