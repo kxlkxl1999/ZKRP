@@ -1,5 +1,4 @@
 hf <- function(beta, xc, xr, yc, yr){
-    n = nrow(xc)
     p = length(beta)
     beta_c = beta[1:(p/2)]
     beta_r = beta[(p/2+1):p]
@@ -57,6 +56,7 @@ hf_sum <- function(beta, xc, xr, yc, yr){
     yl_hat = yc_hat - yr_hat
     yu_hat = yc_hat + yr_hat
     return(mean(abs(yl-yl_hat)+abs(yu-yu_hat)))
+    # return(mean(abs(yc-yc_hat) + abs(yr-yr_hat)))
 }
 
 hf_sum1 <- function(beta, xc, xr, yc, yr){
@@ -97,8 +97,38 @@ hf_sum2 <- function(beta, xc, xr, yc, yr){
     return(mean((abs(yl-yl_hat)+abs(yu-yu_hat))/(yl-yu+yl_hat-yu_hat)))
 }
 
-HF_family <- function(formula = formula, data = data, method='normalization')
-{
+hf_modified<- function(beta, xc, xr, yc, yr){
+    n = nrow(xc)
+    p = length(beta)
+    beta_c = beta[1:(p/2)]
+    beta_r = beta[(p/2+1):p]
+    yc_hat = cbind(1,xc) %*% beta_c
+    yr_hat = cbind(1,xr) %*% beta_r
+    yl = yc-yr
+    yu = yc+yr
+    yl_hat = yc_hat - yr_hat
+    yu_hat = yc_hat + yr_hat
+    data = cbind(yl,yu,yl_hat,yu_hat)
+    hf_m <- function(x) {
+        x1=x[1]
+        x2=x[2]
+        x3=x[3]
+        x4=x[4]
+        l_union = min(max(x2, x4)-min(x1, x3), x2-x1+x4-x3)
+        l1 = x2-x1
+        l2 = x4-x3
+        if(l_union == l1 + l2)
+            {return((abs(x1-x3)+abs(x3-x2))/2 + (abs(x2-x4)+abs(x3-x2))/2)}
+        else if(l_union>l1 & l_union>l2)
+            {return(max((x1-x3)^2,(x2-x4)^2)/max(2*l1, 2*l2) + min((x1-x3)^2,(x2-x4)^2)/min(2*l1, 2*l2))}
+        else
+            {return(((x1-x3)^2+(x2-x4)^2)/(2*max(l1, l2)))}
+    }
+    u = apply(data, 1, hf_m)
+    return(mean(u))
+}
+
+HF_family <- function(formula = formula, data = data, method='normalization1'){
     # model = rq(y~x, method = "pfn")
     # return(as.numeric(model$coefficients))
     
@@ -130,14 +160,57 @@ HF_family <- function(formula = formula, data = data, method='normalization')
             x.R[i, j] = (x[i, 2*j+1] - x[i, 2*j]) / 2
         }
     }
-    
+    hf1 = HF1(formula = formula, data = data)
+    beta0 = c(as.vector(hf1$coefficients.Center), as.vector(hf1$coefficeints.Range))
+    coef.C=c()
+    coef.R=c()
+    if(method=='normalization1')
+    {
+        hf = optim(par=beta0, fn=hf_normalization1, xc=x.C, xr=x.R, yc=y.C, yr=y.R)
+        coef.C = hf$par[1:(p/2+1)]
+        coef.R = hf$par[(p/2+2):(p+2)]
+    }
+    else if(method=='normalization2')
+    {
+        hf = optim(par=beta0, fn=hf_normalization2, xc=x.C, xr=x.R, yc=y.C, yr=y.R)
+        coef.C = hf$par[1:(p/2+1)]
+        coef.R = hf$par[(p/2+2):(p+2)]
+    }
+    else if(method=='sum')
+    {
+        hf = optim(par=beta0, fn=hf_sum, xc=x.C, xr=x.R, yc=y.C, yr=y.R)
+        coef.C = hf$par[1:(p/2+1)]
+        coef.R = hf$par[(p/2+2):(p+2)]
+    }
+    else if(method=='sum1')
+    {
+        hf = optim(par=beta0, fn=hf_sum1, xc=x.C, xr=x.R, yc=y.C, yr=y.R)
+        coef.C = hf$par[1:(p/2+1)]
+        coef.R = hf$par[(p/2+2):(p+2)]
+    }
+    else if(method=='sum2')
+    {
+        hf = optim(par=beta0, fn=hf_sum2, xc=x.C, xr=x.R, yc=y.C, yr=y.R)
+        coef.C = hf$par[1:(p/2+1)]
+        coef.R = hf$par[(p/2+2):(p+2)]
+    }
+    else if(method=='modified')
+    {
+        hf = optim(par=beta0, fn=hf_modified, xc=x.C, xr=x.R, yc=y.C, yr=y.R)
+        coef.C = hf$par[1:(p/2+1)]
+        coef.R = hf$par[(p/2+2):(p+2)]
+    }
+    else if(method=='hf')
+    {
+        hf = optim(par=beta0, fn=hf, xc=x.C, xr=x.R, yc=y.C, yr=y.R)
+        coef.C = hf$par[1:(p/2+1)]
+        coef.R = hf$par[(p/2+2):(p+2)]
+    }
     
     result <- list(call = match.call(),
                    response = y,
                    predictor = x,
                    coefficients.Center = coef.C,
-                   coefficeints.Range = coef.R,
-                   fitted.values = fitted_values,
-                   residuals = residuals)
+                   coefficeints.Range = coef.R)
     return(result)
 }

@@ -1,6 +1,5 @@
 HF1 <- function(formula = formula, data = data)
 {
-  # model = rq(y~x, method = "pfn")
   # return(as.numeric(model$coefficients))
   
   # input formula for regression
