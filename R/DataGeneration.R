@@ -243,8 +243,8 @@ data_generation_outlier_realdata <- function(data, seed, outlierType=1, alpha=0.
     {
         yc = data[sampled.index,2]/2 - data[sampled.index,1]/2
         yr = data[sampled.index,2]/2 + data[sampled.index,1]/2
-        yc = yc + 2*rt(n1,3)
-        yr = yr + 2*abs(rt(n1,3))
+        yc = yc + 2*rt(n1,2)
+        yr = yr + 2*abs(rt(n1,2))
         data[sampled.index,1] = yc-yr
         data[sampled.index,2] = yc+yr
     }
