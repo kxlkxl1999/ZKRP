@@ -3,9 +3,7 @@ from tqdm import tqdm
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import optimize
-
-
-# from scipy.stats import wasserstein_distance
+from sklearn.model_selection import KFold
 
 
 def hausdorff_distance(x, y, sgn=False):
@@ -133,6 +131,16 @@ def frechet_mean(data, method='hausdorff', inter_l=0):
         return np.mean(data)
     elif method == 'arithmetic-based':
         return [np.mean(data[:, 0]), np.mean(data[:, 1])]
+
+
+def FMoFM(data, fold=10):
+    n = data.shape[0]
+    kf = KFold(n_splits=fold)
+    fmean = []
+    for _, index in kf.split(list(range(0, n))):
+        fmean.append(frechet_mean(data[index, ])['interval'])
+
+    return frechet_mean(np.array(fmean), method='hausdorff1')
 
 
 def frechet_variance(data, method='hausdorff', theta=1):
