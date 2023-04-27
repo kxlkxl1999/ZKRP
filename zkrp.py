@@ -133,14 +133,24 @@ def frechet_mean(data, method='hausdorff', inter_l=0):
         return [np.mean(data[:, 0]), np.mean(data[:, 1])]
 
 
-def FMoFM(data, fold=10):
+def FMoFM(data, fold=10, seed=0):
     n = data.shape[0]
-    kf = KFold(n_splits=fold)
+    kf = KFold(n_splits=fold, shuffle=True, random_state=seed)
     fmean = []
     for _, index in kf.split(list(range(0, n))):
         fmean.append(frechet_mean(data[index, ])['interval'])
 
     return frechet_mean(np.array(fmean), method='hausdorff1')
+
+
+def FMoFM2(data, fold=10, seed=0):
+    n = data.shape[0]
+    kf = KFold(n_splits=fold, shuffle=True, random_state=seed)
+    fmean = []
+    for _, index in kf.split(list(range(0, n))):
+        fmean.append(frechet_mean(data[index, ], method='hausdorff1')['interval'])
+
+    return frechet_mean(np.array(fmean))
 
 
 def frechet_variance(data, method='hausdorff', theta=1):
@@ -298,6 +308,36 @@ def show(data, path, result=None):
     plt.xlabel('Range')  # x轴标题
     plt.ylabel('Number')  # y轴标题
     plt.grid(ls='-.')  # 绘制背景线
+    plt.tight_layout()
+    plt.savefig(path)
+    plt.show()
+
+
+def show_plus(data, path, result_list=None):
+    """
+    show the distribution of interval data
+    :param data: numpy[n,2]: interval data, each line indicates an interval
+    :param path: path of saving fig
+    :param result_list: list of dict: the frechet_mean of the interval dataset. mean, median, mom
+    :return: none
+    """
+    n = np.shape(data)[0]
+    y = range(n)
+    label_list = ['frechet mean', 'frechet median', 'FMoFM']
+    color_list = ['red', 'blue', 'orange']
+    a = [0, 0, 0]
+    plt.figure(dpi=150, figsize=(8, 6))
+    for i in range(n):
+        plt.plot(data[i, :], np.array([y[i], y[i]]), alpha=0.4, color="black")
+    if result_list:
+        for i in range(len(result_list)):
+            a[i], = plt.plot(result_list[i]['interval'], np.array([round(n / 2) + 5*i, round(n / 2)+5*i]), alpha=1, label=label_list[i], color=color_list[i], linewidth=2)
+
+    plt.title('plot of interval')  # 折线图标题
+    plt.xlabel('Range')  # x轴标题
+    plt.ylabel('Number')  # y轴标题
+    plt.grid(ls='-.')  # 绘制背景线
+    plt.legend(loc='best', handles=a)
     plt.tight_layout()
     plt.savefig(path)
     plt.show()
