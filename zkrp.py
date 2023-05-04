@@ -133,9 +133,12 @@ def frechet_mean(data, method='hausdorff', inter_l=0):
         return [np.mean(data[:, 0]), np.mean(data[:, 1])]
 
 
-def FMoFM(data, fold=10, seed=0):
+def FMoFM(data, fold=10, seed=False):
     n = data.shape[0]
-    kf = KFold(n_splits=fold, shuffle=True, random_state=seed)
+    if seed:
+        kf = KFold(n_splits=fold, shuffle=True, random_state=seed)
+    else:
+        kf = KFold(n_splits=fold, shuffle=True)
     fmean = []
     for _, index in kf.split(list(range(0, n))):
         fmean.append(frechet_mean(data[index, ])['interval'])
