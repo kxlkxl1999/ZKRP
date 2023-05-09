@@ -1,3 +1,3 @@
 # ZKRP
 interval data analysis
-hausdorff-frechet mean, var, cor
+hausdorff-frechet mean, var, cor and regression
