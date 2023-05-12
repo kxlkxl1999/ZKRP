@@ -293,7 +293,7 @@ def frechet_correlation(x, y, method='hausdorff'):
                np.sqrt(frechet_variance(x, method=method) * frechet_variance(y, method=method))
 
 
-def show(data, path, result=None):
+def show(data, path=None, result=None):
     """
     show the distribution of interval data
     :param data: numpy[n,2]: interval data, each line indicates an interval
@@ -312,7 +312,8 @@ def show(data, path, result=None):
     plt.ylabel('Number')  # y轴标题
     plt.grid(ls='-.')  # 绘制背景线
     plt.tight_layout()
-    plt.savefig(path)
+    if path:
+        plt.savefig(path)
     plt.show()
 
 
