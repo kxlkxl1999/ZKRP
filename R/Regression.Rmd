@@ -190,15 +190,15 @@ myprocess <- function(list_of_mat)
 }
 
 
-simu_plotdata_save <- function(rate, n, a, b, c, d, e, f, g, h, i, j, seed, niter=200)
+simu_plotdata_save <- function(rate, n, a, b, c, d, e, f, g, h, i, j, k, l, seed, niter=200)
 {
     
-### Outlier type 1 =======================
-    set.seed(seed)
+# ### Outlier type 1 =======================
+    set.seed(0)
     n_rate = length(rate)
-    
+
     print("outliertype 1:")
-    
+
     data_1c_m = as.data.frame(matrix(nrow=n_rate,ncol=12))
     names(data_1c_m) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
     data_1r_m = as.data.frame(matrix(nrow=n_rate,ncol=12))
@@ -207,7 +207,7 @@ simu_plotdata_save <- function(rate, n, a, b, c, d, e, f, g, h, i, j, seed, nite
     names(data_1l_m) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
     data_1u_m = as.data.frame(matrix(nrow=n_rate,ncol=12))
     names(data_1u_m) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
-    
+
     data_1c_l = as.data.frame(matrix(nrow=n_rate,ncol=12))
     names(data_1c_l) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
     data_1r_l = as.data.frame(matrix(nrow=n_rate,ncol=12))
@@ -216,7 +216,7 @@ simu_plotdata_save <- function(rate, n, a, b, c, d, e, f, g, h, i, j, seed, nite
     names(data_1l_l) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
     data_1u_l = as.data.frame(matrix(nrow=n_rate,ncol=12))
     names(data_1u_l) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
-    
+
     data_1c_u = as.data.frame(matrix(nrow=n_rate,ncol=12))
     names(data_1c_u) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
     data_1r_u = as.data.frame(matrix(nrow=n_rate,ncol=12))
@@ -225,8 +225,8 @@ simu_plotdata_save <- function(rate, n, a, b, c, d, e, f, g, h, i, j, seed, nite
     names(data_1l_u) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
     data_1u_u = as.data.frame(matrix(nrow=n_rate,ncol=12))
     names(data_1u_u) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
-    
-    
+
+
     for(r in 1:length(rate))
     {
         hh = list()
@@ -237,44 +237,45 @@ simu_plotdata_save <- function(rate, n, a, b, c, d, e, f, g, h, i, j, seed, nite
         for(t in 1:niter)
         {
             pb$tick()
-            data = data.frame(data_generation_outlier1(n, a, b, c, d, e, f, g, h, i, j, seed=t, outlierType="central and range", alpha=rate[r]))
+            data = data.frame(data_generation_outlier1(n, a, b, c, d, e, f, g, h, i, j, k, l, seed=t, outlierType="central and range", alpha=rate[r]))
+            data_test = data.frame(data_generation_outlier1(floor(n*0.75), a, b, c, d, e, f, g, h, i, j, k, l, seed=t, outlierType="none"))
             # print(head(data))
-            hh[[t]] = comparasion(cbind(yl,yu)~xl+xu, data[,5:8])
+            hh[[t]] = comparasion(cbind(yl,yu)~xl+xu, data[,5:8], data_test[,5:8])
         }
         hhh = myprocess(hh)
         data_1c_m[r,] = hhh[[1]][1,]
         data_1r_m[r,] = hhh[[1]][2,]
         data_1l_m[r,] = hhh[[1]][3,]
         data_1u_m[r,] = hhh[[1]][4,]
-        
+
         data_1c_l[r,] = hhh[[2]][1,]
         data_1r_l[r,] = hhh[[2]][2,]
         data_1l_l[r,] = hhh[[2]][3,]
         data_1u_l[r,] = hhh[[2]][4,]
-        
+
         data_1c_u[r,] = hhh[[3]][1,]
         data_1r_u[r,] = hhh[[3]][2,]
         data_1l_u[r,] = hhh[[3]][3,]
         data_1u_u[r,] = hhh[[3]][4,]
     }
-    
+
     write.csv(data_1c_m,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_1c_m.csv", row.names = FALSE)
     write.csv(data_1r_m,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_1r_m.csv", row.names = FALSE)
     write.csv(data_1l_m,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_1l_m.csv", row.names = FALSE)
     write.csv(data_1u_m,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_1u_m.csv", row.names = FALSE)
-    
+
     write.csv(data_1c_l,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_1c_l.csv", row.names = FALSE)
     write.csv(data_1r_l,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_1r_l.csv", row.names = FALSE)
     write.csv(data_1l_l,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_1l_l.csv", row.names = FALSE)
     write.csv(data_1u_l,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_1u_l.csv", row.names = FALSE)
-    
+
     write.csv(data_1c_u,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_1c_u.csv", row.names = FALSE)
     write.csv(data_1r_u,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_1r_u.csv", row.names = FALSE)
     write.csv(data_1l_u,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_1l_u.csv", row.names = FALSE)
     write.csv(data_1u_u,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_1u_u.csv", row.names = FALSE)
 
 ### Outlier type 2 ===================
-    
+
     print("outliertype 2:")
     data_2c_m = as.data.frame(matrix(nrow=n_rate,ncol=12))
     names(data_2c_m) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
@@ -284,7 +285,7 @@ simu_plotdata_save <- function(rate, n, a, b, c, d, e, f, g, h, i, j, seed, nite
     names(data_2l_m) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
     data_2u_m = as.data.frame(matrix(nrow=n_rate,ncol=12))
     names(data_2u_m) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
-    
+
     data_2c_l = as.data.frame(matrix(nrow=n_rate,ncol=12))
     names(data_2c_l) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
     data_2r_l = as.data.frame(matrix(nrow=n_rate,ncol=12))
@@ -293,7 +294,7 @@ simu_plotdata_save <- function(rate, n, a, b, c, d, e, f, g, h, i, j, seed, nite
     names(data_2l_l) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
     data_2u_l = as.data.frame(matrix(nrow=n_rate,ncol=12))
     names(data_2u_l) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
-    
+
     data_2c_u = as.data.frame(matrix(nrow=n_rate,ncol=12))
     names(data_2c_u) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
     data_2r_u = as.data.frame(matrix(nrow=n_rate,ncol=12))
@@ -302,8 +303,8 @@ simu_plotdata_save <- function(rate, n, a, b, c, d, e, f, g, h, i, j, seed, nite
     names(data_2l_u) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
     data_2u_u = as.data.frame(matrix(nrow=n_rate,ncol=12))
     names(data_2u_u) = c("CM", "CRM", "CCRM", "IRR", "FUZZY", "SSLR", "LN_IRR", "DK","HD1","HD_normal", "HD_sum","HD_modified")
-    
-    
+
+
     for(r in 1:length(rate))
     {
         hh = list()
@@ -314,21 +315,23 @@ simu_plotdata_save <- function(rate, n, a, b, c, d, e, f, g, h, i, j, seed, nite
         for(t in 1:niter)
         {
             pb$tick()
-            data = data.frame(data_generation_outlier2(n, a, b, c, d, e, f, g, h, i, j, seed=t, outlierType="central and range", alpha=rate[r]))
-            hh[[t]] = comparasion(cbind(yl,yu)~xl+xu, data[,5:8])
+            data = data.frame(data_generation_outlier2(n, a, b, c, d, e, f, g, h, i, j, k, l, seed=t, outlierType="central and range", alpha=rate[r]))
+            hdata_test = data.frame(data_generation_outlier2(floor(n*0.75), a, b, c, d, e, f, g, h, i, j, k, l, seed=t, outlierType="none"))
+            # print(head(data))
+            hh[[t]] = comparasion(cbind(yl,yu)~xl+xu, data[,5:8], data_test[,5:8])
         }
         hhh = myprocess(hh)
-    
+
         data_2c_m[r,] = hhh[[1]][1,]
         data_2r_m[r,] = hhh[[1]][2,]
         data_2l_m[r,] = hhh[[1]][3,]
         data_2u_m[r,] = hhh[[1]][4,]
-        
+
         data_2c_l[r,] = hhh[[2]][1,]
         data_2r_l[r,] = hhh[[2]][2,]
         data_2l_l[r,] = hhh[[2]][3,]
         data_2u_l[r,] = hhh[[2]][4,]
-        
+
         data_2c_u[r,] = hhh[[3]][1,]
         data_2r_u[r,] = hhh[[3]][2,]
         data_2l_u[r,] = hhh[[3]][3,]
@@ -339,12 +342,12 @@ simu_plotdata_save <- function(rate, n, a, b, c, d, e, f, g, h, i, j, seed, nite
     write.csv(data_2r_m,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_2r_m.csv", row.names = FALSE)
     write.csv(data_2l_m,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_2l_m.csv", row.names = FALSE)
     write.csv(data_2u_m,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_2u_m.csv", row.names = FALSE)
-    
+
     write.csv(data_2c_l,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_2c_l.csv", row.names = FALSE)
     write.csv(data_2r_l,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_2r_l.csv", row.names = FALSE)
     write.csv(data_2l_l,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_2l_l.csv", row.names = FALSE)
     write.csv(data_2u_l,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_2u_l.csv", row.names = FALSE)
-    
+
     write.csv(data_2c_u,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_2c_u.csv", row.names = FALSE)
     write.csv(data_2r_u,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_2r_u.csv", row.names = FALSE)
     write.csv(data_2l_u,"C:\\Users\\kangxinlai\\Desktop\\zero-kp\\ZKRP\\R\\plotdata\\data_2l_u.csv", row.names = FALSE)
@@ -390,8 +393,10 @@ simu_plotdata_save <- function(rate, n, a, b, c, d, e, f, g, h, i, j, seed, nite
         for(t in 1:niter)
         {
             pb$tick()
-            data = data.frame(data_generation_outlier3(n, a, b, c, d, e, f, g, h, i, j, seed=t, outlierType="central and range", alpha=rate[r]))
-            hh[[t]] = comparasion(cbind(yl,yu)~xl+xu, data[,5:8])
+            data = data.frame(data_generation_outlier3(n, a, b, c, d, e, f, g, h, i, j, k, l, seed=t, outlierType="central and range", alpha=rate[r]))
+            data_test = data.frame(data_generation_outlier3(floor(n*0.75), a, b, c, d, e, f, g, h, i, j, k, l, seed=t, outlierType="none"))
+            # print(head(data))
+            hh[[t]] = comparasion(cbind(yl,yu)~xl+xu, data[,5:8], data_test[,5:8])
         }
         hhh = myprocess(hh)
     
@@ -466,8 +471,10 @@ simu_plotdata_save <- function(rate, n, a, b, c, d, e, f, g, h, i, j, seed, nite
         for(t in 1:niter)
         {
             pb$tick()
-            data = data.frame(data_generation_outlier4(n, a, b, c, d, e, f, g, h, i, j, seed=t, outlierType="central and range", alpha=rate[r]))
-            hh[[t]] = comparasion(cbind(yl,yu)~xl+xu, data[,5:8])
+            data = data.frame(data_generation_outlier4(n, a, b, c, d, e, f, g, h, i, j, k, l, seed=t, outlierType="central and range", alpha=rate[r]))
+            data_test = data.frame(data_generation_outlier4(floor(n*0.75), a, b, c, d, e, f, g, h, i, j, k, l, seed=t, outlierType="none"))
+            # print(head(data))
+            hh[[t]] = comparasion(cbind(yl,yu)~xl+xu, data[,5:8], data_test[,5:8])
         }
         hhh = myprocess(hh)
     
@@ -506,8 +513,27 @@ simu_plotdata_save <- function(rate, n, a, b, c, d, e, f, g, h, i, j, seed, nite
 ```
 
 ```{r}
-simu_plotdata_save(rate = seq(0.01,0.5,0.08), n=200, 0, 20, 0, 1, 0, 10, 0.2, 0.5, 0, 5, seed = 0, niter = 500)
+simu_plotdata_save(rate = seq(0.01,0.2,0.03), n=200, 0, 20, 0, 2, 0, 5, 0.2, 0.5, 0, 5,-10,-5, seed = 0, niter = 100)
 ```
+### plot of data
+```{r}
+data1 = data.frame(data_generation_outlier1(n=200, 0, 20, 0, 2, 0, 5, 0.2, 0.5, 0, 5,-10,-5, seed=0, outlierType="central"))
+plot.cross(data1$xc, data1$xr, data1$yc, data1$yr)
+
+data2 = data.frame(data_generation_outlier2(n=200, 0, 20, 0, 2, 0, 5, 0.2, 0.5, 0, 5,-10,-5, seed=0, outlierType="central"))
+plot.cross(data2$xc, data2$xr, data2$yc, data2$yr)
+
+data3 = data.frame(data_generation_outlier3(n=200, 0, 20, 0, 2, 0, 5, 0.2, 0.5, 0, 5,-10,-5, seed=0, outlierType="central"))
+plot.cross(data3$xc, data3$xr, data3$yc, data3$yr)
+
+data4 = data.frame(data_generation_outlier4(n=200, 0, 20, 0, 2, 0, 5, 0.2, 0.5, 0, 5,-10,-5, seed=0, outlierType="central"))
+plot.cross(data4$xc, data4$xr, data4$yc, data4$yr)
+
+data5 = data.frame(data_generation_outlier4(n=200, 0, 20, 0, 2, 0, 5, 0.2, 0.5, 0, 5,-10,-5, seed=0, outlierType="none"))
+plot.cross(data5$xc, data5$xr, data5$yc, data5$yr)
+
+```
+
 
 ### rankdata
 ```{r warning=FALSE}
@@ -630,6 +656,11 @@ dataM = data.frame(
 
 
 ```{r}
+outlier_comparasion(cbind(yl,yu)~x1l+x1u+x2l+x2u+x3l+x3u+x4l+x4u, dataM,seed = 0, outlierType = 0)
+```
+
+
+```{r}
 outlier_comparasion(cbind(yl,yu)~x1l+x1u+x2l+x2u+x3l+x3u+x4l+x4u, dataM,seed = 0, outlierType = 1,alpha = 0.15)
 ```
 
@@ -644,3 +675,29 @@ outlier_comparasion(cbind(yl,yu)~x1l+x1u+x2l+x2u+x3l+x3u+x4l+x4u, dataM,seed = 0
 ```{r}
 outlier_comparasion(cbind(yl,yu)~x1l+x1u+x2l+x2u+x3l+x3u+x4l+x4u, dataM,seed = 0, outlierType = 4,alpha = 0.15)
 ```
+
+### outlier comparasion with fixed alpha= 0.1
+```{r}
+outlier_comparasion_simu(cbind(yl,yu)~xl+xu, n=500, 0, 20, 0, 2, 0, 5, 0.2, 0.5, 0, 5,-10,-5, seed=0, outlierType = 1, niter=1000)
+```
+
+```{r}
+outlier_comparasion_simu(cbind(yl,yu)~xl+xu, n=500, 0, 20, 0, 2, 0, 5, 0.2, 0.5, 0, 5,-10,-5, seed=0, outlierType = 2, niter=1000)
+```
+
+```{r}
+outlier_comparasion_simu(cbind(yl,yu)~xl+xu, n=500, 0, 20, 0, 2, 0, 5, 0.2, 0.5, 0, 5,-10,-5, seed=0, outlierType = 3, niter=1000)
+```
+
+```{r}
+outlier_comparasion_simu(cbind(yl,yu)~xl+xu, n=500, 0, 20, 0, 2, 0, 5, 0.2, 0.5, 0, 5,-10,-5, seed=0, outlierType = 4, niter=1000)
+```
+
+```{r}
+outlier_comparasion_simu(cbind(yl,yu)~xl+xu, n=500, 0, 20, 0, 2, 0, 5, 0.2, 0.5, 0, 5,-10,-5, seed=0, outlierType = 0, niter=1000)
+```
+
+```{r}
+outlier_comparasion_simu(cbind(yl,yu)~xl+xu, n=500, 0, 20, 0, 2, 0, 5, 0.2, 0.5, 0, 5,-10,-5, seed=0, outlierType = 5, niter=1000)
+```
+

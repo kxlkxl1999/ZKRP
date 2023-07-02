@@ -293,6 +293,7 @@ def frechet_correlation(x, y, method='hausdorff'):
                np.sqrt(frechet_variance(x, method=method) * frechet_variance(y, method=method))
 
 
+
 def show(data, path=None, result=None):
     """
     show the distribution of interval data

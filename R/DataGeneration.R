@@ -53,7 +53,7 @@ data_generation0 <- function(n, p, a, b, c, d, e, f, g, h, i, j, seed){
   ))
 }
 
-data_generation_outlier1 <- function(n, a, b, c, d, e, f, g, h, i, j, seed, outlierType="central", alpha=0.1){
+data_generation_outlier1 <- function(n, a, b, c, d, e, f, g, h, i, j,k,l, seed, outlierType="central", alpha=0.1){
   set.seed(seed)
   x.C  = c()   # center point of x
   x.R  = c()
@@ -63,23 +63,23 @@ data_generation_outlier1 <- function(n, a, b, c, d, e, f, g, h, i, j, seed, outl
   x.C = runif(n, a, b)
   beta1 = runif(1, c, d)
   betastar = runif(1, g, h)
-  beta0 = runif(n, c, d)
+  beta0 = runif(n,k,l)
   epsilon = runif(n, e, f)
   epsilonr = runif(n, i, j)
   y.C = beta0 + x.C * beta1 + epsilon
-  x.R = x.C * betastar + epsilonr
-  y.R = y.C * betastar + epsilonr
+  x.R = abs(x.C * betastar + epsilonr)
+  y.R = abs(y.C * betastar + epsilonr)
   n1 = floor(n*alpha)
   sampled.index = sample(1:n,n1)
   
   if(outlierType == "central")
-    y.C[sampled.index] = 5
+    y.C[sampled.index] = -500
   else if(outlierType == "range")
-    y.R[sampled.index] = 5
+    y.R[sampled.index] = 0.1
   else if(outlierType == "central and range")
   {
-    y.C[sampled.index] = 5
-    y.R[sampled.index] = 5
+    y.C[sampled.index] = -500
+    y.R[sampled.index] = 0.1
   }
   
   return(list(
@@ -94,7 +94,7 @@ data_generation_outlier1 <- function(n, a, b, c, d, e, f, g, h, i, j, seed, outl
   ))
 }
 
-data_generation_outlier2 <- function(n, a, b, c, d, e, f, g, h, i, j, seed, outlierType="central", alpha=0.1){
+data_generation_outlier2 <- function(n, a, b, c, d, e, f, g, h, i, j,k,l, seed, outlierType="central", alpha=0.1){
     set.seed(seed)
     x.C  = c()   # center point of x
     x.R  = c()
@@ -104,23 +104,23 @@ data_generation_outlier2 <- function(n, a, b, c, d, e, f, g, h, i, j, seed, outl
     x.C = runif(n, a, b)
     beta1 = runif(1, c, d)
     betastar = runif(1, g, h)
-    beta0 = runif(n, c, d)
+    beta0 = runif(n, k, l)
     epsilon = runif(n, e, f)
     epsilonr = runif(n, i, j)
     y.C = beta0 + x.C * beta1 + epsilon
-    x.R = x.C * betastar + epsilonr
-    y.R = y.C * betastar + epsilonr
+    x.R = abs(x.C * betastar + epsilonr)
+    y.R = abs(y.C * betastar + epsilonr)
     n1 = floor(n*alpha)
     sampled.index = sample(1:n,n1)
     
     if(outlierType == "central")
         y.C[sampled.index] = 1000
     else if(outlierType == "range")
-        y.R[sampled.index] = 1000
+        y.R[sampled.index] = 250
     else if(outlierType == "central and range")
     {
         y.C[sampled.index] = 1000
-        y.R[sampled.index] = 1000
+        y.R[sampled.index] = 250
     }
     
     return(list(
@@ -135,7 +135,7 @@ data_generation_outlier2 <- function(n, a, b, c, d, e, f, g, h, i, j, seed, outl
     ))
 }
 
-data_generation_outlier3 <- function(n, a, b, c, d, e, f, g, h, i, j, seed, outlierType="central", alpha=0.1){
+data_generation_outlier3 <- function(n, a, b, c, d, e, f, g, h, i, j,k,l, seed, outlierType="central", alpha=0.1){
     set.seed(seed)
     x.C  = c()   # center point of x
     x.R  = c()
@@ -145,23 +145,23 @@ data_generation_outlier3 <- function(n, a, b, c, d, e, f, g, h, i, j, seed, outl
     x.C = runif(n, a, b)
     beta1 = runif(1, c, d)
     betastar = runif(1, g, h)
-    beta0 = runif(n, c, d)
+    beta0 = runif(n,k,l)
     epsilon = runif(n, e, f)
     epsilonr = runif(n, i, j)
     y.C = beta0 + x.C * beta1 + epsilon
-    x.R = x.C * betastar + epsilonr
-    y.R = y.C * betastar + epsilonr
+    x.R = abs(x.C * betastar + epsilonr)
+    y.R = abs(y.C * betastar + epsilonr)
     n1 = floor(n*alpha)
     sampled.index = sample(1:n,n1)
     
     if(outlierType == "central")
-        y.C[sampled.index] = runif(n1, 6, 12)
+        y.C[sampled.index] = rbinom(n1,1,0.5)
     else if(outlierType == "range")
-        y.R[sampled.index] = runif(n1, 2, 4)
+        y.R[sampled.index] = rbinom(n1,1,0.5)+0.01
     else if(outlierType == "central and range")
     {
-        y.C[sampled.index] = runif(n1, 6, 12)
-        y.R[sampled.index] = runif(n1, 2, 4)
+        y.C[sampled.index] = rbinom(n1,1,0.5)
+        y.R[sampled.index] = rbinom(n1,1,0.5)+0.01
     }
     
     return(list(
@@ -176,7 +176,7 @@ data_generation_outlier3 <- function(n, a, b, c, d, e, f, g, h, i, j, seed, outl
     ))
 }
 
-data_generation_outlier4 <- function(n, a, b, c, d, e, f, g, h, i, j, seed, outlierType="central", alpha=0.1){
+data_generation_outlier4 <- function(n, a, b, c, d, e, f, g, h, i, j,k,l, seed, outlierType="central", alpha=0.1){
   set.seed(seed)
   x.C  = c()   # center point of x
   x.R  = c()
@@ -186,23 +186,23 @@ data_generation_outlier4 <- function(n, a, b, c, d, e, f, g, h, i, j, seed, outl
   x.C = runif(n, a, b)
   beta1 = runif(1, c, d)
   betastar = runif(1, g, h)
-  beta0 = runif(n, c, d)
+  beta0 = runif(n,k,l)
   epsilon = runif(n, e, f)
   epsilonr = runif(n, i, j)
   y.C = beta0 + x.C * beta1 + epsilon
-  x.R = x.C * betastar + epsilonr
-  y.R = y.C * betastar + epsilonr
+  x.R = abs(x.C * betastar + epsilonr)
+  y.R = abs(y.C * betastar + epsilonr)
   n1 = floor(n*alpha)
   sampled.index = sample(1:n,n1)
   
   if(outlierType == "central")
-    y.C[sampled.index] = y.C[sampled.index] + 5*rt(n1,3)
+    y.C[sampled.index] = y.C[sampled.index] + rt(n1,1)
   else if(outlierType == "range")
-    y.R[sampled.index] = y.R[sampled.index] + 5*abs(rt(n1,3))
+    y.R[sampled.index] = abs(y.R[sampled.index] + rt(n1,1))
   else if(outlierType == "central and range")
-  {
-    y.C[sampled.index] = y.C[sampled.index] + 5*rt(n1,3)
-    y.R[sampled.index] = y.R[sampled.index] + 5*abs(rt(n1,3))
+      {
+    y.C[sampled.index] = y.C[sampled.index] + rt(n1,1)
+    y.R[sampled.index] = abs(y.R[sampled.index] + rt(n1,1))
   }
   
   return(list(
@@ -215,6 +215,68 @@ data_generation_outlier4 <- function(n, a, b, c, d, e, f, g, h, i, j, seed, outl
     xl = x.C - x.R,
     xu = x.C + x.R
   ))
+}
+
+data_generation_outlier5 <- function(n, a, b, c, d, e, f, g, h, i, j,k,l, seed, outlierType="central", alpha=0.1){
+    set.seed(seed)
+    x.C  = c()   # center point of x
+    x.R  = c()
+    beta0 = 0
+    beta1 = 0
+    betastar = 0
+    x.C = runif(n, a, b)
+    beta1 = runif(1, c, d)
+    betastar = runif(1, g, h)
+    beta0 = runif(n,k,l)
+    epsilon = runif(n, e, f)
+    epsilonr = runif(n, i, j)
+    y.C = beta0 + x.C * beta1 + epsilon
+    x.R = abs(x.C * betastar + epsilonr)
+    y.R = abs(y.C * betastar + epsilonr)
+    n1 = floor(n*alpha)
+    n11 = floor(n1/4)
+    sampled.index = sample(1:n,n1)
+    sampled.index1 = sampled.index[1:n11]
+    sampled.index2 = sampled.index[(n11+1):(2*n11)]
+    sampled.index3 = sampled.index[(2*n11+1):(3*n11)]
+    sampled.index4 = sampled.index[(3*n11+1):n1]
+    
+    if(outlierType == "central")
+    {
+        y.C[sampled.index1] = y.C[sampled.index1] -500
+        y.C[sampled.index2] = y.C[sampled.index2] +1000
+        y.C[sampled.index3] = rbinom(n11,1,0.5)
+        y.C[sampled.index4] = y.C[sampled.index4] + rt(n11,1)
+    }
+    else if(outlierType == "range")
+    {
+        y.R[sampled.index1] = 0.1
+        y.R[sampled.index2] = 250
+        y.R[sampled.index3] = rbinom(n11,1,0.5)+0.01
+        y.R[sampled.index4] = abs(y.R[sampled.index4] + rt(n11,1))
+    }
+    else if(outlierType == "central and range")
+    {
+        y.C[sampled.index1] = y.C[sampled.index1] -500
+        y.C[sampled.index2] = y.C[sampled.index2] +1000
+        y.C[sampled.index3] = rbinom(n11,1,0.5)
+        y.C[sampled.index4] = y.C[sampled.index4] + rt((n1-3*n11),1)
+        y.R[sampled.index1] = 0.1
+        y.R[sampled.index2] = 250
+        y.R[sampled.index3] = rbinom(n11,1,0.5)+0.01
+        y.R[sampled.index4] = abs(y.R[sampled.index4] + rt((n1-3*n11),1))
+    }
+    
+    return(list(
+        xc = x.C,
+        xr = x.R,
+        yc = y.C,
+        yr = y.R,
+        yl = y.C - y.R,
+        yu = y.C + y.R,
+        xl = x.C - x.R,
+        xu = x.C + x.R
+    ))
 }
 
 data_generation_outlier_realdata <- function(data, seed, outlierType=1, alpha=0.1){
@@ -239,10 +301,10 @@ data_generation_outlier_realdata <- function(data, seed, outlierType=1, alpha=0.
         data[sampled.index,1] = yc-yr
         data[sampled.index,2] = yc+yr
     }
-    else
+    else if(outlierType==4)
     {
-        yc = data[sampled.index,2]/2 - data[sampled.index,1]/2
-        yr = data[sampled.index,2]/2 + data[sampled.index,1]/2
+        yc = data[sampled.index,2]/2 + data[sampled.index,1]/2
+        yr = data[sampled.index,2]/2 - data[sampled.index,1]/2
         yc = yc + 2*rt(n1,2)
         yr = yr + 2*abs(rt(n1,2))
         data[sampled.index,1] = yc-yr

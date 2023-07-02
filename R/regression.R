@@ -79,7 +79,7 @@ eval <- function(model, testdata){
     yc = (yu + yl) / 2
     yr = (yu - yl) / 2
     yhatc = cbind(1,xc) %*% coef.c
-    yhatr = cbind(1,xr) %*% coef.r
+    yhatr = abs(cbind(1,xr) %*% coef.r)
 
     return(rmse(yc, yr, yhatc, yhatr))
 }
@@ -147,7 +147,7 @@ eval_LN_IRR <- function(model, testdata){
     xr = (xu - xl) / 2
     yc = (yu + yl) / 2
     yr = (yu - yl) / 2
-    X_test <-cbind(xc,xr,1)
+    X_test <-cbind(1,xc,xr)
     
     yhatc <- as.vector(X_test%*%coef.c)
     Y_r_ln_fit <- as.vector(X_test%*%coef.r)
@@ -176,13 +176,13 @@ eval_SSLR <- function(model, testdata){
     return(rmse(yc, yr, yhatc, yhatr))
 }
 
-comparasion <- function(formula, dataset)
+comparasion <- function(formula, train, test)
 {
     set.seed(0)
-    n = nrow(dataset)
-    ntrain = floor(n*0.75)
-    train = dataset[1:ntrain, ]
-    test = dataset[(ntrain+1):n, ]
+#    n = nrow(dataset)
+#    ntrain = floor(n*0.75)
+#    train = dataset[1:ntrain, ]
+#    test = dataset[(ntrain+1):n, ]
     
     model_cm = CM(formula, train)
     model_crm = CRM(formula, train)
@@ -296,7 +296,120 @@ outlier_comparasion <- function(formula, dataset, seed, outlierType=1, alpha=0.1
     return(result_list)
 }
 
-outlier_plotdata <- function(formula, dataset, seed, outlierType=1, alpha=0.1,k = 10)
+outlier_comparasion_simu <- function(formula, n, a, b, c, d, e, f, g, h, i, j, k, l, seed, outlierType = 1, alpha=0.1, niter=200)
 {
+    s = seed
+    rmse_cm = matrix(0,nrow = 4)
+    rmse_crm = matrix(0,nrow = 4)
+    rmse_ccrm = matrix(0,nrow = 4)
+    rmse_irr = matrix(0,nrow = 4)
+    rmse_fuzzy = matrix(0,nrow = 4)
+    rmse_sslr = matrix(0,nrow = 4)
+    rmse_ln_irr = matrix(0,nrow = 4)
+    rmse_dk = matrix(0,nrow = 4)
+    rmse_hf1 = matrix(0,nrow = 4)
+    rmse_hf_normal = matrix(0,nrow = 4)
+    rmse_hf_sum = matrix(0,nrow = 4)
+    rmse_hf_modified = matrix(0,nrow = 4)
+    for(t in 1:niter)
+    {
+        if(outlierType==1)
+        {
+            train = data.frame(data_generation_outlier1(n, a, b, c, d, e, f, g, h, i, j, k, l, seed=t+s, outlierType="central and range", alpha=alpha))
+            test = data.frame(data_generation_outlier1(floor(n*0.5), a, b, c, d, e, f, g, h, i, j, k, l, seed=t, outlierType="none"))
+        }
+        else if(outlierType==2)
+        {
+            train = data.frame(data_generation_outlier2(n, a, b, c, d, e, f, g, h, i, j, k, l, seed=t+s, outlierType="central and range", alpha=alpha))
+            test = data.frame(data_generation_outlier1(floor(n*0.5), a, b, c, d, e, f, g, h, i, j, k, l, seed=t, outlierType="none"))
+        }
+        else if(outlierType==3)
+        {
+            train = data.frame(data_generation_outlier3(n, a, b, c, d, e, f, g, h, i, j, k, l, seed=t+s, outlierType="central and range", alpha=alpha))
+            test = data.frame(data_generation_outlier1(floor(n*0.5), a, b, c, d, e, f, g, h, i, j, k, l, seed=t, outlierType="none"))
+        }
+        else if(outlierType==4)
+        {
+            train = data.frame(data_generation_outlier4(n, a, b, c, d, e, f, g, h, i, j, k, l, seed=t+s, outlierType="central and range", alpha=alpha))
+            test = data.frame(data_generation_outlier1(floor(n*0.5), a, b, c, d, e, f, g, h, i, j, k, l, seed=t, outlierType="none"))
+        }
+        else if(outlierType==0)
+        {
+            train = data.frame(data_generation_outlier4(n, a, b, c, d, e, f, g, h, i, j, k, l, seed=t+s, outlierType="none"))
+            test = data.frame(data_generation_outlier1(floor(n*0.5), a, b, c, d, e, f, g, h, i, j, k, l, seed=t, outlierType="none"))
+        }
+        else if(outlierType==5)
+        {
+            train = data.frame(data_generation_outlier5(n, a, b, c, d, e, f, g, h, i, j, k, l, seed=t+s, outlierType="central and range", alpha=alpha))
+            test = data.frame(data_generation_outlier1(floor(n*0.5), a, b, c, d, e, f, g, h, i, j, k, l, seed=t, outlierType="none"))
+        }
+        train = train[,5:8]
+        test = test[,5:8]
+        
+        model_cm = CM(formula, train)
+        model_crm = CRM(formula, train)
+        model_ccrm = CCRM(formula, train)
+        model_hf1 = HF1(formula, train)
+        model_irr = IRR(formula, train)
+        model_fuzzy = Fuzzy(formula, train)
+        model_sslr = SSLR(formula, train)
+        model_ln_irr = LN_IRR(formula, train)
+        model_dk = Dk(formula, train)
+        model_hf_normal = HF_family(formula, train, method='normalization1')
+        model_hf_sum = HF_family(formula, train, method='sum')
+        model_hf_modified = HF_family(formula, train, method='modified')
+        rmse_cm = cbind(rmse_cm, eval(model_cm, test))
+        rmse_crm = cbind(rmse_crm, eval(model_crm, test))
+        rmse_ccrm = cbind(rmse_ccrm, eval(model_ccrm, test))
+        rmse_hf1 = cbind(rmse_hf1, eval(model_hf1, test))
+        rmse_irr = cbind(rmse_irr, eval_IRR(model_irr, test))
+        rmse_fuzzy = cbind(rmse_fuzzy, eval_fuzzy(model_fuzzy, test))
+        rmse_sslr = cbind(rmse_sslr, eval_SSLR(model_sslr, test))
+        rmse_ln_irr = cbind(rmse_ln_irr, eval_LN_IRR(model_ln_irr, test))
+        rmse_dk = cbind(rmse_dk, eval(model_dk, test))
+        rmse_hf_normal = cbind(rmse_hf_normal, eval(model_hf_normal, test))
+        rmse_hf_sum = cbind(rmse_hf_sum, eval(model_hf_sum, test))
+        rmse_hf_modified = cbind(rmse_hf_modified, eval(model_hf_modified, test))
+    }
     
+    result1 = cbind(
+        apply(rmse_cm[,-1], 1, mean),
+        apply(rmse_crm[,-1], 1, mean),
+        apply(rmse_ccrm[,-1], 1, mean),
+        apply(rmse_irr[,-1], 1, mean),
+        apply(rmse_fuzzy[,-1], 1, mean),
+        apply(rmse_sslr[,-1], 1, mean),
+        apply(rmse_ln_irr[,-1], 1, mean),
+        apply(rmse_dk[,-1], 1, mean),
+        apply(rmse_hf1[,-1], 1, mean),
+        apply(rmse_hf_normal[,-1], 1, mean),
+        apply(rmse_hf_sum[,-1], 1, mean),
+        apply(rmse_hf_modified[,-1], 1, mean))
+    
+    result2 = cbind(
+        apply(rmse_cm[,-1], 1, sd),
+        apply(rmse_crm[,-1], 1, sd),
+        apply(rmse_ccrm[,-1], 1, sd),
+        apply(rmse_irr[,-1], 1, sd),
+        apply(rmse_fuzzy[,-1], 1, sd),
+        apply(rmse_sslr[,-1], 1, sd),
+        apply(rmse_ln_irr[,-1], 1, sd),
+        apply(rmse_dk[,-1], 1, sd),
+        apply(rmse_hf1[,-1], 1, sd),
+        apply(rmse_hf_normal[,-1], 1, sd),
+        apply(rmse_hf_sum[,-1], 1, sd),
+        apply(rmse_hf_modified[,-1], 1, sd))
+    colnames(result1) = c("cm","crm",'ccrm','irr','fuzzy','sslr','ln_irr','dk','hf1','hf_normal','hf_sum','hf_modified')
+    rownames(result1) = c('rmsec','rmser','rmsel','rmseu')
+    colnames(result2) = c("cm","crm",'ccrm','irr','fuzzy','sslr','ln_irr','dk','hf1','hf_normal','hf_sum','hf_modified')
+    rownames(result2) = c('rmsec','rmser','rmsel','rmseu')
+    result_list = list(round(result1,3),round(result2,3))
+    names(result_list) = c("Mean","Sd")
+    return(result_list)
 }
+
+
+# outlier_plotdata <- function(formula, dataset, seed, outlierType=1, alpha=0.1,k = 10)
+# {
+#     
+# }

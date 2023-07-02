@@ -24,7 +24,7 @@ hf_normalization1 <- function(beta, xc, xr, yc, yr){
         b=x[2]
         c=x[3]
         d=x[4]
-        return(min(max(b,d)-min(a,c), b-a+d-c))
+        return(min(max(a,b,c,d)-min(a,b,c,d), abs(b-a)+abs(d-c)))
         }
     u = apply(data, 1, interval_union)
     return(mean((abs(yc-yc_hat) + abs(yr-yr_hat))/u))
@@ -41,7 +41,7 @@ hf_normalization2 <- function(beta, xc, xr, yc, yr){
     yu = yc+yr
     yl_hat = yc_hat - yr_hat
     yu_hat = yc_hat + yr_hat
-    return(mean((abs(yc-yc_hat) + abs(yr-yr_hat))/(yl-yu+yl_hat-yu_hat)))
+    return(mean((abs(yc-yc_hat) + abs(yr-yr_hat))/(abs(yl-yu)+abs(yl_hat-yu_hat))))
 }
 
 hf_sum <- function(beta, xc, xr, yc, yr){
@@ -77,7 +77,7 @@ hf_sum1 <- function(beta, xc, xr, yc, yr){
         b=x[2]
         c=x[3]
         d=x[4]
-        return(min(max(b,d)-min(a,c), b-a+d-c))
+        return(min(max(a,b,c,d)-min(a,b,c,d), abs(b-a)+abs(d-c)))
     }
     u = apply(data, 1, interval_union)
     return(mean((abs(yl-yl_hat)+abs(yu-yu_hat))/u))
@@ -94,7 +94,7 @@ hf_sum2 <- function(beta, xc, xr, yc, yr){
     yu = yc+yr
     yl_hat = yc_hat - yr_hat
     yu_hat = yc_hat + yr_hat
-    return(mean((abs(yl-yl_hat)+abs(yu-yu_hat))/(yl-yu+yl_hat-yu_hat)))
+    return(mean((abs(yl-yl_hat)+abs(yu-yu_hat))/(abs(yl-yu)+abs(yl_hat-yu_hat))))
 }
 
 hf_modified<- function(beta, xc, xr, yc, yr){
@@ -114,9 +114,9 @@ hf_modified<- function(beta, xc, xr, yc, yr){
         x2=x[2]
         x3=x[3]
         x4=x[4]
-        l_union = min(max(x2, x4)-min(x1, x3), x2-x1+x4-x3)
-        l1 = x2-x1
-        l2 = x4-x3
+        l_union = min(max(x1,x2,x3,x4)-min(x1,x2,x3,x4), abs(x2-x1)+abs(x4-x3))
+        l1 = abs(x2-x1)
+        l2 = abs(x4-x3)
         if(l_union == l1 + l2)
             {return((abs(x1-x3)+abs(x3-x2))/2 + (abs(x2-x4)+abs(x3-x2))/2)}
         else if(l_union>l1 & l_union>l2)
