@@ -378,7 +378,7 @@ def show2(x, y, path, Cov=None):
     plt.show()
 
 
-def show3(x, y, samples=25, path=None, real=None, Cor=None, varname=None):
+def show3(x, y, samples=25, path=None, real=None, Cor=None, varname=None, prototype=None, title=None):
     np.random.seed(0)
     n = np.shape(x)[0]
     plt.figure(dpi=150, figsize=(4, 4))
@@ -387,14 +387,23 @@ def show3(x, y, samples=25, path=None, real=None, Cor=None, varname=None):
         if real is not None:
             plt.scatter(real[i, 0], real[i, 1], alpha=1, color="black", s=2)
 
+    if prototype is not None:
+        plt.fill_between(prototype[0], np.array([prototype[1][0], prototype[1][0]]), np.array([prototype[1][1], prototype[1][1]]), alpha=0.25, linewidth=0,
+                         color='red')
+
     if varname is not None:
         xname = varname[0]
         yname = varname[1]
     else:
         xname = r'$X_1$'
         yname = r'$X_2$'
-    if Cor is not None:
+
+    if title is not None:
+        plt.title(title)
+    elif Cor is not None:
         plt.title('plot of ' + xname +' and ' + yname + ' with Cor %.4f' % Cor)  # 折线图标题
+    elif prototype is not None:
+        plt.title('plot of hyper-intervals with prototype')
     else:
         plt.title('plot of ' + xname+' and ' + yname)
     plt.xlabel(xname)  # x轴标题
@@ -405,3 +414,28 @@ def show3(x, y, samples=25, path=None, real=None, Cor=None, varname=None):
     if path is not None:
         plt.savefig(path)
     plt.show()
+
+
+def prototype_infinity(data):
+    """
+
+    :param data: list of list of array-like
+    [
+    [[1,2], [2.3], [3,4]],
+    [[1,2], [2.3], [3,4]]
+    ]
+    :return:
+    """
+    n = len(data)
+    p = len(data[0])
+    prototype = []
+
+    for j in range(p):
+        a_list = []
+        b_list = []
+        for i in range(n):
+            a_list.append(data[i][j][0])
+            b_list.append(data[i][j][1])
+        prototype.append([max(a_list)/2+min(a_list)/2, max(b_list)/2+min(b_list)/2])
+
+    return prototype

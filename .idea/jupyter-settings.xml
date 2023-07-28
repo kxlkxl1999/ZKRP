@@ -3,15 +3,15 @@
   <component name="JupyterPersistentConnectionParameters">
     <option name="moduleParameters">
       <map>
-        <entry key="$PROJECT_DIR$/../../remote sensoring/plot/.idea/plot.iml">
+        <entry key="$PROJECT_DIR$/.idea/ZKRP.iml">
           <value>
             <JupyterConnectionParameters>
               <option name="managed" value="true" />
-              <option name="sdkHomePath" value="C:\Users\kangxinlai\anaconda3\python.exe" />
+              <option name="sdkHomePath" value="C:\ProgramData\anaconda3\python.exe" />
             </JupyterConnectionParameters>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/.idea/ZKRP.iml">
+        <entry key="$USER_HOME$/remote sensoring/plot/.idea/plot.iml">
           <value>
             <JupyterConnectionParameters>
               <option name="managed" value="true" />
