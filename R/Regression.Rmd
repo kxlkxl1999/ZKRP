@@ -14,7 +14,7 @@ library(MAINT.Data)
 library(iRegression)
 library(MASS)
 library(quantreg)
-library(Rdonlp2)
+#library(Rdonlp2)
 library(sm)
 library(Matrix)
 
@@ -673,7 +673,7 @@ outlier_comparasion(cbind(yl,yu)~x1l+x1u+x2l+x2u+x3l+x3u+x4l+x4u, dataM,seed = 0
 ```
 
 ```{r}
-outlier_comparasion(cbind(yl,yu)~x1l+x1u+x2l+x2u+x3l+x3u+x4l+x4u, dataM,seed = 0, outlierType = 4,alpha = 0.15)
+outlier_comparasion(cbind(yl,yu)~x1l+x1u+x2l+x2u+x3l+x3u+x4l+x4u, dataM,seed = 0, outlierType = 4,alpha = 0.1)
 ```
 
 ### outlier comparasion with fixed alpha= 0.1

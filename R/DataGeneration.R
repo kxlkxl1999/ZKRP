@@ -282,8 +282,13 @@ data_generation_outlier5 <- function(n, a, b, c, d, e, f, g, h, i, j,k,l, seed, 
 data_generation_outlier_realdata <- function(data, seed, outlierType=1, alpha=0.1){
     n = nrow(data)
     n1 = floor(n * alpha)
+    n11 = floor(n1/4)
     sampled.index = sample(1:n,n1)
-    
+    sampled.index1 = sampled.index[1:n11]
+    sampled.index2 = sampled.index[(n11+1):(2*n11)]
+    sampled.index3 = sampled.index[(2*n11+1):(3*n11)]
+    sampled.index4 = sampled.index[(3*n11+1):n1]
+
     if(outlierType==1)
     {
         data[sampled.index,1] = 0.1
@@ -310,6 +315,24 @@ data_generation_outlier_realdata <- function(data, seed, outlierType=1, alpha=0.
         data[sampled.index,1] = yc-yr
         data[sampled.index,2] = yc+yr
     }
-    
+    else if(outlierType==0)
+    {
+      data[sampled.index1,1] = 0.1
+      data[sampled.index1,2] = 0.2
+      data[sampled.index2,1] = 1000
+      data[sampled.index2,2] = 2000
+      yc = runif(n11,0,1)
+      yr = runif(n11,0,1)
+      data[sampled.index3,1] = yc-yr
+      data[sampled.index3,2] = yc+yr
+      
+      yc4 = data[sampled.index4,2]/2 + data[sampled.index4,1]/2
+      yr4 = data[sampled.index4,2]/2 - data[sampled.index4,1]/2
+      yc4 = yc4 + 2*rt(n1-3*n11,2)
+      yr4 = yr4 + 2*abs(rt(n1-3*n11,2))
+      data[sampled.index4,1] = yc4-yr4
+      data[sampled.index4,2] = yc4+yr4
+    }
+
     return(data)
 }

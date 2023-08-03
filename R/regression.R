@@ -212,22 +212,22 @@ comparasion <- function(formula, train, test)
     return(cbind(rmse_cm,rmse_crm,rmse_ccrm,rmse_irr,rmse_fuzzy,rmse_sslr,rmse_ln_irr,rmse_dk,rmse_hf1,rmse_hf_normal,rmse_hf_sum,rmse_hf_modified))
 }
 
-outlier_comparasion <- function(formula, dataset, seed, outlierType=1, alpha=0.1,k = 10)
+outlier_comparasion <- function(formula, dataset, seed, outlierType=1, alpha=0.05,k = 10)
 {
     set.seed(0)
     folds = createFolds(dataset[,1],k=k)
     rmse_cm = matrix(0,nrow = 4)
     rmse_crm = matrix(0,nrow = 4)
     rmse_ccrm = matrix(0,nrow = 4)
-    rmse_irr = matrix(0,nrow = 4)
-    rmse_fuzzy = matrix(0,nrow = 4)
-    rmse_sslr = matrix(0,nrow = 4)
-    rmse_ln_irr = matrix(0,nrow = 4)
+    # rmse_irr = matrix(0,nrow = 4)
+    # rmse_fuzzy = matrix(0,nrow = 4)
+    # rmse_sslr = matrix(0,nrow = 4)
+    # rmse_ln_irr = matrix(0,nrow = 4)
     rmse_dk = matrix(0,nrow = 4)
     rmse_hf1 = matrix(0,nrow = 4)
-    rmse_hf_normal = matrix(0,nrow = 4)
-    rmse_hf_sum = matrix(0,nrow = 4)
-    rmse_hf_modified = matrix(0,nrow = 4)
+    # rmse_hf_normal = matrix(0,nrow = 4)
+    # rmse_hf_sum = matrix(0,nrow = 4)
+    # rmse_hf_modified = matrix(0,nrow = 4)
     for(i in 1:k)
     {
         train = dataset[-folds[[i]], ]
@@ -238,60 +238,60 @@ outlier_comparasion <- function(formula, dataset, seed, outlierType=1, alpha=0.1
         model_crm = CRM(formula, train)
         model_ccrm = CCRM(formula, train)
         model_hf1 = HF1(formula, train)
-        model_irr = IRR(formula, train)
-        model_fuzzy = Fuzzy(formula, train)
-        model_sslr = SSLR(formula, train)
-        model_ln_irr = LN_IRR(formula, train)
+        # model_irr = IRR(formula, train)
+        # model_fuzzy = Fuzzy(formula, train)
+        # model_sslr = SSLR(formula, train)
+        # model_ln_irr = LN_IRR(formula, train)
         model_dk = Dk(formula, train)
-        model_hf_normal = HF_family(formula, train, method='normalization1')
-        model_hf_sum = HF_family(formula, train, method='sum')
-        model_hf_modified = HF_family(formula, train, method='modified')
+        # model_hf_normal = HF_family(formula, train, method='normalization1')
+        # model_hf_sum = HF_family(formula, train, method='sum')
+        # model_hf_modified = HF_family(formula, train, method='modified')
         rmse_cm = cbind(rmse_cm, eval(model_cm, test))
         rmse_crm = cbind(rmse_crm, eval(model_crm, test))
         rmse_ccrm = cbind(rmse_ccrm, eval(model_ccrm, test))
         rmse_hf1 = cbind(rmse_hf1, eval(model_hf1, test))
-        rmse_irr = cbind(rmse_irr, eval_IRR(model_irr, test))
-        rmse_fuzzy = cbind(rmse_fuzzy, eval_fuzzy(model_fuzzy, test))
-        rmse_sslr = cbind(rmse_sslr, eval_SSLR(model_sslr, test))
-        rmse_ln_irr = cbind(rmse_ln_irr, eval_LN_IRR(model_ln_irr, test))
+        # rmse_irr = cbind(rmse_irr, eval_IRR(model_irr, test))
+        # rmse_fuzzy = cbind(rmse_fuzzy, eval_fuzzy(model_fuzzy, test))
+        # rmse_sslr = cbind(rmse_sslr, eval_SSLR(model_sslr, test))
+        # rmse_ln_irr = cbind(rmse_ln_irr, eval_LN_IRR(model_ln_irr, test))
         rmse_dk = cbind(rmse_dk, eval(model_dk, test))
-        rmse_hf_normal = cbind(rmse_hf_normal, eval(model_hf_normal, test))
-        rmse_hf_sum = cbind(rmse_hf_sum, eval(model_hf_sum, test))
-        rmse_hf_modified = cbind(rmse_hf_modified, eval(model_hf_modified, test))
+        # rmse_hf_normal = cbind(rmse_hf_normal, eval(model_hf_normal, test))
+        # rmse_hf_sum = cbind(rmse_hf_sum, eval(model_hf_sum, test))
+        # rmse_hf_modified = cbind(rmse_hf_modified, eval(model_hf_modified, test))
     }
     
     result1 = cbind(
             apply(rmse_cm[,-1], 1, mean),
             apply(rmse_crm[,-1], 1, mean),
             apply(rmse_ccrm[,-1], 1, mean),
-            apply(rmse_irr[,-1], 1, mean),
-            apply(rmse_fuzzy[,-1], 1, mean),
-            apply(rmse_sslr[,-1], 1, mean),
-            apply(rmse_ln_irr[,-1], 1, mean),
+            # apply(rmse_irr[,-1], 1, mean),
+            # apply(rmse_fuzzy[,-1], 1, mean),
+            # apply(rmse_sslr[,-1], 1, mean),
+            # apply(rmse_ln_irr[,-1], 1, mean),
             apply(rmse_dk[,-1], 1, mean),
-            apply(rmse_hf1[,-1], 1, mean),
-            apply(rmse_hf_normal[,-1], 1, mean),
-            apply(rmse_hf_sum[,-1], 1, mean),
-            apply(rmse_hf_modified[,-1], 1, mean))
+            apply(rmse_hf1[,-1], 1, mean))
+            # apply(rmse_hf_normal[,-1], 1, mean),
+            # apply(rmse_hf_sum[,-1], 1, mean),
+            # apply(rmse_hf_modified[,-1], 1, mean))
             
     result2 = cbind(
             apply(rmse_cm[,-1], 1, sd),
             apply(rmse_crm[,-1], 1, sd),
             apply(rmse_ccrm[,-1], 1, sd),
-            apply(rmse_irr[,-1], 1, sd),
-            apply(rmse_fuzzy[,-1], 1, sd),
-            apply(rmse_sslr[,-1], 1, sd),
-            apply(rmse_ln_irr[,-1], 1, sd),
+            # apply(rmse_irr[,-1], 1, sd),
+            # apply(rmse_fuzzy[,-1], 1, sd),
+            # apply(rmse_sslr[,-1], 1, sd),
+            # apply(rmse_ln_irr[,-1], 1, sd),
             apply(rmse_dk[,-1], 1, sd),
-            apply(rmse_hf1[,-1], 1, sd),
-            apply(rmse_hf_normal[,-1], 1, sd),
-            apply(rmse_hf_sum[,-1], 1, sd),
-            apply(rmse_hf_modified[,-1], 1, sd))
-    colnames(result1) = c("cm","crm",'ccrm','irr','fuzzy','sslr','ln_irr','dk','hf1','hf_normal','hf_sum','hf_modified')
-    rownames(result1) = c('rmsec','rmser','rmsel','rmseu')
-    colnames(result2) = c("cm","crm",'ccrm','irr','fuzzy','sslr','ln_irr','dk','hf1','hf_normal','hf_sum','hf_modified')
-    rownames(result2) = c('rmsec','rmser','rmsel','rmseu')
-    result_list = list(round(result1,4),round(result2,4))
+            apply(rmse_hf1[,-1], 1, sd))
+            # apply(rmse_hf_normal[,-1], 1, sd),
+            # apply(rmse_hf_sum[,-1], 1, sd),
+            # apply(rmse_hf_modified[,-1], 1, sd))
+    colnames(result1) = c("cm","crm",'ccrm','dk','hf1')
+    # rownames(result1) = c('rmsec','rmser','rmsel','rmseu')
+    colnames(result2) = c("cm","crm",'ccrm','dk','hf1')
+    # rownames(result2) = c('rmsec','rmser','rmsel','rmseu')
+    result_list = list(round(colMeans(result1),3),round(colMeans(result2),3))
     names(result_list) = c("Mean","Sd")
     return(result_list)
 }
@@ -302,15 +302,15 @@ outlier_comparasion_simu <- function(formula, n, a, b, c, d, e, f, g, h, i, j, k
     rmse_cm = matrix(0,nrow = 4)
     rmse_crm = matrix(0,nrow = 4)
     rmse_ccrm = matrix(0,nrow = 4)
-    rmse_irr = matrix(0,nrow = 4)
-    rmse_fuzzy = matrix(0,nrow = 4)
-    rmse_sslr = matrix(0,nrow = 4)
-    rmse_ln_irr = matrix(0,nrow = 4)
+    # rmse_irr = matrix(0,nrow = 4)
+    # rmse_fuzzy = matrix(0,nrow = 4)
+    # rmse_sslr = matrix(0,nrow = 4)
+    # rmse_ln_irr = matrix(0,nrow = 4)
     rmse_dk = matrix(0,nrow = 4)
     rmse_hf1 = matrix(0,nrow = 4)
-    rmse_hf_normal = matrix(0,nrow = 4)
-    rmse_hf_sum = matrix(0,nrow = 4)
-    rmse_hf_modified = matrix(0,nrow = 4)
+    # rmse_hf_normal = matrix(0,nrow = 4)
+    # rmse_hf_sum = matrix(0,nrow = 4)
+    # rmse_hf_modified = matrix(0,nrow = 4)
     for(t in 1:niter)
     {
         if(outlierType==1)
@@ -350,60 +350,66 @@ outlier_comparasion_simu <- function(formula, n, a, b, c, d, e, f, g, h, i, j, k
         model_crm = CRM(formula, train)
         model_ccrm = CCRM(formula, train)
         model_hf1 = HF1(formula, train)
-        model_irr = IRR(formula, train)
-        model_fuzzy = Fuzzy(formula, train)
-        model_sslr = SSLR(formula, train)
-        model_ln_irr = LN_IRR(formula, train)
+        # model_irr = IRR(formula, train)
+        # model_fuzzy = Fuzzy(formula, train)
+        # model_sslr = SSLR(formula, train)
+        # model_ln_irr = LN_IRR(formula, train)
         model_dk = Dk(formula, train)
-        model_hf_normal = HF_family(formula, train, method='normalization1')
-        model_hf_sum = HF_family(formula, train, method='sum')
-        model_hf_modified = HF_family(formula, train, method='modified')
+        # model_hf_normal = HF_family(formula, train, method='normalization1')
+        # model_hf_sum = HF_family(formula, train, method='sum')
+        # model_hf_modified = HF_family(formula, train, method='modified')
         rmse_cm = cbind(rmse_cm, eval(model_cm, test))
         rmse_crm = cbind(rmse_crm, eval(model_crm, test))
         rmse_ccrm = cbind(rmse_ccrm, eval(model_ccrm, test))
         rmse_hf1 = cbind(rmse_hf1, eval(model_hf1, test))
-        rmse_irr = cbind(rmse_irr, eval_IRR(model_irr, test))
-        rmse_fuzzy = cbind(rmse_fuzzy, eval_fuzzy(model_fuzzy, test))
-        rmse_sslr = cbind(rmse_sslr, eval_SSLR(model_sslr, test))
-        rmse_ln_irr = cbind(rmse_ln_irr, eval_LN_IRR(model_ln_irr, test))
+        # rmse_irr = cbind(rmse_irr, eval_IRR(model_irr, test))
+        # rmse_fuzzy = cbind(rmse_fuzzy, eval_fuzzy(model_fuzzy, test))
+        # rmse_sslr = cbind(rmse_sslr, eval_SSLR(model_sslr, test))
+        # rmse_ln_irr = cbind(rmse_ln_irr, eval_LN_IRR(model_ln_irr, test))
         rmse_dk = cbind(rmse_dk, eval(model_dk, test))
-        rmse_hf_normal = cbind(rmse_hf_normal, eval(model_hf_normal, test))
-        rmse_hf_sum = cbind(rmse_hf_sum, eval(model_hf_sum, test))
-        rmse_hf_modified = cbind(rmse_hf_modified, eval(model_hf_modified, test))
+        # rmse_hf_normal = cbind(rmse_hf_normal, eval(model_hf_normal, test))
+        # rmse_hf_sum = cbind(rmse_hf_sum, eval(model_hf_sum, test))
+        # rmse_hf_modified = cbind(rmse_hf_modified, eval(model_hf_modified, test))
     }
     
     result1 = cbind(
         apply(rmse_cm[,-1], 1, mean),
         apply(rmse_crm[,-1], 1, mean),
         apply(rmse_ccrm[,-1], 1, mean),
-        apply(rmse_irr[,-1], 1, mean),
-        apply(rmse_fuzzy[,-1], 1, mean),
-        apply(rmse_sslr[,-1], 1, mean),
-        apply(rmse_ln_irr[,-1], 1, mean),
+        # apply(rmse_irr[,-1], 1, mean),
+        # apply(rmse_fuzzy[,-1], 1, mean),
+        # apply(rmse_sslr[,-1], 1, mean),
+        # apply(rmse_ln_irr[,-1], 1, mean),
         apply(rmse_dk[,-1], 1, mean),
-        apply(rmse_hf1[,-1], 1, mean),
-        apply(rmse_hf_normal[,-1], 1, mean),
-        apply(rmse_hf_sum[,-1], 1, mean),
-        apply(rmse_hf_modified[,-1], 1, mean))
+        apply(rmse_hf1[,-1], 1, mean)
+        # apply(rmse_hf_normal[,-1], 1, mean),
+        # apply(rmse_hf_sum[,-1], 1, mean),
+        # apply(rmse_hf_modified[,-1], 1, mean)
+        )
     
     result2 = cbind(
         apply(rmse_cm[,-1], 1, sd),
         apply(rmse_crm[,-1], 1, sd),
         apply(rmse_ccrm[,-1], 1, sd),
-        apply(rmse_irr[,-1], 1, sd),
-        apply(rmse_fuzzy[,-1], 1, sd),
-        apply(rmse_sslr[,-1], 1, sd),
-        apply(rmse_ln_irr[,-1], 1, sd),
+        # apply(rmse_irr[,-1], 1, sd),
+        # apply(rmse_fuzzy[,-1], 1, sd),
+        # apply(rmse_sslr[,-1], 1, sd),
+        # apply(rmse_ln_irr[,-1], 1, sd),
         apply(rmse_dk[,-1], 1, sd),
-        apply(rmse_hf1[,-1], 1, sd),
-        apply(rmse_hf_normal[,-1], 1, sd),
-        apply(rmse_hf_sum[,-1], 1, sd),
-        apply(rmse_hf_modified[,-1], 1, sd))
-    colnames(result1) = c("cm","crm",'ccrm','irr','fuzzy','sslr','ln_irr','dk','hf1','hf_normal','hf_sum','hf_modified')
-    rownames(result1) = c('rmsec','rmser','rmsel','rmseu')
-    colnames(result2) = c("cm","crm",'ccrm','irr','fuzzy','sslr','ln_irr','dk','hf1','hf_normal','hf_sum','hf_modified')
-    rownames(result2) = c('rmsec','rmser','rmsel','rmseu')
-    result_list = list(round(result1,3),round(result2,3))
+        apply(rmse_hf1[,-1], 1, sd)
+        # apply(rmse_hf_normal[,-1], 1, sd),
+        # apply(rmse_hf_sum[,-1], 1, sd),
+        # apply(rmse_hf_modified[,-1], 1, sd)
+        )
+    # colnames(result1) = c("cm","crm",'ccrm','irr','fuzzy','sslr','ln_irr','dk','hf1','hf_normal','hf_sum','hf_modified')
+    # rownames(result1) = c('rmsec','rmser','rmsel','rmseu')
+    # colnames(result2) = c("cm","crm",'ccrm','irr','fuzzy','sslr','ln_irr','dk','hf1','hf_normal','hf_sum','hf_modified')
+    # rownames(result2) = c('rmsec','rmser','rmsel','rmseu')
+    colnames(result1) = c("cm","crm",'ccrm','dk','hf1')
+    # rownames(result1) = c('rmsec','rmser','rmsel','rmseu')
+    colnames(result2) = c("cm","crm",'ccrm','dk','hf1')
+    # rownames(result2) = c('rmsec','rmser','rmsel','rmseu')
+    result_list = list(round(colMeans(result1),3),round(colMeans(result2),3))
     names(result_list) = c("Mean","Sd")
     return(result_list)
 }
