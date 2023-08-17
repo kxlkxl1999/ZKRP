@@ -382,7 +382,7 @@ def show3(x, y, samples=25, path=None, real=None, Cor=None, varname=None, protot
     np.random.seed(0)
     n = np.shape(x)[0]
     plt.figure(dpi=150, figsize=(4, 4))
-    for i in np.random.choice(n,samples,replace=False):
+    for i in np.random.choice(n, samples, replace=False):
         plt.fill_between(x[i, :], np.array([y[i, 1], y[i, 1]]), np.array([y[i, 0], y[i, 0]]), alpha=0.25, linewidth=0, color='steelblue')
         if real is not None:
             plt.scatter(real[i, 0], real[i, 1], alpha=1, color="black", s=2)
@@ -406,8 +406,8 @@ def show3(x, y, samples=25, path=None, real=None, Cor=None, varname=None, protot
         plt.title('plot of hyper-intervals with prototype')
     else:
         plt.title('plot of ' + xname+' and ' + yname)
-    plt.xlabel(xname)  # x轴标题
-    plt.ylabel(yname)  # y轴标题
+    plt.xlabel(xname,fontsize=12)  # x轴标题
+    plt.ylabel(yname,fontsize=12)  # y轴标题
     plt.grid(ls='-.')  # 绘制背景线
     # plt.legend(loc='best', handles=[a, b])
     plt.tight_layout()
